@@ -1,0 +1,58 @@
+/* ============================================================================
+   TYPOGRAPHY TOKENS
+   ----------------------------------------------------------------------------
+   Font families are injected by next/font in src/app/layout.tsx, which sets
+   --font-sans-src / --font-display-src on <html>. We alias them here so the
+   rest of the system never depends on how fonts happen to be loaded.
+
+   Type scale is FLUID: clamp(min, preferred, max) means sizes interpolate
+   smoothly with the viewport instead of jumping at breakpoints. One token per
+   step — no per-breakpoint overrides scattered through components.
+   ========================================================================== */
+
+:root {
+  /* Families */
+  --font-sans:    var(--font-sans-src), ui-sans-serif, system-ui, -apple-system,
+                  "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-display-src), var(--font-sans);
+  --font-mono:    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+                  "Liberation Mono", monospace;
+
+  /* ---------------------------------------------------------------------
+     FLUID TYPE SCALE
+     Viewport range: 320px -> 1440px
+     --------------------------------------------------------------------- */
+  --text-xs:   clamp(0.75rem,  0.73rem + 0.09vw, 0.8125rem);   /* 12 -> 13 */
+  --text-sm:   clamp(0.875rem, 0.85rem + 0.11vw, 0.9375rem);   /* 14 -> 15 */
+  --text-base: clamp(1rem,     0.97rem + 0.14vw, 1.0625rem);   /* 16 -> 17 */
+  --text-lg:   clamp(1.125rem, 1.08rem + 0.22vw, 1.25rem);     /* 18 -> 20 */
+  --text-xl:   clamp(1.25rem,  1.18rem + 0.36vw, 1.5rem);      /* 20 -> 24 */
+  --text-2xl:  clamp(1.5rem,   1.39rem + 0.54vw, 1.875rem);    /* 24 -> 30 */
+  --text-3xl:  clamp(1.875rem, 1.7rem + 0.89vw,  2.375rem);    /* 30 -> 38 */
+  --text-4xl:  clamp(2.25rem,  1.98rem + 1.34vw, 3rem);        /* 36 -> 48 */
+  --text-5xl:  clamp(2.75rem,  2.3rem + 2.23vw,  4rem);        /* 44 -> 64 */
+  --text-6xl:  clamp(3.25rem,  2.5rem + 3.75vw,  5.5rem);      /* 52 -> 88 */
+
+  /* Line heights — unitless so they scale with font-size */
+  --leading-none:    1;
+  --leading-tight:   1.15;
+  --leading-snug:    1.3;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+  --leading-loose:   1.8;
+
+  /* Weights */
+  --weight-normal:    400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+  --weight-bold:      700;
+  --weight-extrabold: 800;
+
+  /* Letter spacing — large display text needs negative tracking to look right */
+  --tracking-tighter: -0.03em;
+  --tracking-tight:   -0.015em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.02em;
+  --tracking-wider:   0.06em;
+  --tracking-widest:  0.12em;
+}

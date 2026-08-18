@@ -1,0 +1,335 @@
+/* ============================================================================
+   GLOBAL STYLESHEET
+   ----------------------------------------------------------------------------
+   Load order matters and is deliberate:
+
+     1. tailwindcss          — preflight/reset + utility engine
+     2. tokens/*             — our raw CSS custom properties
+     3. @theme inline        — exposes those tokens to Tailwind as utilities
+     4. @layer base          — element defaults
+     5. @layer components    — the few genuinely global composite classes
+     6. @layer utilities     — small helpers Tailwind does not ship
+
+   Component-specific styling belongs in the component (Tailwind classes), not
+   here. This file should stay small.
+   ========================================================================== */
+
+@import "tailwindcss";
+
+@import "./tokens/colors.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
+@import "./tokens/effects.css";
+
+/* Tell Tailwind that dark mode is driven by a `.dark` class on an ancestor,
+   rather than the prefers-color-scheme media query. Gives us a manual toggle. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================================
+   THEME BRIDGE
+   ----------------------------------------------------------------------------
+   `@theme inline` maps our semantic tokens onto Tailwind's namespaces, which
+   is what generates the utility classes. `inline` keeps the var() reference
+   live, so the .dark overrides above still apply at runtime.
+
+   Naming: the part after the namespace prefix becomes the class suffix.
+       --color-text-primary   ->  text-text-primary
+       --color-surface-base   ->  bg-surface-base
+       --radius-lg            ->  rounded-lg
+   ========================================================================== */
+
+@theme inline {
+  /* --- Colours ------------------------------------------------------- */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-inverse: var(--color-text-inverse);
+  --color-text-brand: var(--color-text-brand);
+  --color-text-accent: var(--color-text-accent);
+  --color-text-on-brand: var(--color-text-on-brand);
+  --color-text-on-accent: var(--color-text-on-accent);
+
+  --color-surface-base: var(--color-surface-base);
+  --color-surface-subtle: var(--color-surface-subtle);
+  --color-surface-muted: var(--color-surface-muted);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-surface-inverse: var(--color-surface-inverse);
+  --color-surface-brand: var(--color-surface-brand);
+  --color-surface-brand-subtle: var(--color-surface-brand-subtle);
+  --color-surface-accent: var(--color-surface-accent);
+  --color-surface-accent-subtle: var(--color-surface-accent-subtle);
+  --color-surface-overlay: var(--color-surface-overlay);
+
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-default: var(--color-border-default);
+  --color-border-strong: var(--color-border-strong);
+  --color-border-brand: var(--color-border-brand);
+  --color-border-inverse: var(--color-border-inverse);
+
+  --color-interactive-primary: var(--color-interactive-primary);
+  --color-interactive-primary-hover: var(--color-interactive-primary-hover);
+  --color-interactive-primary-active: var(--color-interactive-primary-active);
+  --color-interactive-accent: var(--color-interactive-accent);
+  --color-interactive-accent-hover: var(--color-interactive-accent-hover);
+  --color-interactive-accent-active: var(--color-interactive-accent-active);
+  --color-interactive-neutral: var(--color-interactive-neutral);
+  --color-interactive-neutral-hover: var(--color-interactive-neutral-hover);
+  --color-interactive-neutral-active: var(--color-interactive-neutral-active);
+  --color-interactive-disabled: var(--color-interactive-disabled);
+
+  --color-focus-ring: var(--color-focus-ring);
+  --color-status-success: var(--color-status-success);
+  --color-status-warning: var(--color-status-warning);
+  --color-status-danger: var(--color-status-danger);
+
+  /* --- Typography ---------------------------------------------------- */
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-2xl: var(--text-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-4xl: var(--text-4xl);
+  --text-5xl: var(--text-5xl);
+  --text-6xl: var(--text-6xl);
+
+  --leading-none: var(--leading-none);
+  --leading-tight: var(--leading-tight);
+  --leading-snug: var(--leading-snug);
+  --leading-normal: var(--leading-normal);
+  --leading-relaxed: var(--leading-relaxed);
+  --leading-loose: var(--leading-loose);
+
+  --tracking-tighter: var(--tracking-tighter);
+  --tracking-tight: var(--tracking-tight);
+  --tracking-normal: var(--tracking-normal);
+  --tracking-wide: var(--tracking-wide);
+  --tracking-wider: var(--tracking-wider);
+  --tracking-widest: var(--tracking-widest);
+
+  /* --- Layout -------------------------------------------------------- */
+  --container-content: var(--width-content);
+  --container-narrow: var(--width-narrow);
+  --container-wide: var(--width-wide);
+
+  --spacing-gutter: var(--gutter);
+  --spacing-section-sm: var(--section-y-sm);
+  --spacing-section: var(--section-y);
+  --spacing-section-lg: var(--section-y-lg);
+  --spacing-header: var(--header-height);
+
+  /* --- Effects ------------------------------------------------------- */
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-3xl: var(--radius-3xl);
+  --radius-full: var(--radius-full);
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+  --shadow-brand: var(--shadow-brand);
+  --shadow-accent: var(--shadow-accent);
+
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+  --ease-spring: var(--ease-spring);
+}
+
+/* ============================================================================
+   BASE — element-level defaults
+   ========================================================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border-subtle);
+  }
+
+  html {
+    /* Smooth in-page anchor navigation, disabled for reduced-motion users
+       via the media query at the foot of this file. */
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-surface-base);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings default to the display face and tight tracking. Individual size
+     is always set at the call site (or via the Heading component), because it
+     depends on visual hierarchy, not on tag level. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+  }
+
+  /* Avoid orphans in body copy */
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Anchor targets clear the sticky header */
+  :target,
+  [id] {
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  /* Consistent, visible keyboard focus everywhere. :focus-visible means mouse
+     users never see it — only keyboard navigation does. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Media defaults — block prevents the mysterious inline-descender gap */
+  img,
+  svg,
+  video,
+  canvas,
+  picture {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Inputs should inherit typography rather than fall back to system UI */
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Selection colour */
+  ::selection {
+    background-color: var(--color-surface-brand);
+    color: var(--color-text-on-brand);
+  }
+}
+
+/* ============================================================================
+   COMPONENTS — global composite classes
+   ----------------------------------------------------------------------------
+   Deliberately minimal. Anything reusable should be a React component in
+   src/components, not a class here. These exist only where a class is more
+   ergonomic than a wrapper element.
+   ========================================================================== */
+
+@layer components {
+  /* Gradient text — used for emphasised words in display headings */
+  .text-gradient-brand {
+    background-image: linear-gradient(
+      100deg,
+      var(--brand-500) 0%,
+      var(--brand-700) 55%,
+      var(--accent-500) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Skip-to-content link — visually hidden until it receives keyboard focus */
+  .skip-link {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    z-index: var(--z-toast);
+    transform: translateY(-200%);
+    transition: transform var(--duration-fast) var(--ease-out);
+    background-color: var(--color-surface-brand);
+    color: var(--color-text-on-brand);
+    padding: 0.625rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: var(--weight-semibold);
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================================
+   UTILITIES
+   ========================================================================== */
+
+@layer utilities {
+  /* Screen-reader-only text */
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Hide scrollbar while keeping the element scrollable — for carousels */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Full-bleed: break an element out of its container to the viewport edge */
+  .full-bleed {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ----------------------------------------------------------------------------
+   Respect the OS-level preference. Animations are neutralised rather than
+   removed, so anything relying on an animation/transition end event still fires.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

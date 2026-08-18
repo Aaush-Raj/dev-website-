@@ -1,0 +1,9 @@
+.next
+node_modules
+public
+*.md
+
+# Design tokens are column-aligned by hand for scannability — a vertical list
+# of colour ramps reads far better aligned than reflowed. Prettier collapses
+# that alignment, so these files are formatted manually.
+src/styles/tokens/

@@ -1,0 +1,15 @@
+# eLurny — Full Content
+
+> TODO(content): this file should contain the complete text content of the
+> site as clean markdown, so a language model can ingest the whole thing in a
+> single fetch without crawling. Populate it once the page copy is final.
+>
+> Convention: https://llmstxt.org
+
+## About
+
+Placeholder. Replace with the full product description.
+
+## Contact
+
+Email: hello@elurny.com

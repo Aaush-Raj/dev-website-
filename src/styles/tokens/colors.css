@@ -1,0 +1,188 @@
+/* ============================================================================
+   COLOR TOKENS
+   ----------------------------------------------------------------------------
+   THE single source of truth for every colour in the site.
+
+   Two layers, and the distinction matters:
+
+   1. PRIMITIVES (--brand-500, --neutral-900 ...)
+      Raw palette values. Never reference these directly in a component.
+      They exist only to be pointed at by semantic tokens below.
+
+   2. SEMANTIC TOKENS (--color-text-primary, --color-surface-raised ...)
+      Named for their ROLE, not their appearance. These are what components use.
+      Because they are indirection over primitives, a rebrand or a theme swap
+      is a change to this file alone — no component is ever touched.
+
+   Usage in components (via Tailwind, wired up in globals.css @theme):
+       <div className="bg-surface-raised text-text-primary" />
+
+   Placeholder values below are neutral defaults. Replace the primitives with
+   the real brand palette once the Figma designs land.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     LAYER 1 — PRIMITIVES
+     Raw palette. Do not use directly in components.
+     --------------------------------------------------------------------- */
+
+  /* Brand — primary accent ramp */
+  --brand-50:  #eef4ff;
+  --brand-100: #d9e6ff;
+  --brand-200: #bcd3ff;
+  --brand-300: #8eb8ff;
+  --brand-400: #5a92ff;
+  --brand-500: #356bfa;
+  --brand-600: #1f4aef;
+  --brand-700: #1838db;
+  --brand-800: #1a31b1;
+  --brand-900: #1b2f8b;
+  --brand-950: #151e54;
+
+  /* Accent — secondary highlight ramp */
+  --accent-50:  #fff4ed;
+  --accent-100: #ffe6d4;
+  --accent-200: #ffc8a8;
+  --accent-300: #ffa271;
+  --accent-400: #ff7038;
+  --accent-500: #fe4c11;
+  --accent-600: #ef3207;
+  --accent-700: #c62008;
+  --accent-800: #9d1c0f;
+  --accent-900: #7e1a10;
+  --accent-950: #440806;
+
+  /* Neutral — text, surfaces, borders */
+  --neutral-0:   #ffffff;
+  --neutral-50:  #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1e293b;
+  --neutral-900: #0f172a;
+  --neutral-950: #020617;
+
+  /* Status */
+  --success-500: #16a34a;
+  --success-600: #15803d;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --danger-500:  #dc2626;
+  --danger-600:  #b91c1c;
+
+  /* ---------------------------------------------------------------------
+     LAYER 2 — SEMANTIC TOKENS  (light theme)
+     These are what components consume.
+     --------------------------------------------------------------------- */
+
+  /* Text */
+  --color-text-primary:    var(--neutral-900);
+  --color-text-secondary:  var(--neutral-600);
+  --color-text-tertiary:   var(--neutral-500);
+  --color-text-muted:      var(--neutral-400);
+  --color-text-inverse:    var(--neutral-0);
+  --color-text-brand:      var(--brand-600);
+  --color-text-accent:     var(--accent-600);
+  --color-text-on-brand:   var(--neutral-0);
+  --color-text-on-accent:  var(--neutral-0);
+
+  /* Surfaces — page and container backgrounds */
+  --color-surface-base:     var(--neutral-0);
+  --color-surface-subtle:   var(--neutral-50);
+  --color-surface-muted:    var(--neutral-100);
+  --color-surface-raised:   var(--neutral-0);
+  --color-surface-inverse:  var(--neutral-900);
+  --color-surface-brand:    var(--brand-600);
+  --color-surface-brand-subtle:  var(--brand-50);
+  --color-surface-accent:   var(--accent-500);
+  --color-surface-accent-subtle: var(--accent-50);
+  --color-surface-overlay:  rgb(2 6 23 / 0.55);
+
+  /* Borders */
+  --color-border-subtle:   var(--neutral-200);
+  --color-border-default:  var(--neutral-300);
+  --color-border-strong:   var(--neutral-400);
+  --color-border-brand:    var(--brand-500);
+  --color-border-inverse:  var(--neutral-700);
+
+  /* Interactive — buttons, links, controls */
+  --color-interactive-primary:         var(--brand-600);
+  --color-interactive-primary-hover:   var(--brand-700);
+  --color-interactive-primary-active:  var(--brand-800);
+  --color-interactive-accent:          var(--accent-500);
+  --color-interactive-accent-hover:    var(--accent-600);
+  --color-interactive-accent-active:   var(--accent-700);
+  --color-interactive-neutral:         var(--neutral-100);
+  --color-interactive-neutral-hover:   var(--neutral-200);
+  --color-interactive-neutral-active:  var(--neutral-300);
+  --color-interactive-disabled:        var(--neutral-200);
+
+  /* Focus ring — accessibility, keep high contrast */
+  --color-focus-ring: var(--brand-500);
+
+  /* Status */
+  --color-status-success: var(--success-600);
+  --color-status-warning: var(--warning-600);
+  --color-status-danger:  var(--danger-600);
+}
+
+/* ---------------------------------------------------------------------------
+   DARK THEME
+   ---------------------------------------------------------------------------
+   Only SEMANTIC tokens are redefined — primitives stay fixed. Roles are
+   remapped, so every component inverts correctly without any component change.
+
+   Activated by `class="dark"` on <html> (see ThemeScript in src/lib/theme.ts).
+   Delete this block if the brand is committed to a single light appearance.
+   ------------------------------------------------------------------------- */
+
+.dark {
+  --color-text-primary:    var(--neutral-50);
+  --color-text-secondary:  var(--neutral-300);
+  --color-text-tertiary:   var(--neutral-400);
+  --color-text-muted:      var(--neutral-500);
+  --color-text-inverse:    var(--neutral-900);
+  --color-text-brand:      var(--brand-300);
+  --color-text-accent:     var(--accent-300);
+  --color-text-on-brand:   var(--neutral-0);
+  --color-text-on-accent:  var(--neutral-0);
+
+  --color-surface-base:     var(--neutral-950);
+  --color-surface-subtle:   var(--neutral-900);
+  --color-surface-muted:    var(--neutral-800);
+  --color-surface-raised:   var(--neutral-900);
+  --color-surface-inverse:  var(--neutral-50);
+  --color-surface-brand:    var(--brand-500);
+  --color-surface-brand-subtle:  var(--brand-950);
+  --color-surface-accent:   var(--accent-500);
+  --color-surface-accent-subtle: var(--accent-950);
+  --color-surface-overlay:  rgb(0 0 0 / 0.7);
+
+  --color-border-subtle:   var(--neutral-800);
+  --color-border-default:  var(--neutral-700);
+  --color-border-strong:   var(--neutral-600);
+  --color-border-brand:    var(--brand-400);
+  --color-border-inverse:  var(--neutral-300);
+
+  --color-interactive-primary:         var(--brand-500);
+  --color-interactive-primary-hover:   var(--brand-400);
+  --color-interactive-primary-active:  var(--brand-300);
+  --color-interactive-accent:          var(--accent-500);
+  --color-interactive-accent-hover:    var(--accent-400);
+  --color-interactive-accent-active:   var(--accent-300);
+  --color-interactive-neutral:         var(--neutral-800);
+  --color-interactive-neutral-hover:   var(--neutral-700);
+  --color-interactive-neutral-active:  var(--neutral-600);
+  --color-interactive-disabled:        var(--neutral-800);
+
+  --color-focus-ring: var(--brand-400);
+
+  --color-status-success: var(--success-500);
+  --color-status-warning: var(--warning-500);
+  --color-status-danger:  var(--danger-500);
+}

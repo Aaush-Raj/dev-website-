@@ -1,0 +1,36 @@
+/* ============================================================================
+   SPACING & LAYOUT TOKENS
+   ----------------------------------------------------------------------------
+   Tailwind's default numeric spacing scale (p-4, gap-6 ...) stays available for
+   component-internal spacing. The tokens here govern PAGE-LEVEL rhythm — the
+   things that must stay consistent across every section of the site.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     CONTENT WIDTHS
+     --------------------------------------------------------------------- */
+  --width-content:  75rem;   /* 1200px — default section container      */
+  --width-narrow:   48rem;   /*  768px — long-form prose, legal pages   */
+  --width-wide:     90rem;   /* 1440px — full-bleed feature layouts     */
+
+  /* ---------------------------------------------------------------------
+     GUTTERS — horizontal page padding, fluid across breakpoints
+     --------------------------------------------------------------------- */
+  --gutter: clamp(1.25rem, 0.9rem + 1.75vw, 2.5rem);   /* 20 -> 40px */
+
+  /* ---------------------------------------------------------------------
+     SECTION RHYTHM — vertical space between page sections.
+     Fluid, so a section never feels cramped on mobile or sparse on desktop.
+     --------------------------------------------------------------------- */
+  --section-y-sm: clamp(2.5rem, 1.8rem + 3.5vw, 4rem);    /* 40 ->  64px */
+  --section-y:    clamp(4rem,   2.9rem + 5.5vw, 7rem);    /* 64 -> 112px */
+  --section-y-lg: clamp(5.5rem, 3.8rem + 8.5vw, 10rem);   /* 88 -> 160px */
+
+  /* ---------------------------------------------------------------------
+     STRUCTURAL
+     --------------------------------------------------------------------- */
+  --header-height: 4.5rem;   /* keep in sync with the Header component;
+                                used for scroll-margin so anchor links do not
+                                land underneath the sticky header */
+}

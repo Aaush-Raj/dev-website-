@@ -1,0 +1,59 @@
+/* ============================================================================
+   EFFECT TOKENS — radii, shadows, motion, z-index
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     BORDER RADIUS
+     --------------------------------------------------------------------- */
+  --radius-xs:   0.25rem;   /*  4px */
+  --radius-sm:   0.375rem;  /*  6px */
+  --radius-md:   0.5rem;    /*  8px */
+  --radius-lg:   0.75rem;   /* 12px */
+  --radius-xl:   1rem;      /* 16px */
+  --radius-2xl:  1.5rem;    /* 24px */
+  --radius-3xl:  2rem;      /* 32px */
+  --radius-full: 9999px;
+
+  /* ---------------------------------------------------------------------
+     SHADOWS
+     Tinted with the neutral hue rather than pure black — pure-black shadows
+     read as grey smudges over coloured surfaces.
+     --------------------------------------------------------------------- */
+  --shadow-xs:  0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow-sm:  0 1px 3px 0 rgb(15 23 42 / 0.08), 0 1px 2px -1px rgb(15 23 42 / 0.06);
+  --shadow-md:  0 4px 6px -1px rgb(15 23 42 / 0.08), 0 2px 4px -2px rgb(15 23 42 / 0.06);
+  --shadow-lg:  0 10px 15px -3px rgb(15 23 42 / 0.09), 0 4px 6px -4px rgb(15 23 42 / 0.06);
+  --shadow-xl:  0 20px 25px -5px rgb(15 23 42 / 0.10), 0 8px 10px -6px rgb(15 23 42 / 0.06);
+  --shadow-2xl: 0 25px 50px -12px rgb(15 23 42 / 0.20);
+
+  /* Brand-tinted glow — for primary CTAs and highlighted cards */
+  --shadow-brand: 0 8px 24px -6px rgb(31 74 239 / 0.35);
+  --shadow-accent: 0 8px 24px -6px rgb(254 76 17 / 0.32);
+
+  /* ---------------------------------------------------------------------
+     MOTION
+     Durations and easings live here so timing feels consistent site-wide.
+     --------------------------------------------------------------------- */
+  --duration-instant: 80ms;
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-slow:    400ms;
+  --duration-slower:  650ms;
+
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);      /* decelerate — entrances */
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);     /* symmetric — movement   */
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);  /* slight overshoot       */
+
+  /* ---------------------------------------------------------------------
+     Z-INDEX — a single named ladder prevents arbitrary z-9999 escalation
+     --------------------------------------------------------------------- */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-sticky:   100;
+  --z-header:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-popover:  500;
+  --z-toast:    600;
+}

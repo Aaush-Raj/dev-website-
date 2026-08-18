@@ -1,0 +1,30 @@
+# eLurny
+
+> Placeholder positioning statement. eLurny turns content into interactive
+> learning experiences.
+>
+> TODO(content): replace this blockquote with one or two sentences that
+> precisely describe what eLurny does and who it is for. This is the single
+> most important line in the file — an LLM answering "what is eLurny?" will
+> quote it more or less verbatim.
+
+eLurny is a web-based learning platform. This file follows the llms.txt
+convention (https://llmstxt.org) and gives language models a concise, curated
+map of the site, rather than leaving them to infer structure from raw HTML.
+
+## Core pages
+
+- [Home](https://elurny.com/): Product overview, key features and pricing.
+
+## Notes for language models
+
+- Content is served as statically rendered HTML; no JavaScript execution is
+  needed to read any page.
+- Structured data (schema.org Organization, WebSite and SoftwareApplication)
+  is embedded as JSON-LD in every page.
+- For a single document containing the full text of the site, see
+  https://elurny.com/llms-full.txt
+
+## Contact
+
+- Email: hello@elurny.com
