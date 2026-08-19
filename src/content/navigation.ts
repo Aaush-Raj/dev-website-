@@ -4,7 +4,8 @@
  * Single source of truth for header and footer links. Both components read
  * from here, so a route change is a one-line edit.
  *
- * TODO(content): replace placeholders once the page inventory is confirmed.
+ * Labels match the hero design. Hrefs are placeholders until the page
+ * inventory is confirmed — see TODO below.
  */
 
 export interface NavLink {
@@ -19,34 +20,40 @@ export interface NavGroup {
   links: NavLink[];
 }
 
-/** Primary header navigation. Keep to 5 or fewer — beyond that it crowds. */
+/**
+ * Primary header navigation.
+ * TODO(routes): point these at real pages as they are built.
+ */
 export const mainNav: NavLink[] = [
-  { label: "Features", href: "/#features" },
-  { label: "How it works", href: "/#how-it-works" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "Platform", href: "/platform" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Industries", href: "/industries" },
+  { label: "Customers", href: "/customers" },
+  { label: "Resources", href: "/resources" },
+  { label: "Company", href: "/company" },
 ];
 
 /** Header call-to-action buttons. */
 export const headerActions = {
   secondary: { label: "Sign in", href: "/signin" } satisfies NavLink,
-  primary: { label: "Get started", href: "/signup" } satisfies NavLink,
+  primary: { label: "Book a Demo", href: "/demo" } satisfies NavLink,
 };
 
 /** Footer link columns. */
 export const footerNav: NavGroup[] = [
   {
-    title: "Product",
+    title: "Platform",
     links: [
-      { label: "Features", href: "/#features" },
-      { label: "How it works", href: "/#how-it-works" },
-      { label: "Pricing", href: "/#pricing" },
+      { label: "Overview", href: "/platform" },
+      { label: "Capabilities", href: "/platform/capabilities" },
+      { label: "Analytics", href: "/platform/analytics" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "/about" },
+      { label: "About", href: "/company" },
+      { label: "Customers", href: "/customers" },
       { label: "Contact", href: "/contact" },
     ],
   },

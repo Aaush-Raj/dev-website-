@@ -39,6 +39,50 @@
    ========================================================================== */
 
 @theme inline {
+  /* --- Palette ramps -------------------------------------------------
+     The primitives, exposed as utilities (bg-brand-600, text-neutral-500…).
+
+     Semantic tokens below remain the DEFAULT choice — reach for these ramps
+     only where a surface is fixed by the design regardless of theme, such as
+     the always-white navigation pill in the hero.
+     ------------------------------------------------------------------- */
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+  --color-brand-950: var(--brand-950);
+
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-800: var(--accent-800);
+  --color-accent-900: var(--accent-900);
+  --color-accent-950: var(--accent-950);
+
+  --color-neutral-0: var(--neutral-0);
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-950: var(--neutral-950);
+
   /* --- Colours ------------------------------------------------------- */
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
@@ -98,8 +142,10 @@
   --text-4xl: var(--text-4xl);
   --text-5xl: var(--text-5xl);
   --text-6xl: var(--text-6xl);
+  --text-hero: var(--text-hero);
 
   --leading-none: var(--leading-none);
+  --leading-hero: var(--leading-hero);
   --leading-tight: var(--leading-tight);
   --leading-snug: var(--leading-snug);
   --leading-normal: var(--leading-normal);
@@ -117,6 +163,8 @@
   --container-content: var(--width-content);
   --container-narrow: var(--width-narrow);
   --container-wide: var(--width-wide);
+  --container-nav: var(--width-nav);
+  --container-hero: var(--width-hero);
 
   --spacing-gutter: var(--gutter);
   --spacing-section-sm: var(--section-y-sm);

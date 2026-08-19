@@ -4,20 +4,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/Button";
 import { headerActions, mainNav } from "@/content/navigation";
 import { cn } from "@/lib/utils";
 
 /**
  * MOBILE MENU
  * ---------------------------------------------------------------------------
- * Full-screen navigation panel for viewports below lg.
+ * Navigation panel for viewports below lg. Renders as a sheet dropping from
+ * under the floating nav pill, matching its rounded, inset geometry.
  *
  * Accessibility behaviour handled here:
  *  - aria-expanded / aria-controls wire the trigger to the panel
  *  - Escape closes
  *  - body scroll is locked while open, so the page behind does not move
- *  - route changes close the menu (in-page anchors included)
+ *  - route changes close the menu
  */
 
 export function MobileMenu() {
@@ -67,9 +67,8 @@ export function MobileMenu() {
         aria-controls="mobile-menu"
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         className={cn(
-          "inline-flex size-10 items-center justify-center rounded-md",
-          "duration-fast text-text-primary transition-colors",
-          "hover:bg-interactive-neutral",
+          "inline-flex size-11 items-center justify-center rounded-full",
+          "duration-fast text-neutral-900 transition-colors hover:bg-neutral-100",
         )}
       >
         {/* Hamburger / close, drawn as two rotating bars. */}
@@ -91,50 +90,72 @@ export function MobileMenu() {
         </span>
       </button>
 
-      {/* Panel — sits below the header, fills the remaining viewport. */}
+      {/* Backdrop */}
+      <div
+        hidden={!isMenuOpen}
+        onClick={() => setMenuOpen(false)}
+        aria-hidden="true"
+        className="fixed inset-0 top-0 z-[-1] bg-neutral-950/20 backdrop-blur-sm"
+      />
+
+      {/* Panel — drops from beneath the pill, matching its inset and radius. */}
       <div
         id="mobile-menu"
         hidden={!isMenuOpen}
         className={cn(
-          "fixed inset-x-0 top-header bottom-0 z-[190]",
-          "border-t border-border-subtle bg-surface-base",
-          "overflow-y-auto px-gutter py-8",
+          "absolute inset-x-gutter top-[calc(100%+0.5rem)]",
+          "max-h-[calc(100dvh-8rem)] overflow-y-auto",
+          "rounded-3xl bg-white p-4 shadow-xl",
         )}
       >
-        <ul className="flex flex-col gap-1">
-          {mainNav.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={cn(
-                  "block rounded-lg px-4 py-3 text-lg font-medium text-text-primary",
-                  "duration-fast transition-colors hover:bg-interactive-neutral",
-                )}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+        <ul className="flex flex-col">
+          {mainNav.map((link) => {
+            const isActive = pathname.startsWith(link.href);
+
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "duration-fast block rounded-xl px-4 py-3 text-base transition-colors",
+                    isActive
+                      ? "bg-brand-50 font-semibold text-brand-700"
+                      : "font-medium text-neutral-700 hover:bg-neutral-100",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
-        <div className="mt-8 flex flex-col gap-3">
-          <Button
+        <div className="mt-3 flex flex-col gap-2 border-t border-neutral-200 pt-4">
+          <Link
             href={headerActions.secondary.href}
-            variant="outline"
-            size="lg"
-            fullWidth
+            onClick={() => setMenuOpen(false)}
+            className={cn(
+              "rounded-full border border-neutral-300 px-6 py-3 text-center",
+              "text-[0.9375rem] font-semibold text-neutral-900",
+              "duration-fast transition-colors hover:bg-neutral-100",
+            )}
           >
             {headerActions.secondary.label}
-          </Button>
-          <Button
+          </Link>
+
+          <Link
             href={headerActions.primary.href}
-            variant="primary"
-            size="lg"
-            fullWidth
+            onClick={() => setMenuOpen(false)}
+            className={cn(
+              "rounded-full bg-brand-600 px-6 py-3 text-center",
+              "text-[0.9375rem] font-semibold text-white",
+              "duration-normal transition-colors hover:bg-brand-700",
+            )}
           >
             {headerActions.primary.label}
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

@@ -27,45 +27,48 @@
      Raw palette. Do not use directly in components.
      --------------------------------------------------------------------- */
 
-  /* Brand — primary accent ramp */
-  --brand-50:  #eef4ff;
-  --brand-100: #d9e6ff;
-  --brand-200: #bcd3ff;
-  --brand-300: #8eb8ff;
-  --brand-400: #5a92ff;
-  --brand-500: #356bfa;
-  --brand-600: #1f4aef;
-  --brand-700: #1838db;
-  --brand-800: #1a31b1;
-  --brand-900: #1b2f8b;
-  --brand-950: #151e54;
+  /* Brand — violet. Sampled from the hero design; 600 is the exact
+     button/wordmark fill (#5b32b7), 700 the deeper nav-underline violet. */
+  --brand-50:  #f4f1fd;
+  --brand-100: #eae4fb;
+  --brand-200: #d7ccf8;
+  --brand-300: #bba7f1;
+  --brand-400: #9b7ae8;
+  --brand-500: #7f52dc;
+  --brand-600: #5b32b7;
+  --brand-700: #4d24a8;
+  --brand-800: #401e89;
+  --brand-900: #361b70;
+  --brand-950: #200f47;
 
-  /* Accent — secondary highlight ramp */
-  --accent-50:  #fff4ed;
-  --accent-100: #ffe6d4;
-  --accent-200: #ffc8a8;
-  --accent-300: #ffa271;
-  --accent-400: #ff7038;
-  --accent-500: #fe4c11;
-  --accent-600: #ef3207;
-  --accent-700: #c62008;
-  --accent-800: #9d1c0f;
-  --accent-900: #7e1a10;
-  --accent-950: #440806;
+  /* Accent — amber. 400 is the heading underline (#feb442), 500 the
+     logo mark (#feb132). */
+  --accent-50:  #fff9ed;
+  --accent-100: #fef1d3;
+  --accent-200: #fddfa5;
+  --accent-300: #fdca6d;
+  --accent-400: #feb442;
+  --accent-500: #fc9a16;
+  --accent-600: #ed7a0c;
+  --accent-700: #c45a0c;
+  --accent-800: #9c4711;
+  --accent-900: #7e3b12;
+  --accent-950: #441c05;
 
-  /* Neutral — text, surfaces, borders */
+  /* Neutral — warm greige, not blue-grey. The page background is #f0ece8
+     and the ink is near-black (#111323 with a faint violet cast). */
   --neutral-0:   #ffffff;
-  --neutral-50:  #f8fafc;
-  --neutral-100: #f1f5f9;
-  --neutral-200: #e2e8f0;
-  --neutral-300: #cbd5e1;
-  --neutral-400: #94a3b8;
-  --neutral-500: #64748b;
-  --neutral-600: #475569;
-  --neutral-700: #334155;
-  --neutral-800: #1e293b;
-  --neutral-900: #0f172a;
-  --neutral-950: #020617;
+  --neutral-50:  #faf8f6;
+  --neutral-100: #f0ece8;
+  --neutral-200: #e4ded7;
+  --neutral-300: #d2cabf;
+  --neutral-400: #a8a09a;
+  --neutral-500: #7e7873;
+  --neutral-600: #5c5854;
+  --neutral-700: #46433f;
+  --neutral-800: #2b2926;
+  --neutral-900: #111323;
+  --neutral-950: #0a0b14;
 
   /* Status */
   --success-500: #16a34a;
@@ -92,9 +95,9 @@
   --color-text-on-accent:  var(--neutral-0);
 
   /* Surfaces — page and container backgrounds */
-  --color-surface-base:     var(--neutral-0);
+  --color-surface-base:     var(--neutral-100);
   --color-surface-subtle:   var(--neutral-50);
-  --color-surface-muted:    var(--neutral-100);
+  --color-surface-muted:    var(--neutral-200);
   --color-surface-raised:   var(--neutral-0);
   --color-surface-inverse:  var(--neutral-900);
   --color-surface-brand:    var(--brand-600);

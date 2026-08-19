@@ -14,14 +14,14 @@ export const siteConfig = {
   name: "eLurny",
 
   /** Short tagline. Keep under ~60 chars — it appears in the homepage title. */
-  tagline: "Learn anything, faster",
+  tagline: "Capability that shows up in performance",
 
   /**
    * Default meta description. 150-160 characters is the sweet spot: long
    * enough to be informative, short enough that Google will not truncate it.
    */
   description:
-    "eLurny turns any content into interactive learning experiences. Placeholder description — replace with real product positioning before launch.",
+    "Lurny connects role expectations, learning, practice, real-work evidence and action intelligence—so leaders can see where capability stands and what to improve next.",
 
   /**
    * Canonical origin, no trailing slash. Every absolute URL in metadata,

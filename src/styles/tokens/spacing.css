@@ -11,6 +11,11 @@
      CONTENT WIDTHS
      --------------------------------------------------------------------- */
   --width-content:  75rem;   /* 1200px — default section container      */
+  --width-nav:      78rem;   /* 1248px — floating nav pill. The design measures
+                                1080px, but its nav face is narrower than Inter
+                                Tight; this keeps all eight items on one line. */
+  --width-hero:     82.5rem; /* 1320px — hero grid; the product panel extends
+                                well past the pill in the design */
   --width-narrow:   48rem;   /*  768px — long-form prose, legal pages   */
   --width-wide:     90rem;   /* 1440px — full-bleed feature layouts     */
 

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Sora } from "next/font/google";
+import { Inter_Tight, JetBrains_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/layout/Footer";
@@ -24,19 +24,30 @@ import "@/styles/globals.css";
  * request to Google, and no layout shift.
  */
 
-/** Body face. `variable` exposes it as a CSS custom property. */
-const fontSans = Inter({
+/**
+ * Inter Tight — the closest freely-available match to the display face in the
+ * hero design: a grotesque with tight default tracking and near-circular
+ * bowls. Used for both body and headings, which is what the design does.
+ */
+const fontSans = Inter_Tight({
   subsets: ["latin"],
   variable: "--font-sans-src",
   display: "swap",
 });
 
-/** Display face for headings. */
-const fontDisplay = Sora({
+const fontDisplay = Inter_Tight({
   subsets: ["latin"],
   variable: "--font-display-src",
   display: "swap",
-  weight: ["400", "600", "700", "800"],
+  weight: ["500", "600", "700", "800"],
+});
+
+/** Eyebrow labels — the design sets them in a wide-tracked monospace. */
+const fontMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono-src",
+  display: "swap",
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -81,7 +92,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang={siteConfig.lang}
-      className={`${fontSans.variable} ${fontDisplay.variable}`}
+      className={`${fontSans.variable} ${fontDisplay.variable} ${fontMono.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-dvh flex-col">

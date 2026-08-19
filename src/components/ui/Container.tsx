@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
 const widthStyles = {
   narrow: "max-w-narrow", //  768px — long-form prose
   content: "max-w-content", // 1200px — default
+  nav: "max-w-nav", // 1080px — floating nav pill
+  hero: "max-w-hero", // 1320px — hero grid, wider than the pill
   wide: "max-w-wide", // 1440px — feature layouts
   full: "max-w-none", // no constraint; gutter still applies
 } as const;
