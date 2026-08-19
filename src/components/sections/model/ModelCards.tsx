@@ -30,10 +30,10 @@ const cardShell = cn(
   "shadow-[0_10px_30px_-14px_rgb(17_19_35/0.12)]",
 );
 
-const panelShell = cn("rounded-xl border border-neutral-200/70 p-3.5");
+const panelShell = cn("rounded-xl border border-neutral-200/70 p-3");
 
 const ctaButton = cn(
-  "mt-3.5 w-full rounded-lg bg-brand-50 py-2.5 text-center",
+  "mt-3 w-full rounded-lg bg-brand-50 py-2 text-center",
   "text-[0.75rem] font-semibold text-brand-700",
 );
 
@@ -46,16 +46,16 @@ export function RoleCard({ className }: { className?: string }) {
   const { role } = model;
 
   return (
-    <div className={cn(cardShell, "p-4 sm:p-5", className)}>
-      <h3 className="text-center text-lg font-semibold tracking-[-0.01em] text-neutral-900 sm:text-xl">
+    <div className={cn(cardShell, "p-3.5 sm:p-4", className)}>
+      <h3 className="text-center text-base font-semibold tracking-[-0.01em] text-neutral-900 sm:text-lg">
         {role.title}
       </h3>
 
       {/* Amber-outlined chip, per the design. */}
-      <p className="mt-3 flex justify-center">
+      <p className="mt-2.5 flex justify-center">
         <span
           className={cn(
-            "rounded-md border border-accent-300 px-2.5 py-1.5",
+            "rounded-md border border-accent-300 px-2 py-1",
             "font-mono text-[0.5625rem] font-medium tracking-[0.1em] uppercase",
             "text-neutral-800",
           )}
@@ -65,7 +65,7 @@ export function RoleCard({ className }: { className?: string }) {
       </p>
 
       {/* Dimension rows */}
-      <div className="mt-4 overflow-hidden rounded-xl border border-neutral-200/70">
+      <div className="mt-3 overflow-hidden rounded-xl border border-neutral-200/70">
         {role.dimensions.map((dimension, index) => {
           const Icon = dimensionIcons[dimension.icon];
 
@@ -73,19 +73,19 @@ export function RoleCard({ className }: { className?: string }) {
             <div
               key={dimension.label}
               className={cn(
-                "flex items-start gap-3 p-3.5",
+                "flex items-start gap-2.5 p-2.5",
                 index > 0 && "border-t border-neutral-200/70",
               )}
             >
-              <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600">
-                <Icon className="size-[18px]" />
+              <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600">
+                <Icon className="size-4" />
               </span>
 
               <div className="min-w-0 flex-1">
                 <p className="font-mono text-[0.625rem] font-bold tracking-[0.09em] text-neutral-900 uppercase">
                   {dimension.label}
                 </p>
-                <p className="mt-1 text-[0.6875rem] leading-snug text-neutral-500">
+                <p className="mt-0.5 text-[0.625rem] leading-snug text-neutral-500">
                   {dimension.description}
                 </p>
               </div>
@@ -122,15 +122,15 @@ export function RoleCard({ className }: { className?: string }) {
       {/* Readiness score */}
       <div
         className={cn(
-          "mt-3.5 flex items-center justify-between gap-3 rounded-xl",
-          "border border-neutral-200/70 px-3.5 py-3",
+          "mt-3 flex items-center justify-between gap-3 rounded-xl",
+          "border border-neutral-200/70 px-3 py-2.5",
         )}
       >
         <p className="font-mono text-[0.625rem] font-bold tracking-[0.09em] text-neutral-900 uppercase">
           {role.score.label}
         </p>
         <p className="flex items-baseline gap-1">
-          <span className="text-2xl font-bold text-accent-400">
+          <span className="text-xl font-bold text-accent-400">
             {role.score.value}
           </span>
           <span className="text-[0.625rem] text-neutral-400">
@@ -179,40 +179,40 @@ export function EngineCard({
   const Icon = engineIcons[engine.icon];
 
   return (
-    <div className={cn(cardShell, "p-4", className)}>
+    <div className={cn(cardShell, "p-3.5", className)}>
       {/* Header */}
       <div className="flex items-center gap-2.5">
         <span className="shrink-0 text-brand-600">
-          <Icon className="size-6" />
+          <Icon className="size-5" />
         </span>
-        <h3 className="text-[0.9375rem] font-semibold text-neutral-900">
+        <h3 className="text-[0.875rem] font-semibold text-neutral-900">
           {engine.name}
         </h3>
       </div>
-      <p className="mt-1 pl-[2.125rem] text-[0.75rem] text-neutral-500">
+      <p className="mt-0.5 pl-[1.875rem] text-[0.6875rem] text-neutral-500">
         {engine.tagline}
       </p>
 
       {/* Panel */}
-      <div className={cn(panelShell, "mt-3.5")}>
-        <p className="text-[0.75rem] font-semibold text-neutral-800">
+      <div className={cn(panelShell, "mt-3")}>
+        <p className="text-[0.6875rem] font-semibold text-neutral-800">
           {engine.panelLabel}
         </p>
 
         {/* ------------------------------------------------ bars (Pulse) */}
         {engine.kind === "bars" && (
-          <div className="mt-3 flex flex-col gap-3">
+          <div className="mt-2.5 flex flex-col gap-2.5">
             {engine.bars.map((bar, index) => (
               <div key={bar.label}>
                 <div className="flex items-baseline justify-between gap-3">
-                  <p className="text-[0.6875rem] text-neutral-700">
+                  <p className="text-[0.625rem] text-neutral-700">
                     {bar.label}
                   </p>
-                  <p className="text-[0.6875rem] font-medium text-neutral-500">
+                  <p className="text-[0.625rem] font-medium text-neutral-500">
                     {bar.value}%
                   </p>
                 </div>
-                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-neutral-100">
+                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-neutral-100">
                   <motion.div
                     className="h-full rounded-full bg-brand-600"
                     initial={{ width: reduce ? `${bar.value}%` : 0 }}
@@ -232,13 +232,13 @@ export function EngineCard({
 
         {/* -------------------------------------------- lessons (Magic) */}
         {engine.kind === "lessons" && (
-          <ul className="mt-3 flex flex-col gap-2.5">
+          <ul className="mt-2.5 flex flex-col gap-2">
             {engine.lessons.map((lesson) => (
-              <li key={lesson.title} className="flex items-center gap-2.5">
+              <li key={lesson.title} className="flex items-center gap-2">
                 {/* Thumbnail stand-in — a tinted tile, as in the design. */}
                 <span
                   className={cn(
-                    "size-8 shrink-0 rounded-md",
+                    "size-7 shrink-0 rounded-md",
                     lessonTone[lesson.tone],
                   )}
                 />
@@ -246,7 +246,7 @@ export function EngineCard({
                   <p className="text-[0.6875rem] leading-snug font-medium text-neutral-800">
                     {lesson.title}
                   </p>
-                  <p className="mt-0.5 text-[0.625rem] text-neutral-500">
+                  <p className="mt-0.5 text-[0.5625rem] text-neutral-500">
                     {lesson.meta}
                   </p>
                 </div>
@@ -257,27 +257,24 @@ export function EngineCard({
 
         {/* ---------------------------------------- submissions (Pitch) */}
         {engine.kind === "submissions" && (
-          <ul className="mt-3 flex flex-col gap-2.5">
+          <ul className="mt-2.5 flex flex-col gap-2">
             {engine.submissions.map((submission) => {
               const StatusIcon = statusIcons[submission.status];
               return (
-                <li
-                  key={submission.title}
-                  className="flex items-center gap-2.5"
-                >
+                <li key={submission.title} className="flex items-center gap-2">
                   <span
                     className={cn(
-                      "grid size-8 shrink-0 place-items-center rounded-md",
+                      "grid size-7 shrink-0 place-items-center rounded-md",
                       statusTone[submission.status],
                     )}
                   >
-                    <StatusIcon className="size-[17px]" />
+                    <StatusIcon className="size-4" />
                   </span>
                   <div className="min-w-0">
                     <p className="text-[0.6875rem] leading-snug font-medium text-neutral-800">
                       {submission.title}
                     </p>
-                    <p className="mt-0.5 text-[0.625rem] text-neutral-500">
+                    <p className="mt-0.5 text-[0.5625rem] text-neutral-500">
                       {submission.meta}
                     </p>
                   </div>
@@ -289,26 +286,26 @@ export function EngineCard({
 
         {/* --------------------------------------------- actions (Sense) */}
         {engine.kind === "actions" && (
-          <ul className="mt-3 flex flex-col gap-2.5">
+          <ul className="mt-2.5 flex flex-col gap-2">
             {engine.actions.map((action) => {
               const ActionIcon = actionIcons[action.icon];
               return (
-                <li key={action.title} className="flex items-center gap-2.5">
+                <li key={action.title} className="flex items-center gap-2">
                   <span
                     className={cn(
-                      "grid size-8 shrink-0 place-items-center rounded-md",
+                      "grid size-7 shrink-0 place-items-center rounded-md",
                       action.tone === "high"
                         ? "bg-brand-50 text-brand-600"
                         : "bg-accent-50 text-accent-500",
                     )}
                   >
-                    <ActionIcon className="size-[17px]" />
+                    <ActionIcon className="size-4" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[0.6875rem] leading-snug font-medium text-neutral-800">
                       {action.title}
                     </p>
-                    <p className="mt-0.5 text-[0.625rem] text-neutral-500">
+                    <p className="mt-0.5 text-[0.5625rem] text-neutral-500">
                       Priority <span className="text-neutral-400">•</span>{" "}
                       <span
                         className={cn("font-medium", priorityTone[action.tone])}

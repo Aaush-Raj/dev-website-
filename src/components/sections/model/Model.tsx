@@ -50,7 +50,7 @@ export function Model() {
   return (
     <section id="model" className="bg-surface-subtle py-section-lg">
       <Container width="hero">
-        <div className="grid gap-12 xl:grid-cols-[minmax(0,0.62fr)_minmax(0,1.38fr)] xl:gap-10">
+        <div className="grid gap-12 xl:grid-cols-[minmax(0,0.56fr)_minmax(0,1.44fr)] xl:gap-8">
           {/* ============================ Statement =================== */}
           <div className="xl:pt-4">
             <motion.p
@@ -67,9 +67,10 @@ export function Model() {
               {...rise(0.08)}
               className={cn(
                 "mt-6 font-display font-extrabold tracking-[-0.03em]",
-                "leading-[1.02] text-neutral-900",
+                // Design: ~51px on a ~49px line box — leading below 1.
+                "leading-[0.96] text-neutral-900",
                 // Measured from the design at ~51px on a 1440 frame.
-                "text-[2.125rem] sm:text-[2.625rem] xl:text-[3.1875rem]",
+                "text-[1.875rem] sm:text-[2.375rem] xl:text-[2.875rem]",
               )}
             >
               {/* Lines break where the design breaks them on xl+, and wrap
@@ -125,8 +126,10 @@ export function Model() {
                 "sm:grid-cols-2",
                 // xl: engines left/right, hub centred across both rows.
                 // Design measures the hub at 320px against 213px engines — 1.5x.
-                "xl:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1fr)]",
-                "xl:items-center xl:gap-x-14",
+                // Rendered slightly under that, which lands the hub on the
+                // design's 0.845 width:height rather than overshooting it.
+                "xl:grid-cols-[minmax(0,1fr)_minmax(0,1.38fr)_minmax(0,1fr)]",
+                "xl:items-center xl:gap-x-11",
               )}
             >
               {/* Hub. Rendered first so it leads on small screens; placed
@@ -221,10 +224,10 @@ function ArrowLayer({ className }: { className?: string }) {
    * the engines feed evidence back.
    */
   const arrows = [
-    { left: "24%", top: "20%", width: "9%", dir: "left" },
-    { left: "67%", top: "20%", width: "9%", dir: "right" },
-    { left: "24%", top: "65%", width: "9%", dir: "left" },
-    { left: "67%", top: "65%", width: "9%", dir: "right" },
+    { left: "26.6%", top: "20.3%", width: "5.1%", dir: "left" },
+    { left: "68.3%", top: "20.3%", width: "5.2%", dir: "right" },
+    { left: "26.6%", top: "64.2%", width: "5.1%", dir: "left" },
+    { left: "68.3%", top: "64.1%", width: "5.2%", dir: "right" },
   ] as const;
 
   return (
