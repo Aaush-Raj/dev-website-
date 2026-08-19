@@ -20,6 +20,31 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
 
+  /**
+   * Hosts allowed to reach the DEV server's internal assets.
+   *
+   * Next 16 rejects requests for /_next/* with a 403 when the forwarded host
+   * is not the one the dev server is bound to. Tunnelling `next dev` through
+   * ngrok, Cloudflare Tunnel or a LAN IP therefore serves the HTML but blocks
+   * every JS chunk, so React never hydrates and the page renders blank.
+   *
+   * Wildcards cover the ephemeral subdomain these services hand out on each
+   * restart. Add your own tunnel host here if it is not listed.
+   *
+   * DEV ONLY — this has no effect on `next build` / `next start`, where the
+   * assets are served without an origin check.
+   */
+  allowedDevOrigins: [
+    "*.ngrok-free.app",
+    "*.ngrok.io",
+    "*.ngrok.app",
+    "*.trycloudflare.com",
+    "*.loca.lt",
+    // Local network testing, e.g. a phone on the same Wi-Fi.
+    "192.168.0.0/16",
+    "10.0.0.0/8",
+  ],
+
   // Emit /about/ rather than /about — one canonical form, so a trailing-slash
   // variant never competes with itself in the index.
   trailingSlash: false,

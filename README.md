@@ -98,6 +98,25 @@ Only add `"use client"` when the component needs state, effects or browser
 APIs — currently just `Header`, `MobileMenu`, `Reveal` and `error.tsx`. Keep
 client components as leaves so the rest of the tree ships zero JavaScript.
 
+## Sharing a local preview
+
+`npm run dev` binds to localhost. To show the site on a phone or send someone
+a link, tunnel it:
+
+```bash
+ngrok http 3000          # or: cloudflared tunnel --url http://localhost:3000
+```
+
+Next 16 rejects `/_next/*` requests whose forwarded host is not the one the
+dev server is bound to, which serves the HTML but blocks every JS chunk — the
+page arrives **completely blank**. The common tunnel providers are already
+allowlisted in `allowedDevOrigins` in
+[`next.config.ts`](next.config.ts); add your host there if you use a
+different one.
+
+This applies to `next dev` only. A production build (`npm run build && npm start`)
+serves its assets without the origin check, so it tunnels without any config.
+
 ## SEO
 
 Already wired up:
