@@ -73,16 +73,34 @@ function useDiagramGeometry(enabled: boolean) {
     if (cells.length < 5) return;
 
     const wrapBox = wrap.getBoundingClientRect();
+
+    /*
+     * Uses offsetLeft/offsetTop rather than getBoundingClientRect().
+     *
+     * The cards animate in with a `y: 18` transform, and
+     * getBoundingClientRect() reports the TRANSFORMED box. Measuring mid-
+     * animation therefore captured every card 18px below its settled
+     * position, which left the bottom connectors detached from the hub by
+     * exactly that much. offsetTop is the untransformed layout position, so
+     * it is correct whether or not the entrance animation has finished.
+     *
+     * offsetParent is the wrapper (it is `position: relative`), so these are
+     * already in the coordinate space the SVG's viewBox uses.
+     */
     const box = (element: Element) => {
-      const rect = element.getBoundingClientRect();
+      const el = element as HTMLElement;
+      const left = el.offsetLeft;
+      const top = el.offsetTop;
+      const width = el.offsetWidth;
+      const height = el.offsetHeight;
       return {
-        left: rect.left - wrapBox.left,
-        right: rect.right - wrapBox.left,
-        top: rect.top - wrapBox.top,
-        bottom: rect.bottom - wrapBox.top,
-        cx: rect.left - wrapBox.left + rect.width / 2,
-        cy: rect.top - wrapBox.top + rect.height / 2,
-        w: rect.width,
+        left,
+        right: left + width,
+        top,
+        bottom: top + height,
+        cx: left + width / 2,
+        cy: top + height / 2,
+        w: width,
       };
     };
 
@@ -114,7 +132,25 @@ function useDiagramGeometry(enabled: boolean) {
       observer.observe(cell);
     });
 
-    return () => observer.disconnect();
+    /*
+     * Re-measure once webfonts have loaded.
+     *
+     * next/font swaps the real face in after first paint, which reflows every
+     * card by a few pixels. Measuring only on mount captured the fallback-font
+     * layout and left the connectors detached from the hub by ~18px — the
+     * ResizeObserver does fire on that reflow, but only for elements it is
+     * already observing, and the wrapper's own height can settle before the
+     * cards inside it do.
+     */
+    let cancelled = false;
+    document.fonts?.ready.then(() => {
+      if (!cancelled) measure();
+    });
+
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+    };
   }, [measure]);
 
   return { wrapRef, geometry };
@@ -368,6 +404,10 @@ function ArrowLayer({
     ].join(" ");
   };
 
+  /**
+   * Mirror of topPath for the lower half: leave the hub's bottom edge going
+   * down, turn outward through the corner, and run to the engine card.
+   */
   const bottomPath = (
     fromX: number,
     fromY: number,
@@ -377,8 +417,8 @@ function ArrowLayer({
     const dir = toX > fromX ? 1 : -1;
     return [
       `M ${fromX} ${fromY}`,
-      `L ${toX - dir * R} ${fromY}`,
-      `Q ${toX} ${fromY} ${toX} ${fromY - R}`,
+      `L ${fromX} ${toY - R}`,
+      `Q ${fromX} ${toY} ${fromX + dir * R} ${toY}`,
       `L ${toX} ${toY}`,
     ].join(" ");
   };
@@ -404,25 +444,25 @@ function ArrowLayer({
       ),
       head: { x: engines.tr.left - 6, y: engines.tr.cy, dir: "right" },
     },
-    // Bottom-left: in from LurnyPitch, turn up, point at the hub.
+    // Bottom-left: down from the hub, turn left, point at LurnyPitch.
     {
       d: bottomPath(
-        engines.bl.right + 6,
-        engines.bl.cy,
         hub.cx - hub.w * 0.22,
         hub.bottom,
+        engines.bl.right + 6,
+        engines.bl.cy,
       ),
-      head: { x: hub.cx - hub.w * 0.22, y: hub.bottom, dir: "up" },
+      head: { x: engines.bl.right + 6, y: engines.bl.cy, dir: "left" },
     },
-    // Bottom-right: in from LurnySense, turn up, point at the hub.
+    // Bottom-right: down from the hub, turn right, point at LurnySense.
     {
       d: bottomPath(
-        engines.br.left - 6,
-        engines.br.cy,
         hub.cx + hub.w * 0.22,
         hub.bottom,
+        engines.br.left - 6,
+        engines.br.cy,
       ),
-      head: { x: hub.cx + hub.w * 0.22, y: hub.bottom, dir: "up" },
+      head: { x: engines.br.left - 6, y: engines.br.cy, dir: "right" },
     },
   ];
 
