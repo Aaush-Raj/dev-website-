@@ -58,7 +58,9 @@
   /* Neutral — warm greige, not blue-grey. The page background is #f0ece8
      and the ink is near-black (#111323 with a faint violet cast). */
   --neutral-0:   #ffffff;
-  --neutral-50:  #fafaf8;   /* section-2 background, sampled from design */
+  --neutral-50:  #faf9f7;   /* off-white section ground. The designs sample
+                              #fafaf8 (section 2) and #faf8f6 (section 4) —
+                              a 2/255 difference, so they share one token. */
   --neutral-100: #f0ece8;
   --neutral-200: #e4ded7;
   --neutral-300: #d2cabf;

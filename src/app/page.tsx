@@ -1,3 +1,4 @@
+import { Engines } from "@/components/sections/engines/Engines";
 import { Hero } from "@/components/sections/hero/Hero";
 import { ClientStrip } from "@/components/sections/problem/ClientStrip";
 import { Problem } from "@/components/sections/problem/Problem";
@@ -33,6 +34,8 @@ export default function HomePage() {
       </div>
 
       <System />
+
+      <Engines />
 
       {/* TODO(sections): remaining homepage sections go here as designs land. */}
     </>
