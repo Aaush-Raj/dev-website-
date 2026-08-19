@@ -10,6 +10,7 @@ import {
   StarGlyph,
   TrendUpGlyph,
 } from "@/components/sections/tour/TourIcons";
+import { Uncopyable } from "@/components/ui/Uncopyable";
 import { tour } from "@/content/tour";
 import { cn } from "@/lib/utils";
 
@@ -55,7 +56,7 @@ export function TourPoster({ className }: { className?: string }) {
   });
 
   return (
-    <div className={cn("relative", className)} aria-hidden="true">
+    <Uncopyable className={cn("relative", className)}>
       {/* Dashed connectors, behind the cards. Hidden below lg where the
           layout becomes a scroller and the arcs would not line up. */}
       <ConnectorLayer className="pointer-events-none absolute inset-0 hidden lg:block" />
@@ -266,7 +267,7 @@ export function TourPoster({ className }: { className?: string }) {
           </ul>
         </motion.div>
       </div>
-    </div>
+    </Uncopyable>
   );
 }
 

@@ -18,6 +18,7 @@ import {
   ScanIcon,
   sidebarIcons,
 } from "@/components/sections/hero/DashboardIcons";
+import { Uncopyable } from "@/components/ui/Uncopyable";
 import { dashboard } from "@/content/dashboard";
 import { cn } from "@/lib/utils";
 
@@ -66,30 +67,8 @@ export function DashboardMockup({ className }: { className?: string }) {
   });
 
   return (
-    <div
-      className={cn(
-        "relative",
-        /*
-         * The mockup reads as a product screenshot, so it behaves like one:
-         * text inside it cannot be selected or dragged out.
-         *
-         * `select-none` blocks selection, and the onCopy/onDragStart handlers
-         * below stop a keyboard select-all or an image-drag from lifting the
-         * markup out. This is presentation, not protection — anyone can read
-         * the DOM — but it keeps the block feeling like a single image.
-         *
-         * It is already aria-hidden, so nothing here affects assistive tech:
-         * screen readers never reach this content in the first place.
-         */
-        "select-none",
-        className,
-      )}
-      aria-hidden="true"
-      role="presentation"
-      onCopy={(event) => event.preventDefault()}
-      onCut={(event) => event.preventDefault()}
-      onDragStart={(event) => event.preventDefault()}
-      onContextMenu={(event) => event.preventDefault()}
+    <Uncopyable
+      className={cn("relative", className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -465,7 +444,7 @@ export function DashboardMockup({ className }: { className?: string }) {
           </div>
         </div>
       </motion.div>
-    </div>
+    </Uncopyable>
   );
 }
 

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { EngineCard, RoleCard } from "@/components/sections/model/ModelCards";
 import { HierarchyIcon } from "@/components/sections/model/ModelIcons";
 import { Container } from "@/components/ui/Container";
+import { Uncopyable } from "@/components/ui/Uncopyable";
 import { model } from "@/content/model";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,13 @@ import { cn } from "@/lib/utils";
  */
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
+
+/**
+ * How far the connector spark travels in one cycle. Comfortably longer than
+ * the longest elbow path, so the dash always exits the far end rather than
+ * stalling partway along it.
+ */
+const PATH_SWEEP = 620;
 
 /** Measured positions of the diagram's cards, in the wrapper's coordinates. */
 interface DiagramGeometry {
@@ -176,6 +184,13 @@ export function Model() {
 
   const { wrapRef, geometry } = useDiagramGeometry(isWide);
 
+  /**
+   * Drives the travelling spark on the connectors. Hovering anywhere on the
+   * diagram runs it, so the whole thing animates as one system rather than
+   * asking the visitor to find four separate hit targets.
+   */
+  const [isDiagramHovered, setIsDiagramHovered] = useState(false);
+
   const rise = (delay: number) => ({
     initial: { opacity: reduce ? 1 : 0, y: reduce ? 0 : 18 },
     whileInView: { opacity: 1, y: 0 },
@@ -258,12 +273,18 @@ export function Model() {
           </div>
 
           {/* ============================= Diagram ==================== */}
-          <div aria-hidden="true" className="relative" ref={wrapRef}>
+          <Uncopyable
+            className="relative"
+            innerRef={wrapRef}
+            onMouseEnter={() => setIsDiagramHovered(true)}
+            onMouseLeave={() => setIsDiagramHovered(false)}
+          >
             {/* Elbow connectors, behind the cards. Drawn from measured card
                 edges, so they stay attached as card heights change. */}
             <ArrowLayer
               className="pointer-events-none absolute inset-0 hidden xl:block"
               geometry={geometry}
+              isActive={isDiagramHovered}
             />
 
             <div
@@ -343,7 +364,7 @@ export function Model() {
                 </p>
               </div>
             </motion.div>
-          </div>
+          </Uncopyable>
         </div>
       </Container>
     </section>
@@ -375,9 +396,12 @@ export function Model() {
 function ArrowLayer({
   className,
   geometry,
+  isActive,
 }: {
   className?: string;
   geometry: DiagramGeometry | null;
+  /** Runs the travelling spark along each connector. */
+  isActive: boolean;
 }) {
   const reduce = useReducedMotion();
 
@@ -517,6 +541,56 @@ function ArrowLayer({
             strokeLinecap="round"
             strokeLinejoin="round"
           />
+
+          {/*
+            Travelling spark.
+
+            A short dash is animated along the path with strokeDashoffset,
+            which follows the elbow's curve exactly — an absolutely positioned
+            dot would need its own copy of the geometry and would cut the
+            corner. The dash pattern is "8 <very large>" so exactly one
+            segment is visible at a time.
+
+            Suppressed under reduced motion, and only runs while the diagram
+            is hovered.
+          */}
+          {!reduce && (
+            <motion.path
+              d={arrow.d}
+              stroke="var(--accent-400)"
+              strokeWidth="2.6"
+              strokeLinecap="round"
+              strokeDasharray="10 9999"
+              initial={false}
+              animate={
+                isActive
+                  ? {
+                      strokeDashoffset: [0, -PATH_SWEEP],
+                      opacity: [0, 1, 1, 0],
+                    }
+                  : { opacity: 0 }
+              }
+              transition={
+                isActive
+                  ? {
+                      strokeDashoffset: {
+                        duration: 1.4,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: index * 0.16,
+                      },
+                      opacity: {
+                        duration: 1.4,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: index * 0.16,
+                        times: [0, 0.12, 0.85, 1],
+                      },
+                    }
+                  : { duration: 0.25 }
+              }
+            />
+          )}
         </motion.g>
       ))}
     </svg>

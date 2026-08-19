@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 
 import { cycleIcons } from "@/components/sections/system/CycleIcons";
+import { Uncopyable } from "@/components/ui/Uncopyable";
 import { system } from "@/content/system";
 import { cn } from "@/lib/utils";
 
@@ -46,7 +47,7 @@ export function CycleDiagram({ className }: { className?: string }) {
   const reduce = useReducedMotion();
 
   return (
-    <div className={cn("relative", className)}>
+    <Uncopyable className={cn("relative", className)}>
       {/* ------------------------------------------------------------------
           Decorative ring layer. Hidden below lg, where the cards stack.
           ------------------------------------------------------------------ */}
@@ -126,7 +127,7 @@ export function CycleDiagram({ className }: { className?: string }) {
           </motion.p>
         </li>
       </ul>
-    </div>
+    </Uncopyable>
   );
 }
 

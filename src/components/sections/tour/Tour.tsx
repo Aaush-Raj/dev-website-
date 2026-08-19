@@ -123,47 +123,96 @@ export function Tour() {
           <TourPoster className="relative lg:min-h-[22rem]" />
 
           {/* ------------------------ Play control ------------------- */}
-          <div className="relative mt-6 flex flex-col items-center gap-3 lg:-mt-8">
-            {hasVideo ? (
-              <button
-                type="button"
-                className={cn(
-                  "group grid size-[3.5rem] place-items-center rounded-full",
-                  "border-2 border-white bg-brand-600 text-white",
-                  "duration-normal transition-[transform,background-color] ease-out",
-                  "hover:scale-105 hover:bg-brand-500 active:scale-100",
-                )}
-              >
-                <PlayGlyph className="size-6 translate-x-px" />
-                <span className="sr-only">{tour.player.label}</span>
-              </button>
-            ) : (
-              /*
-                No video yet. Rendered as a plain element rather than a button
-                so it is not focusable and is not announced as a control that
-                cannot be operated.
-              */
-              <div
+          <div className="relative mt-6 flex flex-col items-center gap-4 lg:-mt-6">
+            <div className="relative grid place-items-center">
+              {/*
+                Concentric pulse rings behind the button. Two rings offset in
+                time read as a repeating outward pulse — the visual language
+                of "this plays". Suppressed under reduced motion, where a
+                looping animation with no user control is exactly what the
+                preference asks you not to run.
+              */}
+              {!reduce &&
+                [0, 1].map((ring) => (
+                  <motion.span
+                    key={ring}
+                    aria-hidden="true"
+                    className="absolute size-[4.5rem] rounded-full border border-brand-400/45"
+                    initial={{ scale: 1, opacity: 0 }}
+                    animate={{ scale: [1, 1.75], opacity: [0.55, 0] }}
+                    transition={{
+                      duration: 2.6,
+                      repeat: Infinity,
+                      ease: "easeOut",
+                      delay: ring * 1.3,
+                    }}
+                  />
+                ))}
+
+              {/* Soft violet bloom directly behind the button. */}
+              <span
                 aria-hidden="true"
                 className={cn(
-                  "grid size-[3.5rem] place-items-center rounded-full",
-                  "border-2 border-white/70 bg-brand-600/80 text-white",
+                  "absolute size-[7rem] rounded-full opacity-60 blur-2xl",
+                  "bg-[radial-gradient(circle,var(--brand-500)_0%,transparent_70%)]",
                 )}
-              >
-                <PlayGlyph className="size-6 translate-x-px" />
-              </div>
-            )}
+              />
 
-            <p className="text-center text-[0.9375rem] font-semibold text-white">
-              {tour.player.label}
-            </p>
+              {hasVideo ? (
+                <button
+                  type="button"
+                  className={cn(
+                    "group relative grid size-[4.5rem] place-items-center rounded-full",
+                    "bg-gradient-to-br from-brand-400 to-brand-700 text-white",
+                    "ring-2 ring-white/85",
+                    "shadow-[0_12px_34px_-8px_rgb(91_50_183/0.85)]",
+                    "duration-normal transition-[transform,box-shadow] ease-out",
+                    "hover:scale-[1.07] hover:shadow-[0_16px_44px_-8px_rgb(91_50_183/0.95)]",
+                    "active:scale-100",
+                  )}
+                >
+                  <PlayGlyph className="size-7 translate-x-0.5 drop-shadow-sm" />
+                  <span className="sr-only">{tour.player.label}</span>
+                </button>
+              ) : (
+                /*
+                  No video yet. Rendered as a plain element rather than a
+                  button so it is not focusable and is not announced as a
+                  control that cannot be operated. It keeps the full visual
+                  treatment, minus the hover response a real control would
+                  have.
+                */
+                <div
+                  aria-hidden="true"
+                  className={cn(
+                    "relative grid size-[4.5rem] place-items-center rounded-full",
+                    "bg-gradient-to-br from-brand-400 to-brand-700 text-white",
+                    "ring-2 ring-white/70",
+                    "shadow-[0_12px_34px_-8px_rgb(91_50_183/0.7)]",
+                  )}
+                >
+                  <PlayGlyph className="size-7 translate-x-0.5 drop-shadow-sm" />
+                </div>
+              )}
+            </div>
 
-            {!hasVideo && (
-              <p className="text-center text-xs text-neutral-500">
-                {/* TODO(assets): remove once the tour video is published. */}
-                Video coming soon
+            <div className="flex flex-col items-center gap-1.5">
+              <p className="text-center text-base font-semibold text-white">
+                {tour.player.label}
               </p>
-            )}
+
+              {!hasVideo && (
+                <span
+                  className={cn(
+                    "rounded-full border border-white/15 bg-white/5 px-2.5 py-1",
+                    "font-mono text-[0.625rem] tracking-[0.1em] text-neutral-400 uppercase",
+                  )}
+                >
+                  {/* TODO(assets): remove once the tour video is published. */}
+                  Coming soon
+                </span>
+              )}
+            </div>
           </div>
 
           {/* ------------------------ Caption bar -------------------- */}
