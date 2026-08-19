@@ -3,6 +3,7 @@ import { Hero } from "@/components/sections/hero/Hero";
 import { ClientStrip } from "@/components/sections/problem/ClientStrip";
 import { Problem } from "@/components/sections/problem/Problem";
 import { System } from "@/components/sections/system/System";
+import { Tour } from "@/components/sections/tour/Tour";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 
@@ -36,6 +37,8 @@ export default function HomePage() {
       <System />
 
       <Engines />
+
+      <Tour />
 
       {/* TODO(sections): remaining homepage sections go here as designs land. */}
     </>
