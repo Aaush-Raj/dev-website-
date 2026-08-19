@@ -44,24 +44,55 @@ export const footerNav: NavGroup[] = [
   {
     title: "Platform",
     links: [
-      { label: "Overview", href: "/platform" },
-      { label: "Capabilities", href: "/platform/capabilities" },
-      { label: "Analytics", href: "/platform/analytics" },
+      { label: "Lurny KxP", href: "/platform/kxp" },
+      { label: "LurnyMagic", href: "/platform/magic" },
+      { label: "LurnyPulse", href: "/platform/pulse" },
+      { label: "LurnyPitch", href: "/platform/pitch" },
+      { label: "LurnyChat", href: "/platform/chat" },
+      { label: "LurnySense", href: "/platform/sense" },
+    ],
+  },
+  {
+    title: "Solutions",
+    links: [
+      { label: "Sales Enablement", href: "/solutions/sales-enablement" },
+      { label: "Frontline Capability", href: "/solutions/frontline" },
+      { label: "Compliance", href: "/solutions/compliance" },
+      { label: "Customer Service", href: "/solutions/customer-service" },
+      { label: "Onboarding", href: "/solutions/onboarding" },
+      { label: "Industries", href: "/industries" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", href: "/company" },
+      { label: "About Lurny", href: "/company" },
       { label: "Customers", href: "/customers" },
+      { label: "Resources", href: "/resources" },
+      { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
     ],
   },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms of Service", href: "/terms" },
-    ],
-  },
 ];
+
+/** The band above the footer columns. */
+export const footerCta = {
+  text: "Ready to turn capability into performance?",
+  action: { label: "Book a demo", href: "/demo" },
+};
+
+/** Brand block beside the link columns. */
+export const footerBrand = {
+  tagline: "AI-native capability-to-performance platform",
+  location: "Bangalore, India",
+};
+
+/** Legal line. */
+export const footerLegal = {
+  company: "Lurny Innovative Labs Pvt Ltd",
+  links: [
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "Security", href: "/security" },
+  ],
+};

@@ -26,7 +26,7 @@ export function organizationSchema(): Schema {
     },
     description: siteConfig.description,
     email: siteConfig.email,
-    sameAs: Object.values(siteConfig.links),
+    sameAs: siteConfig.socials.map((social) => social.href),
   };
 }
 

@@ -90,6 +90,13 @@
   --color-ink-border: var(--ink-border);
   --color-ink-well: var(--ink-well);
 
+  /* Footer surfaces. */
+  --color-footer-bg: var(--footer-bg);
+  --color-footer-raised: var(--footer-raised);
+  --color-footer-border: var(--footer-border);
+  --color-footer-accent: var(--footer-accent);
+  --color-footer-button: var(--footer-button);
+
   /* --- Colours ------------------------------------------------------- */
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);

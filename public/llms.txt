@@ -27,4 +27,4 @@ map of the site, rather than leaving them to infer structure from raw HTML.
 
 ## Contact
 
-- Email: hello@elurny.com
+- Email: hello@lurny.ai

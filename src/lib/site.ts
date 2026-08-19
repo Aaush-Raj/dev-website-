@@ -42,18 +42,36 @@ export const siteConfig = {
   locale: "en_US",
   lang: "en",
 
-  /** Social profiles — also emitted as `sameAs` in Organization JSON-LD. */
-  links: {
-    twitter: "https://twitter.com/elurny",
-    linkedin: "https://www.linkedin.com/company/elurny",
-    youtube: "https://www.youtube.com/@elurny",
-  },
+  /**
+   * Social profiles — also emitted as `sameAs` in Organization JSON-LD.
+   * `icon` selects a mark from components/layout/SocialIcons.tsx.
+   *
+   * TODO(content): confirm each handle before launch.
+   */
+  socials: [
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/company/lurny",
+      icon: "linkedin",
+    },
+    { label: "X", href: "https://x.com/lurny", icon: "x" },
+    {
+      label: "YouTube",
+      href: "https://www.youtube.com/@lurny",
+      icon: "youtube",
+    },
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/lurny",
+      icon: "instagram",
+    },
+  ],
 
   /** Twitter handle for the twitter:site card tag. Include the @. */
   twitterHandle: "@elurny",
 
   /** Contact address surfaced in the footer and in JSON-LD. */
-  email: "hello@elurny.com",
+  email: "hello@lurny.ai",
 } as const;
 
 export type SiteConfig = typeof siteConfig;

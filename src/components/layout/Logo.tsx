@@ -51,7 +51,12 @@ function LogoMark({ className }: { className?: string }) {
       </g>
 
       {/* LURNY — each glyph built from rectangles on a 4-unit stroke. */}
-      <g fill="var(--brand-600)">
+      {/*
+        The wordmark colour is a custom property with a brand-violet default,
+        so a caller on a dark ground can override it — the footer sets
+        `[--logo-wordmark:#ffffff]` — without duplicating this SVG.
+      */}
+      <g fill="var(--logo-wordmark, var(--brand-600))">
         {/* L — stem + foot */}
         <rect x="40" y="0" width="4" height="24" />
         <rect x="40" y="20" width="22" height="4" />
