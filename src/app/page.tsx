@@ -2,6 +2,7 @@ import { Engines } from "@/components/sections/engines/Engines";
 import { Hero } from "@/components/sections/hero/Hero";
 import { ClientStrip } from "@/components/sections/problem/ClientStrip";
 import { Problem } from "@/components/sections/problem/Problem";
+import { Industries } from "@/components/sections/industries/Industries";
 import { Solutions } from "@/components/sections/solutions/Solutions";
 import { System } from "@/components/sections/system/System";
 import { Tour } from "@/components/sections/tour/Tour";
@@ -42,6 +43,8 @@ export default function HomePage() {
       <Tour />
 
       <Solutions />
+
+      <Industries />
 
       {/* TODO(sections): remaining homepage sections go here as designs land. */}
     </>
