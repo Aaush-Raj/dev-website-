@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { EngineCard, RoleCard } from "@/components/sections/model/ModelCards";
 import { HierarchyIcon } from "@/components/sections/model/ModelIcons";
@@ -31,8 +32,113 @@ import { cn } from "@/lib/utils";
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
 
+/** Measured positions of the diagram's cards, in the wrapper's coordinates. */
+interface DiagramGeometry {
+  width: number;
+  height: number;
+  hub: { cx: number; top: number; bottom: number; w: number };
+  engines: Record<
+    "tl" | "tr" | "bl" | "br",
+    { left: number; right: number; cy: number }
+  >;
+}
+
+/**
+ * Measures the diagram's cards so the connectors can be drawn between their
+ * real edges.
+ *
+ * The alternative — hard-coded percentages — breaks whenever a card's height
+ * changes, which it does with viewport width, font scaling and content edits.
+ * Two earlier passes on this section drifted out of alignment for exactly
+ * that reason, so the positions are read from the DOM instead.
+ *
+ * Re-measures on resize via ResizeObserver. Returns null until the first
+ * measurement lands, and the arrow layer renders nothing in that state.
+ */
+function useDiagramGeometry(enabled: boolean) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [geometry, setGeometry] = useState<DiagramGeometry | null>(null);
+
+  const measure = useCallback(() => {
+    const wrap = wrapRef.current;
+    if (!wrap || !enabled) {
+      setGeometry(null);
+      return;
+    }
+
+    const grid = wrap.querySelector("[data-diagram-grid]");
+    if (!grid) return;
+
+    const cells = [...grid.children];
+    if (cells.length < 5) return;
+
+    const wrapBox = wrap.getBoundingClientRect();
+    const box = (element: Element) => {
+      const rect = element.getBoundingClientRect();
+      return {
+        left: rect.left - wrapBox.left,
+        right: rect.right - wrapBox.left,
+        top: rect.top - wrapBox.top,
+        bottom: rect.bottom - wrapBox.top,
+        cx: rect.left - wrapBox.left + rect.width / 2,
+        cy: rect.top - wrapBox.top + rect.height / 2,
+        w: rect.width,
+      };
+    };
+
+    // DOM order: hub, top-left, top-right, bottom-left, bottom-right.
+    const [hub, tl, tr, bl, br] = cells.map(box);
+
+    setGeometry({
+      width: wrapBox.width,
+      height: wrapBox.height,
+      hub: { cx: hub.cx, top: hub.top, bottom: hub.bottom, w: hub.w },
+      engines: {
+        tl: { left: tl.left, right: tl.right, cy: tl.cy },
+        tr: { left: tr.left, right: tr.right, cy: tr.cy },
+        bl: { left: bl.left, right: bl.right, cy: bl.cy },
+        br: { left: br.left, right: br.right, cy: br.cy },
+      },
+    });
+  }, [enabled]);
+
+  useEffect(() => {
+    measure();
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(wrap);
+    // Card heights change independently of the wrapper, so watch them too.
+    wrap.querySelectorAll("[data-diagram-grid] > *").forEach((cell) => {
+      observer.observe(cell);
+    });
+
+    return () => observer.disconnect();
+  }, [measure]);
+
+  return { wrapRef, geometry };
+}
+
 export function Model() {
   const reduce = useReducedMotion();
+
+  /**
+   * The elbow connectors only exist on the xl cross layout, so geometry is
+   * measured only there. `isWide` gates it; below xl the cards stack and the
+   * arrows would have nothing sensible to join.
+   */
+  const [isWide, setIsWide] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1280px)");
+    const sync = () => setIsWide(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  const { wrapRef, geometry } = useDiagramGeometry(isWide);
 
   const rise = (delay: number) => ({
     initial: { opacity: reduce ? 1 : 0, y: reduce ? 0 : 18 },
@@ -116,11 +222,16 @@ export function Model() {
           </div>
 
           {/* ============================= Diagram ==================== */}
-          <div aria-hidden="true" className="relative">
-            {/* Arrows, behind the cards. Only meaningful on the xl cross. */}
-            <ArrowLayer className="pointer-events-none absolute inset-0 hidden xl:block" />
+          <div aria-hidden="true" className="relative" ref={wrapRef}>
+            {/* Elbow connectors, behind the cards. Drawn from measured card
+                edges, so they stay attached as card heights change. */}
+            <ArrowLayer
+              className="pointer-events-none absolute inset-0 hidden xl:block"
+              geometry={geometry}
+            />
 
             <div
+              data-diagram-grid
               className={cn(
                 "relative grid gap-4",
                 "sm:grid-cols-2",
@@ -129,42 +240,46 @@ export function Model() {
                 // Rendered slightly under that, which lands the hub on the
                 // design's 0.845 width:height rather than overshooting it.
                 "xl:grid-cols-[minmax(0,1fr)_minmax(0,1.38fr)_minmax(0,1fr)]",
-                "xl:items-center xl:gap-x-11",
+                // The hub is centred; the engine rows are pinned to the top and
+                // bottom of the track. That leaves clear vertical space between
+                // the hub's edges and each engine's centre line, which is the
+                // room the elbow connectors turn through.
+                "xl:items-stretch xl:gap-x-11 xl:gap-y-32",
               )}
             >
               {/* Hub. Rendered first so it leads on small screens; placed
                   into the middle column on xl. */}
               <motion.div
                 {...rise(0.1)}
-                className="order-first xl:order-none xl:col-start-2 xl:row-span-2 xl:row-start-1"
+                className="order-first xl:order-none xl:col-start-2 xl:row-span-2 xl:row-start-1 xl:self-center"
               >
                 <RoleCard />
               </motion.div>
 
               <motion.div
                 {...rise(0.18)}
-                className="xl:col-start-1 xl:row-start-1"
+                className="xl:col-start-1 xl:row-start-1 xl:self-start"
               >
                 <EngineCard engine={topLeft} />
               </motion.div>
 
               <motion.div
                 {...rise(0.26)}
-                className="xl:col-start-3 xl:row-start-1"
+                className="xl:col-start-3 xl:row-start-1 xl:self-start"
               >
                 <EngineCard engine={topRight} />
               </motion.div>
 
               <motion.div
                 {...rise(0.34)}
-                className="xl:col-start-1 xl:row-start-2"
+                className="xl:col-start-1 xl:row-start-2 xl:self-end"
               >
                 <EngineCard engine={bottomLeft} />
               </motion.div>
 
               <motion.div
                 {...rise(0.42)}
-                className="xl:col-start-3 xl:row-start-2"
+                className="xl:col-start-3 xl:row-start-2 xl:self-end"
               >
                 <EngineCard engine={bottomRight} />
               </motion.div>
@@ -204,75 +319,166 @@ export function Model() {
 /* ========================================================================== */
 
 /**
- * The four arrows joining the hub to its engines.
+ * Elbow connectors between the hub and its four engines, matching the design.
  *
- * Positioned in percentage space rather than one stretched SVG: the diagram's
- * aspect ratio changes with the cards' own heights, so a fixed viewBox drifts
- * out of alignment. Each arrow occupies the gutter between the hub column and
- * one engine column.
+ * Each path leaves one card, runs straight, turns through a rounded corner,
+ * and ends in an arrowhead — rather than a plain horizontal rule. The
+ * direction encodes the loop the copy describes:
+ *
+ *   TOP     hub -> up -> turn outward -> arrowhead at the engine
+ *           (the role standard feeds assessment and learning)
+ *   BOTTOM  engine -> inward -> turn up -> arrowhead at the hub
+ *           (evidence and signals feed back into the standard)
+ *
+ * Drawn in one SVG that overlays the whole diagram. Unlike the earlier
+ * per-gutter spans this needs a shared coordinate space, because a single
+ * path spans from the hub's edge across a gutter to an engine card. The
+ * viewBox is therefore sized to the diagram box at run time and the geometry
+ * is expressed in percentages of it, so it tracks any card height.
  */
-function ArrowLayer({ className }: { className?: string }) {
+function ArrowLayer({
+  className,
+  geometry,
+}: {
+  className?: string;
+  geometry: DiagramGeometry | null;
+}) {
   const reduce = useReducedMotion();
 
-  /*
-   * Positions measured from the rendered grid: the gutters sit at ~25-30%
-   * and ~70-75% of the diagram's width, and each arrow is centred on its
-   * engine card's vertical midpoint.
+  if (!geometry) return null;
+
+  const { width: W, height: H, hub, engines } = geometry;
+  const R = 14; // corner radius
+
+  /**
+   * Build one elbow path.
    *
-   * Heads point OUTWARD from the hub on the right and INWARD on the left,
-   * which is the design's reading: the role standard feeds the engines, and
-   * the engines feed evidence back.
+   * `fromX/fromY` is the start (on the hub or engine edge), `toX/toY` the
+   * arrow tip. The corner sits at (fromX, toY) for top arrows — vertical
+   * first — and at (toX, fromY) for bottom arrows, which run horizontally
+   * first and then turn up.
    */
+  const topPath = (fromX: number, fromY: number, toX: number, toY: number) => {
+    const dir = toX > fromX ? 1 : -1;
+    return [
+      `M ${fromX} ${fromY}`,
+      `L ${fromX} ${toY + R}`,
+      `Q ${fromX} ${toY} ${fromX + dir * R} ${toY}`,
+      `L ${toX} ${toY}`,
+    ].join(" ");
+  };
+
+  const bottomPath = (
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+  ) => {
+    const dir = toX > fromX ? 1 : -1;
+    return [
+      `M ${fromX} ${fromY}`,
+      `L ${toX - dir * R} ${fromY}`,
+      `Q ${toX} ${fromY} ${toX} ${fromY - R}`,
+      `L ${toX} ${toY}`,
+    ].join(" ");
+  };
+
   const arrows = [
-    { left: "26.6%", top: "20.3%", width: "5.1%", dir: "left" },
-    { left: "68.3%", top: "20.3%", width: "5.2%", dir: "right" },
-    { left: "26.6%", top: "64.2%", width: "5.1%", dir: "left" },
-    { left: "68.3%", top: "64.1%", width: "5.2%", dir: "right" },
-  ] as const;
+    // Top-left: up from the hub, turn left, point at LurnyPulse.
+    {
+      d: topPath(
+        hub.cx - hub.w * 0.22,
+        hub.top,
+        engines.tl.right + 6,
+        engines.tl.cy,
+      ),
+      head: { x: engines.tl.right + 6, y: engines.tl.cy, dir: "left" },
+    },
+    // Top-right: up from the hub, turn right, point at LurnyMagic.
+    {
+      d: topPath(
+        hub.cx + hub.w * 0.22,
+        hub.top,
+        engines.tr.left - 6,
+        engines.tr.cy,
+      ),
+      head: { x: engines.tr.left - 6, y: engines.tr.cy, dir: "right" },
+    },
+    // Bottom-left: in from LurnyPitch, turn up, point at the hub.
+    {
+      d: bottomPath(
+        engines.bl.right + 6,
+        engines.bl.cy,
+        hub.cx - hub.w * 0.22,
+        hub.bottom,
+      ),
+      head: { x: hub.cx - hub.w * 0.22, y: hub.bottom, dir: "up" },
+    },
+    // Bottom-right: in from LurnySense, turn up, point at the hub.
+    {
+      d: bottomPath(
+        engines.br.left - 6,
+        engines.br.cy,
+        hub.cx + hub.w * 0.22,
+        hub.bottom,
+      ),
+      head: { x: hub.cx + hub.w * 0.22, y: hub.bottom, dir: "up" },
+    },
+  ];
+
+  /** Arrowhead as an open V, matching the design's line-drawn heads. */
+  const headPath = (x: number, y: number, dir: string) => {
+    const a = 7;
+    if (dir === "left")
+      return `M ${x + a} ${y - a} L ${x} ${y} L ${x + a} ${y + a}`;
+    if (dir === "right")
+      return `M ${x - a} ${y - a} L ${x} ${y} L ${x - a} ${y + a}`;
+    return `M ${x - a} ${y + a} L ${x} ${y} L ${x + a} ${y + a}`;
+  };
 
   return (
-    <div className={className}>
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      className={className}
+      aria-hidden="true"
+      fill="none"
+    >
       {arrows.map((arrow, index) => (
-        <motion.span
-          key={`${arrow.left}-${arrow.top}`}
-          className="absolute block h-4"
-          style={{ left: arrow.left, top: arrow.top, width: arrow.width }}
+        <motion.g
+          key={arrow.d}
           initial={{ opacity: reduce ? 1 : 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{
             duration: reduce ? 0 : 0.5,
-            delay: reduce ? 0 : 0.55 + index * 0.1,
+            delay: reduce ? 0 : 0.5 + index * 0.1,
             ease: easeOut,
           }}
         >
-          <svg
-            viewBox="0 0 100 16"
-            preserveAspectRatio="none"
-            className="size-full overflow-visible"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M 4 8 H 96"
-              stroke="var(--brand-500)"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-            />
-            {/* Head. Drawn as a filled triangle so the non-uniform stretch
-                of preserveAspectRatio="none" cannot distort a stroke. */}
-            <polygon
-              points={
-                arrow.dir === "left"
-                  ? "4,8 12,3.5 12,12.5"
-                  : "96,8 88,3.5 88,12.5"
-              }
-              fill="var(--brand-500)"
-            />
-          </svg>
-        </motion.span>
+          <motion.path
+            d={arrow.d}
+            stroke="var(--brand-500)"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: reduce ? 1 : 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{
+              duration: reduce ? 0 : 0.8,
+              delay: reduce ? 0 : 0.5 + index * 0.1,
+              ease: easeOut,
+            }}
+          />
+          <path
+            d={headPath(arrow.head.x, arrow.head.y, arrow.head.dir)}
+            stroke="var(--brand-500)"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </motion.g>
       ))}
-    </div>
+    </svg>
   );
 }
