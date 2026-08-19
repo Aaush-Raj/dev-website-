@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { useState } from "react";
 
 import {
   BranchTrendLine,
@@ -43,6 +44,17 @@ const easeOut = [0.16, 1, 0.3, 1] as const;
 export function DashboardMockup({ className }: { className?: string }) {
   const reduce = useReducedMotion();
 
+  /** Straightens the panel to face the viewer while the pointer is over it. */
+  const [isHovered, setIsHovered] = useState(false);
+
+  /**
+   * Tracks whether the entrance animation has finished. The entrance is long
+   * and eased; reusing that timing for the hover response would make the
+   * panel feel like it is lagging the pointer, so the two use different
+   * durations.
+   */
+  const [hasEntered, setHasEntered] = useState(false);
+
   const rise = (delay: number) => ({
     initial: { opacity: reduce ? 1 : 0, y: reduce ? 0 : 28 },
     animate: { opacity: 1, y: 0 },
@@ -55,9 +67,31 @@ export function DashboardMockup({ className }: { className?: string }) {
 
   return (
     <div
-      className={cn("relative", className)}
+      className={cn(
+        "relative",
+        /*
+         * The mockup reads as a product screenshot, so it behaves like one:
+         * text inside it cannot be selected or dragged out.
+         *
+         * `select-none` blocks selection, and the onCopy/onDragStart handlers
+         * below stop a keyboard select-all or an image-drag from lifting the
+         * markup out. This is presentation, not protection — anyone can read
+         * the DOM — but it keeps the block feeling like a single image.
+         *
+         * It is already aria-hidden, so nothing here affects assistive tech:
+         * screen readers never reach this content in the first place.
+         */
+        "select-none",
+        className,
+      )}
       aria-hidden="true"
       role="presentation"
+      onCopy={(event) => event.preventDefault()}
+      onCut={(event) => event.preventDefault()}
+      onDragStart={(event) => event.preventDefault()}
+      onContextMenu={(event) => event.preventDefault()}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/*
         Below lg the panel is laid out at a fixed desktop width and scaled
@@ -88,12 +122,22 @@ export function DashboardMockup({ className }: { className?: string }) {
             rotateY: reduce ? -7 : -14,
             y: reduce ? 0 : 36,
           }}
-          animate={{ opacity: 1, rotateY: -7, y: 0 }}
+          animate={{
+            opacity: 1,
+            // Straighten to face the viewer while hovered, then settle back
+            // to the design's resting tilt.
+            rotateY: reduce ? -7 : isHovered ? 0 : -7,
+            y: 0,
+            scale: !reduce && isHovered ? 1.015 : 1,
+          }}
           transition={{
-            duration: reduce ? 0 : 1.1,
-            delay: reduce ? 0 : 0.15,
+            // The entrance runs long and eased; the hover response has to be
+            // quick or the panel feels like it is lagging the pointer.
+            duration: reduce ? 0 : hasEntered ? 0.55 : 1.1,
+            delay: reduce || hasEntered ? 0 : 0.15,
             ease: easeOut,
           }}
+          onAnimationComplete={() => setHasEntered(true)}
         >
           <div className="flex min-h-[30rem] text-[0.6875rem] sm:min-h-[34rem]">
             {/* ------------------------------ Sidebar ------------------ */}
@@ -325,10 +369,15 @@ export function DashboardMockup({ className }: { className?: string }) {
           y: reduce ? 0 : 30,
           scale: reduce ? 1 : 0.94,
         }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+        animate={{
+          opacity: 1,
+          // Lift with the panel on hover so the group reads as one object.
+          y: !reduce && isHovered ? -6 : 0,
+          scale: 1,
+        }}
         transition={{
-          duration: reduce ? 0 : 0.75,
-          delay: reduce ? 0 : 0.85,
+          duration: reduce ? 0 : hasEntered ? 0.45 : 0.75,
+          delay: reduce || hasEntered ? 0 : 0.85,
           ease: easeOut,
         }}
       >
@@ -383,10 +432,15 @@ export function DashboardMockup({ className }: { className?: string }) {
           y: reduce ? 0 : 30,
           scale: reduce ? 1 : 0.94,
         }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+        animate={{
+          opacity: 1,
+          // Lift with the panel on hover so the group reads as one object.
+          y: !reduce && isHovered ? -6 : 0,
+          scale: 1,
+        }}
         transition={{
-          duration: reduce ? 0 : 0.75,
-          delay: reduce ? 0 : 1.0,
+          duration: reduce ? 0 : hasEntered ? 0.45 : 0.75,
+          delay: reduce || hasEntered ? 0 : 1.0,
           ease: easeOut,
         }}
       >
