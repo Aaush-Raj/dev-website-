@@ -28,25 +28,45 @@ const easeOut = [0.16, 1, 0.3, 1] as const;
 /**
  * Shared card surface, including its hover response.
  *
- * The movement is deliberately small — a 3px lift and a slightly deeper,
- * warmer shadow. These cards sit in a dense diagram where five of them are
- * visible at once; a large translate or scale would make the whole layout
- * feel unstable as the pointer crosses it. The border warming to brand violet
- * is what actually signals "this one", the lift just gives it depth.
+ * TIMING — why these particular values:
+ *
+ *  - The transition names `translate`, not `transform`. Tailwind v4 compiles
+ *    `-translate-y-*` to the standalone `translate` property, so a list
+ *    containing `transform` leaves the lift untransitioned and it snaps.
+ *
+ *  - Enter and exit are deliberately different. The card settles in 520ms on
+ *    a decelerating curve, and returns in 380ms. Matching them makes a hover
+ *    feel mechanical; letting the exit run slightly quicker is what reads as
+ *    the surface relaxing rather than being dragged back.
+ *
+ *  - The curve is the `--ease-out` token (0.16, 1, 0.3, 1), the same one the
+ *    section's entrance animations use, rather than Tailwind's default
+ *    `ease-out`. A shared curve is most of what makes separate interactions
+ *    feel like one piece of design.
+ *
+ * The movement itself stays small — 3px. Five cards are visible at once in a
+ * dense diagram, and a larger lift makes the layout feel unstable as the
+ * pointer crosses it. The border warming to brand violet does the signalling;
+ * the lift only supplies depth.
  *
  * `group` lets the interior pieces respond too — see the CTA and icon tiles.
  */
 const cardShell = cn(
   "group rounded-2xl border border-neutral-200/70 bg-white",
   "shadow-[0_10px_30px_-14px_rgb(17_19_35/0.12)]",
-  "duration-slow transition-[transform,box-shadow,border-color] ease-out",
-  "hover:-translate-y-[3px] hover:border-brand-200",
-  "hover:shadow-[0_20px_44px_-18px_rgb(91_50_183/0.28)]",
+  // Exit: slightly quicker than the enter, on the shared token curve.
+  "transition-[translate,box-shadow,border-color] duration-[380ms] ease-out",
+  "will-change-[translate]",
+  // Enter.
+  "hover:-translate-y-[3px] hover:border-brand-200/90",
+  "hover:shadow-[0_18px_40px_-16px_rgb(91_50_183/0.26)]",
+  "hover:duration-[520ms]",
 );
 
 const panelShell = cn(
   "rounded-xl border border-neutral-200/70 p-3",
-  "duration-slow transition-colors ease-out group-hover:border-neutral-200",
+  "transition-colors duration-[380ms] ease-out",
+  "group-hover:border-neutral-200 group-hover:duration-[520ms]",
 );
 
 const ctaButton = cn(
@@ -54,7 +74,8 @@ const ctaButton = cn(
   "text-[0.75rem] font-semibold text-brand-700",
   // Deepens with the card, so the card's primary affordance reads as the
   // thing you would click if this were live UI.
-  "duration-slow transition-colors ease-out group-hover:bg-brand-100",
+  "transition-colors duration-[380ms] ease-out",
+  "group-hover:bg-brand-100/80 group-hover:duration-[520ms]",
 );
 
 /* ========================================================================== */
@@ -101,7 +122,8 @@ export function RoleCard({ className }: { className?: string }) {
                 className={cn(
                   "grid size-7 shrink-0 place-items-center rounded-lg",
                   "bg-brand-50 text-brand-600",
-                  "duration-slow transition-colors ease-out group-hover:bg-brand-100",
+                  "transition-colors duration-[380ms] ease-out",
+                  "group-hover:bg-brand-100/80 group-hover:duration-[520ms]",
                 )}
               >
                 <Icon className="size-4" />
@@ -150,7 +172,8 @@ export function RoleCard({ className }: { className?: string }) {
         className={cn(
           "mt-3 flex items-center justify-between gap-3 rounded-xl",
           "border border-neutral-200/70 px-3 py-2.5",
-          "duration-slow transition-colors ease-out group-hover:border-brand-200",
+          "transition-colors duration-[380ms] ease-out",
+          "group-hover:border-brand-200/80 group-hover:duration-[520ms]",
         )}
       >
         <p className="font-mono text-[0.625rem] font-bold tracking-[0.09em] text-neutral-900 uppercase">
@@ -212,8 +235,9 @@ export function EngineCard({
         <span
           className={cn(
             "shrink-0 text-brand-600",
-            "duration-slow transition-[transform,color] ease-out",
+            "transition-[translate,color] duration-[380ms] ease-out",
             "group-hover:-translate-y-px group-hover:text-brand-700",
+            "group-hover:duration-[520ms]",
           )}
         >
           <Icon className="size-5" />

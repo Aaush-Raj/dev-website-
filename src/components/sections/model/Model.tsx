@@ -349,20 +349,24 @@ export function Model() {
                 "group mt-4 flex items-center gap-4 rounded-2xl border border-neutral-200/70",
                 "bg-white px-5 py-4",
                 "shadow-[0_10px_30px_-14px_rgb(17_19_35/0.12)]",
-                // Same restrained lift as the diagram's cards, so the footer
-                // bar belongs to the same set rather than sitting inert
-                // beneath them.
-                "duration-slow transition-[transform,box-shadow,border-color] ease-out",
-                "hover:-translate-y-[3px] hover:border-brand-200",
-                "hover:shadow-[0_20px_44px_-18px_rgb(91_50_183/0.28)]",
+                // Same restrained lift and timing as the diagram's cards, so
+                // the footer bar belongs to the same set rather than sitting
+                // inert beneath them. Note `translate`, not `transform` —
+                // see the timing note on cardShell in ModelCards.tsx.
+                "transition-[translate,box-shadow,border-color] duration-[380ms] ease-out",
+                "will-change-[translate]",
+                "hover:-translate-y-[3px] hover:border-brand-200/90",
+                "hover:shadow-[0_18px_40px_-16px_rgb(91_50_183/0.26)]",
+                "hover:duration-[520ms]",
                 "xl:mx-auto xl:mt-6 xl:max-w-[32rem]",
               )}
             >
               <span
                 className={cn(
                   "shrink-0 text-brand-500",
-                  "duration-slow transition-[transform,color] ease-out",
+                  "transition-[translate,color] duration-[380ms] ease-out",
                   "group-hover:-translate-y-px group-hover:text-brand-600",
+                  "group-hover:duration-[520ms]",
                 )}
               >
                 <HierarchyIcon className="size-8" />

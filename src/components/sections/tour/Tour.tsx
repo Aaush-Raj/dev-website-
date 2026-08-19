@@ -166,7 +166,8 @@ export function Tour() {
                     "bg-gradient-to-br from-brand-400 to-brand-700 text-white",
                     "ring-2 ring-white/85",
                     "shadow-[0_12px_34px_-8px_rgb(91_50_183/0.85)]",
-                    "duration-normal transition-[transform,box-shadow] ease-out",
+                    "transition-[scale,box-shadow] duration-[380ms] ease-out",
+                    "hover:duration-[520ms]",
                     "hover:scale-[1.07] hover:shadow-[0_16px_44px_-8px_rgb(91_50_183/0.95)]",
                     "active:scale-100",
                   )}

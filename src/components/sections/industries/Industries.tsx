@@ -163,7 +163,9 @@ export function Industries() {
                     fill
                     sizes="(min-width: 1024px) 28vw, (min-width: 640px) 50vw, 100vw"
                     className={cn(
-                      "object-cover transition-[transform,filter] duration-700 ease-out",
+                      // `scale`, not `transform`: Tailwind v4 compiles scale-* to the
+                      // standalone property, so naming transform leaves it unanimated.
+                      "object-cover transition-[scale,filter] duration-700 ease-out",
                       isActive
                         ? "scale-100 saturate-100"
                         : "scale-[1.04] saturate-[0.7]",
