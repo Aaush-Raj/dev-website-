@@ -25,16 +25,36 @@ import { cn } from "@/lib/utils";
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
 
+/**
+ * Shared card surface, including its hover response.
+ *
+ * The movement is deliberately small — a 3px lift and a slightly deeper,
+ * warmer shadow. These cards sit in a dense diagram where five of them are
+ * visible at once; a large translate or scale would make the whole layout
+ * feel unstable as the pointer crosses it. The border warming to brand violet
+ * is what actually signals "this one", the lift just gives it depth.
+ *
+ * `group` lets the interior pieces respond too — see the CTA and icon tiles.
+ */
 const cardShell = cn(
-  "rounded-2xl border border-neutral-200/70 bg-white",
+  "group rounded-2xl border border-neutral-200/70 bg-white",
   "shadow-[0_10px_30px_-14px_rgb(17_19_35/0.12)]",
+  "duration-slow transition-[transform,box-shadow,border-color] ease-out",
+  "hover:-translate-y-[3px] hover:border-brand-200",
+  "hover:shadow-[0_20px_44px_-18px_rgb(91_50_183/0.28)]",
 );
 
-const panelShell = cn("rounded-xl border border-neutral-200/70 p-3");
+const panelShell = cn(
+  "rounded-xl border border-neutral-200/70 p-3",
+  "duration-slow transition-colors ease-out group-hover:border-neutral-200",
+);
 
 const ctaButton = cn(
   "mt-3 w-full rounded-lg bg-brand-50 py-2 text-center",
   "text-[0.75rem] font-semibold text-brand-700",
+  // Deepens with the card, so the card's primary affordance reads as the
+  // thing you would click if this were live UI.
+  "duration-slow transition-colors ease-out group-hover:bg-brand-100",
 );
 
 /* ========================================================================== */
@@ -77,7 +97,13 @@ export function RoleCard({ className }: { className?: string }) {
                 index > 0 && "border-t border-neutral-200/70",
               )}
             >
-              <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600">
+              <span
+                className={cn(
+                  "grid size-7 shrink-0 place-items-center rounded-lg",
+                  "bg-brand-50 text-brand-600",
+                  "duration-slow transition-colors ease-out group-hover:bg-brand-100",
+                )}
+              >
                 <Icon className="size-4" />
               </span>
 
@@ -124,6 +150,7 @@ export function RoleCard({ className }: { className?: string }) {
         className={cn(
           "mt-3 flex items-center justify-between gap-3 rounded-xl",
           "border border-neutral-200/70 px-3 py-2.5",
+          "duration-slow transition-colors ease-out group-hover:border-brand-200",
         )}
       >
         <p className="font-mono text-[0.625rem] font-bold tracking-[0.09em] text-neutral-900 uppercase">
@@ -182,7 +209,13 @@ export function EngineCard({
     <div className={cn(cardShell, "p-3.5", className)}>
       {/* Header */}
       <div className="flex items-center gap-2.5">
-        <span className="shrink-0 text-brand-600">
+        <span
+          className={cn(
+            "shrink-0 text-brand-600",
+            "duration-slow transition-[transform,color] ease-out",
+            "group-hover:-translate-y-px group-hover:text-brand-700",
+          )}
+        >
           <Icon className="size-5" />
         </span>
         <h3 className="text-[0.875rem] font-semibold text-neutral-900">
