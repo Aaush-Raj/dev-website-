@@ -46,7 +46,7 @@
   --accent-50:  #fff9ed;
   --accent-100: #fef1d3;
   --accent-200: #fddfa5;
-  --accent-300: #fdca6d;
+  --accent-300: #fccb46;   /* section-3 icon + underline amber */
   --accent-400: #feb442;
   --accent-500: #fc9a16;
   --accent-600: #ed7a0c;
@@ -69,6 +69,15 @@
   --neutral-800: #2b2926;
   --neutral-900: #111323;
   --neutral-950: #0a0b14;
+
+  /* Ink — the near-black surfaces used by dark sections. Sampled from the
+     section-3 design: the page ground, the raised node cards, and the violet
+     hairline that borders them. */
+  --ink-900:   #0a0a10;
+  --ink-800:   #0f0f17;
+  --ink-700:   #16161f;
+  --ink-border: #4f497b;
+  --ink-well:  #413473;
 
   /* Status */
   --success-500: #16a34a;

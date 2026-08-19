@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter_Tight, JetBrains_Mono } from "next/font/google";
+import {
+  Inter_Tight,
+  JetBrains_Mono,
+  Playfair_Display,
+} from "next/font/google";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/layout/Footer";
@@ -40,6 +44,18 @@ const fontDisplay = Inter_Tight({
   variable: "--font-display-src",
   display: "swap",
   weight: ["500", "600", "700", "800"],
+});
+
+/**
+ * Playfair Display — the high-contrast transitional serif used for the
+ * dark-section headings. Sharp bracketed serifs and vertical stress, matching
+ * the design's display face.
+ */
+const fontSerif = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif-src",
+  display: "swap",
+  weight: ["400", "500", "600"],
 });
 
 /** Eyebrow labels — the design sets them in a wide-tracked monospace. */
@@ -92,7 +108,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang={siteConfig.lang}
-      className={`${fontSans.variable} ${fontDisplay.variable} ${fontMono.variable}`}
+      className={`${fontSans.variable} ${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-dvh flex-col">

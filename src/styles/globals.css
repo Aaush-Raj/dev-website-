@@ -83,6 +83,13 @@
   --color-neutral-900: var(--neutral-900);
   --color-neutral-950: var(--neutral-950);
 
+  /* Ink surfaces for dark sections. */
+  --color-ink-900: var(--ink-900);
+  --color-ink-800: var(--ink-800);
+  --color-ink-700: var(--ink-700);
+  --color-ink-border: var(--ink-border);
+  --color-ink-well: var(--ink-well);
+
   /* --- Colours ------------------------------------------------------- */
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
@@ -130,6 +137,7 @@
   /* --- Typography ---------------------------------------------------- */
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
   --font-mono: var(--font-mono);
 
   --text-xs: var(--text-xs);
