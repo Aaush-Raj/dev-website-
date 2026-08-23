@@ -9,6 +9,32 @@
  * page inventory are confirmed.
  */
 
+/**
+ * Resolve the canonical origin from the environment, falling back to the
+ * production domain.
+ *
+ * Deliberately stricter than `??`: an env var that is present but empty (a
+ * Vercel variable saved with no value) is not `undefined`, so `??` passes the
+ * empty string straight through and `new URL("")` throws at module evaluation
+ * — which fails the build during page-data collection rather than at runtime.
+ * A malformed value is rejected the same way, since a bad origin would
+ * silently poison every canonical URL, OG tag and sitemap entry.
+ */
+function resolveSiteUrl(): string {
+  const fallback = "https://elurny.com";
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return fallback;
+
+  // Vercel exposes VERCEL_URL without a scheme; tolerate that shape generally.
+  const candidate = /^https?:\/\//.test(raw) ? raw : `https://${raw}`;
+
+  try {
+    return new URL(candidate).origin;
+  } catch {
+    return fallback;
+  }
+}
+
 export const siteConfig = {
   /** Legal / brand name, used in JSON-LD and the <title> suffix. */
   name: "eLurny",
@@ -30,10 +56,7 @@ export const siteConfig = {
    * Set NEXT_PUBLIC_SITE_URL in the deployment environment. The fallback keeps
    * local development and preview builds working.
    */
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://elurny.com").replace(
-    /\/$/,
-    "",
-  ),
+  url: resolveSiteUrl(),
 
   /** Default Open Graph image, relative to /public. 1200x630. */
   ogImage: "/assets/images/og-default.png",
