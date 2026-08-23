@@ -55,9 +55,9 @@ function CardTag({ children }: { children: string }) {
   return (
     <span
       className={cn(
-        "absolute -top-3 left-4 z-10 rounded-lg px-3 py-1.5",
+        "absolute -top-2.5 left-3.5 z-10 rounded-md px-2.5 py-1",
         "bg-[#1b1430] ring-1 ring-brand-400/25",
-        "text-[0.625rem] font-bold tracking-[0.08em] text-accent-300 uppercase",
+        "text-[0.5625rem] font-bold tracking-[0.08em] text-accent-300 uppercase",
       )}
     >
       {children}
@@ -77,7 +77,7 @@ function VideoCard() {
   const { video } = outputs;
 
   return (
-    <div className={cn(cardChrome, "relative p-2.5")}>
+    <div className={cn(cardChrome, "relative p-2")}>
       <CardTag>{video.tag}</CardTag>
 
       <div className="relative aspect-video overflow-hidden rounded-xl bg-black">
@@ -112,7 +112,7 @@ function VideoCard() {
             <span className="sr-only">Play the LurnyFlix sample video</span>
             <span
               className={cn(
-                "grid size-14 place-items-center rounded-full",
+                "grid size-12 place-items-center rounded-full",
                 "bg-brand-500/90 text-white backdrop-blur-sm",
                 // `scale`, not `transform`: Tailwind v4 compiles the scale
                 // utilities to the standalone property.
@@ -130,7 +130,7 @@ function VideoCard() {
 
       {/* The scrubber. A drawing — the real control is the play button
           above; a fake track is friendlier than a broken slider. */}
-      <div aria-hidden="true" className="px-1.5 pt-3 pb-1.5">
+      <div aria-hidden="true" className="px-1 pt-2.5 pb-1">
         <span className="block h-1 w-full overflow-hidden rounded-full bg-white/15">
           <span
             className="block h-full rounded-full bg-brand-400"
@@ -138,7 +138,7 @@ function VideoCard() {
           />
         </span>
 
-        <div className="mt-2.5 flex items-center justify-between">
+        <div className="mt-2 flex items-center justify-between">
           <span className="flex items-center gap-2.5">
             <span className="grid size-7 place-items-center rounded-md bg-brand-500/80">
               <svg viewBox="0 0 24 24" className="size-3.5" fill="white">
@@ -187,10 +187,10 @@ export function MagicOutputs({ className }: { className?: string }) {
   });
 
   return (
-    <div className={cn("space-y-7", className)}>
+    <div className={cn("space-y-4", className)}>
       {/* ========================= Storybook ========================== */}
       <Uncopyable as={motion.div} {...arrive(0.15)} className="relative">
-        <div className={cn(cardChrome, "relative p-2.5")}>
+        <div className={cn(cardChrome, "relative p-2")}>
           <CardTag>{outputs.storybook.tag}</CardTag>
 
           <div className="overflow-hidden rounded-xl">
@@ -200,21 +200,21 @@ export function MagicOutputs({ className }: { className?: string }) {
               width={outputs.storybook.image.width}
               height={outputs.storybook.image.height}
               sizes="(min-width: 1024px) 24rem, 90vw"
-              className="aspect-[3/2] w-full object-cover"
+              className="aspect-[16/9] w-full object-cover"
             />
           </div>
 
-          <div className="px-2 pt-3.5 pb-1.5">
-            <p className="font-display text-lg font-semibold text-white">
+          <div className="px-1.5 pt-3 pb-1">
+            <p className="font-display text-base font-semibold text-white">
               {outputs.storybook.title}
             </p>
 
-            <div className="mt-3 flex items-center justify-between">
+            <div className="mt-2 flex items-center justify-between">
               <span
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full",
-                  "bg-accent-300/12 px-3 py-1.5 ring-1 ring-accent-300/25",
-                  "text-[0.6875rem] font-semibold text-accent-300",
+                  "bg-accent-300/12 px-2.5 py-1 ring-1 ring-accent-300/25",
+                  "text-[0.625rem] font-semibold text-accent-300",
                 )}
               >
                 <svg viewBox="0 0 16 16" className="size-3" fill="currentColor">
@@ -253,35 +253,35 @@ export function MagicOutputs({ className }: { className?: string }) {
 
       {/* ========================== Practice ========================== */}
       <Uncopyable as={motion.div} {...arrive(0.41)} className="relative">
-        <div className={cn(cardChrome, "relative px-4 pt-5 pb-4")}>
+        <div className={cn(cardChrome, "relative px-3.5 pt-4 pb-3.5")}>
           <CardTag>{outputs.practice.tag}</CardTag>
 
           <div className="flex items-start gap-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent-500/15 text-lg">
+            <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-accent-500/15 text-base">
               📦
             </span>
             <div className="min-w-0">
-              <p className="font-semibold text-white">
+              <p className="text-[0.875rem] font-semibold text-white">
                 {outputs.practice.title}
               </p>
-              <p className="text-[0.75rem] text-neutral-400">
+              <p className="text-[0.6875rem] text-neutral-400">
                 {outputs.practice.meta}
               </p>
             </div>
           </div>
 
-          <p className="mt-3.5 text-[0.75rem] leading-relaxed text-neutral-300">
+          <p className="mt-3 text-[0.6875rem] leading-relaxed text-neutral-300">
             {outputs.practice.instruction}
           </p>
 
           {/* The five steps. The design lays the first four out two-up and
               gives the last the full width. */}
-          <ol className="mt-3.5 grid grid-cols-2 gap-2.5">
+          <ol className="mt-3 grid grid-cols-2 gap-2">
             {outputs.practice.steps.map((step, index) => (
               <li
                 key={step.label}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-lg px-2.5 py-2",
+                  "flex items-center gap-2 rounded-lg px-2 py-1.5",
                   "ring-1 ring-white/10",
                   // The fifth step spans both columns, as in the design.
                   index === outputs.practice.steps.length - 1 &&
@@ -290,14 +290,14 @@ export function MagicOutputs({ className }: { className?: string }) {
               >
                 <span
                   className={cn(
-                    "grid size-6 shrink-0 place-items-center rounded-md",
-                    "text-[0.6875rem] font-bold text-white",
+                    "grid size-5 shrink-0 place-items-center rounded-md",
+                    "text-[0.625rem] font-bold text-white",
                     stepTones[step.tone],
                   )}
                 >
                   {index + 1}
                 </span>
-                <span className="truncate text-[0.75rem] text-neutral-200">
+                <span className="truncate text-[0.6875rem] text-neutral-200">
                   {step.label}
                 </span>
               </li>

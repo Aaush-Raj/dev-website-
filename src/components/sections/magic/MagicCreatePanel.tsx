@@ -33,7 +33,7 @@ export function MagicCreatePanel({ className }: { className?: string }) {
   return (
     <Uncopyable
       className={cn(
-        "rounded-2xl p-6 sm:p-8",
+        "rounded-2xl p-5 sm:p-6",
         // The design's violet card: a soft gradient rather than a flat fill,
         // lighter at the top left where the section's glow falls.
         "bg-[linear-gradient(150deg,#4a2d74_0%,#3a2359_55%,#2e1b48_100%)]",
@@ -44,8 +44,8 @@ export function MagicCreatePanel({ className }: { className?: string }) {
     >
       <p
         className={cn(
-          "font-display text-xl font-bold tracking-[-0.01em] uppercase",
-          "leading-tight text-white sm:text-2xl",
+          "font-display text-lg font-bold tracking-[-0.01em] uppercase",
+          "leading-tight text-white sm:text-xl",
         )}
       >
         {panel.title.lead}{" "}
@@ -53,20 +53,20 @@ export function MagicCreatePanel({ className }: { className?: string }) {
         <span className="text-accent-300">{panel.title.source}</span>
       </p>
 
-      <p className="mt-4 max-w-88 text-[0.875rem] leading-relaxed text-neutral-300">
+      <p className="mt-3 max-w-84 text-[0.8125rem] leading-relaxed text-neutral-300">
         {panel.description}
       </p>
 
       {/* ------------------------- Fake controls -------------------- */}
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+      <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
         {/* A drawing of a text input. See the note above. */}
         <span
           className={cn(
-            "flex flex-1 items-center gap-2.5 rounded-lg bg-white px-4 py-3.5",
+            "flex flex-1 items-center gap-2 rounded-lg bg-white px-3.5 py-3",
             // `truncate` rather than wrapping: a real input would clip its
             // placeholder on one line, and a two-line placeholder reads as a
             // layout fault.
-            "truncate text-[0.9375rem] whitespace-nowrap text-neutral-400",
+            "truncate text-[0.875rem] whitespace-nowrap text-neutral-400",
           )}
         >
           <svg
@@ -87,8 +87,8 @@ export function MagicCreatePanel({ className }: { className?: string }) {
         <span
           className={cn(
             "inline-flex items-center justify-center gap-2 rounded-lg",
-            "bg-accent-300 px-6 py-3.5",
-            "text-[0.9375rem] font-bold tracking-[0.02em] text-neutral-900 uppercase",
+            "bg-accent-300 px-5 py-3",
+            "text-[0.875rem] font-bold tracking-[0.02em] text-neutral-900 uppercase",
           )}
         >
           {panel.action}

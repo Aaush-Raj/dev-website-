@@ -76,7 +76,9 @@ export function MagicHero() {
       className={cn(
         "relative isolate overflow-hidden bg-[#050411] text-white",
         // Clearance for the floating nav pill, which overlays the page.
-        "pt-28 pb-section-lg sm:pt-32 lg:pt-36",
+        // Deliberately tighter than py-section-lg: this is a hero, and the
+        // three stacked cards already give the section plenty of height.
+        "pt-28 pb-16 sm:pt-30 lg:pt-30 lg:pb-14",
       )}
     >
       {/* ===================== Background layers ====================== */}
@@ -106,19 +108,29 @@ export function MagicHero() {
       <Container width="hero" className="relative">
         <div
           className={cn(
-            "grid items-center gap-14",
+            /*
+              Centre the columns below xl, where they stack and centring reads
+              naturally. On xl the card stack is much taller than the copy, so
+              centring would float the copy in the middle of a tall row and
+              leave dead space above the headline — the columns start together
+              at the top instead.
+            */
+            "grid items-center gap-10 xl:items-start",
             // Three columns on xl, as the design has them. On lg the cards
             // drop below the copy and panel, which share the row.
-            "lg:grid-cols-2 lg:gap-10",
-            // Roughly the design's proportions. The panel needs enough width
-            // to keep its input and CREATE button on one row; the cards need
-            // enough to keep the practice chips two-up.
-            "xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)_minmax(0,0.95fr)]",
-            "xl:gap-x-12",
+            "lg:grid-cols-2 lg:gap-8",
+            /*
+              Roughly the design's proportions, but the copy column gets a
+              floor rather than a bare fraction: its two buttons need ~26rem
+              side by side, and the panel and cards both have wide minimum
+              content, so a pure fr split starves it and the buttons stack.
+            */
+            "xl:grid-cols-[minmax(26rem,1.05fr)_minmax(0,0.95fr)_minmax(0,0.9fr)]",
+            "xl:gap-x-10",
           )}
         >
           {/* =========================== Statement ===================== */}
-          <div>
+          <div className="xl:pt-6">
             <motion.p
               {...rise(0)}
               className={cn(
@@ -138,10 +150,10 @@ export function MagicHero() {
             <motion.h1
               {...rise(0.08)}
               className={cn(
-                "mt-7 font-display font-bold tracking-[-0.035em]",
+                "mt-5 font-display font-bold tracking-[-0.035em]",
                 "leading-[1.08] text-white",
-                // Measured from the design at ~58px on a 1440 frame.
-                "text-[2.25rem] sm:text-[2.875rem] xl:text-[3.25rem]",
+                // Measured from the design at ~52px on a 1440 frame.
+                "text-[2rem] sm:text-[2.5rem] xl:text-[2.875rem]",
               )}
             >
               {hero.headline.map((line, index) => (
@@ -171,11 +183,11 @@ export function MagicHero() {
             <motion.p
               {...rise(0.16)}
               className={cn(
-                "mt-7 max-w-[34rem] leading-relaxed text-pretty",
-                "text-[1.0625rem] text-neutral-300 sm:text-base",
+                "mt-5 max-w-[32rem] leading-relaxed text-pretty",
+                "text-[0.9375rem] text-neutral-300 sm:text-base",
                 // Narrower at xl so it wraps to the design's four lines and
                 // leaves the two buttons room to sit on one row beneath.
-                "xl:max-w-[27rem]",
+                "xl:max-w-[25rem]",
               )}
             >
               {hero.description}
@@ -184,13 +196,13 @@ export function MagicHero() {
             {/* --------------------------- Actions -------------------- */}
             <motion.div
               {...rise(0.24)}
-              className="mt-10 flex flex-wrap items-center gap-4"
+              className="mt-8 flex flex-wrap items-center gap-3"
             >
               <Link
                 href={hero.actions.primary.href}
                 className={cn(
-                  "group inline-flex h-14 items-center justify-center gap-3 rounded-lg px-8",
-                  "bg-accent-300 text-[0.9375rem] font-bold text-neutral-900",
+                  "group inline-flex h-12 items-center justify-center gap-2.5 rounded-lg px-6",
+                  "bg-accent-300 text-[0.875rem] font-bold text-neutral-900",
                   // `translate`, not `transform`: Tailwind v4 compiles the
                   // translate utilities to the standalone property.
                   "duration-normal transition-[background-color,box-shadow,translate] ease-out",
@@ -224,8 +236,8 @@ export function MagicHero() {
               <Link
                 href={hero.actions.secondary.href}
                 className={cn(
-                  "group inline-flex h-14 items-center justify-center gap-3 rounded-lg px-7",
-                  "border border-brand-400/50 text-[0.9375rem] font-semibold text-white",
+                  "group inline-flex h-12 items-center justify-center gap-2.5 rounded-lg px-5",
+                  "border border-brand-400/50 text-[0.875rem] font-semibold text-white",
                   "duration-normal transition-[background-color,border-color,translate] ease-out",
                   "will-change-[translate]",
                   "hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-500/15",
@@ -236,7 +248,7 @@ export function MagicHero() {
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "grid size-7 place-items-center rounded-full",
+                    "grid size-6 place-items-center rounded-full",
                     "border border-brand-400/60 text-brand-200",
                     "duration-normal transition-[background-color,scale] ease-out",
                     "group-hover:scale-110 group-hover:bg-brand-500/25",
@@ -270,7 +282,7 @@ export function MagicHero() {
                 transition: { duration: 0.8, delay: 0.1, ease: easeOut },
               },
             }}
-            className="relative"
+            className="relative xl:pt-14"
           >
             <MagicCreatePanel />
 
@@ -287,8 +299,8 @@ export function MagicHero() {
               preserveAspectRatio="none"
               className={cn(
                 "pointer-events-none absolute top-1/2 left-full hidden",
-                // Spans the grid gap (xl:gap-x-14 = 3.5rem).
-                "h-[26rem] w-14 -translate-y-1/2 xl:block",
+                // Spans the grid gap (xl:gap-x-10 = 2.5rem).
+                "h-[21rem] w-10 -translate-y-1/2 xl:block",
               )}
               initial={reduce ? "shown" : "hidden"}
               whileInView="shown"
@@ -322,9 +334,15 @@ export function MagicHero() {
           </motion.div>
 
           {/* =========================== Outputs ======================= */}
-          {/* Spans both columns on lg, where it sits under the copy and
-              panel rather than beside them. */}
-          <MagicOutputs className="lg:col-span-2 xl:col-span-1" />
+          {/*
+            Spans both columns on lg, where it sits under the copy and panel
+            rather than beside them.
+
+            Capped on xl: three stacked cards are what sets this section's
+            height, so letting them take the full column would make the hero
+            considerably taller than the copy beside it needs.
+          */}
+          <MagicOutputs className="lg:col-span-2 xl:col-span-1 xl:max-w-[19rem] xl:justify-self-end" />
         </div>
       </Container>
     </section>

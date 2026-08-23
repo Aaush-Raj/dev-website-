@@ -1,7 +1,3 @@
-"use client";
-
-import { useReducedMotion } from "motion/react";
-
 import { cn } from "@/lib/utils";
 
 /**
@@ -30,9 +26,14 @@ import { cn } from "@/lib/utils";
  * hydration mismatch, and re-randomising on every mount would make the layout
  * unreproducible.
  *
- * Under `prefers-reduced-motion` the drift stops entirely and the particles
- * become a still field — this is ambient decoration, and continuous motion is
- * exactly what that setting is asking us not to do.
+ * Under `prefers-reduced-motion` the drift stops and the particles become a
+ * still field — ambient continuous motion is exactly what that setting asks us
+ * not to do. That is enforced in CSS (`motion-reduce:animate-none` here, plus
+ * the global neutralising block in globals.css) rather than through motion's
+ * useReducedMotion: the hook returns null on the first render and this
+ * component has no other state to trigger a re-render, so the class would
+ * never be dropped. A media query has no such timing problem, which also
+ * means this file needs no "use client" — it is now static markup.
  */
 
 interface Particle {
@@ -182,8 +183,6 @@ const particles: Particle[] = [
 ];
 
 export function MagicStarfield({ className }: { className?: string }) {
-  const reduce = useReducedMotion();
-
   return (
     <div
       aria-hidden="true"
@@ -195,7 +194,7 @@ export function MagicStarfield({ className }: { className?: string }) {
           className={cn(
             "absolute rounded-full",
             particle.warm ? "bg-accent-300" : "bg-brand-200",
-            !reduce && "animate-magic-drift",
+            "animate-magic-drift motion-reduce:animate-none",
           )}
           style={{
             left: `${particle.left}%`,
