@@ -42,5 +42,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Design source files are tracked; screenshot/probe scratch scripts are not.
+# Screenshot/probe scratch scripts are not tracked.
 /*.mjs
+
+# Design source material (~174MB of Figma exports, screenshots, raw assets).
+# Not tracked: everything the site actually loads has already been derived into
+# public/assets/. Kept locally as reference only.
+/designs/

@@ -209,6 +209,33 @@
   --ease-out: var(--ease-out);
   --ease-in-out: var(--ease-in-out);
   --ease-spring: var(--ease-spring);
+
+  /* --------------------------------------------------------------------
+     ANIMATIONS
+
+     Registered here rather than in a component so Tailwind generates the
+     `animate-*` utility and the keyframes travel with the design system.
+
+     `magic-drift` moves an ambient particle in the LurnyMagic hero. Each
+     particle sets its own duration, delay and `--magic-drift` distance
+     inline, so one keyframe serves the whole field without any two moving
+     in step. Only `translate` and `opacity` animate — both compositor
+     properties, so the field costs no layout or paint.
+
+     The global prefers-reduced-motion block below neutralises this, and
+     MagicStarfield also drops the class outright for those users.
+     -------------------------------------------------------------------- */
+  --animate-magic-drift: magic-drift var(--magic-drift-duration, 40s)
+    ease-in-out infinite alternate;
+
+  @keyframes magic-drift {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: var(--magic-drift, 5%) calc(var(--magic-drift, 5%) * -0.6);
+    }
+  }
 }
 
 /* ============================================================================

@@ -20,7 +20,16 @@ import { cn } from "@/lib/utils";
  *  - route changes close the menu
  */
 
-export function MobileMenu() {
+interface MobileMenuProps {
+  /**
+   * Notifies the parent when the panel opens or closes. The header uses this
+   * to pin itself visible: this panel is rendered inside the header, so a
+   * header that slid away on scroll would take an open menu with it.
+   */
+  onOpenChange?: (open: boolean) => void;
+}
+
+export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,6 +48,18 @@ export function MobileMenu() {
     },
     [pathname],
   );
+
+  /*
+   * Report the open state upward.
+   *
+   * Watches the DERIVED `isMenuOpen` rather than calling onOpenChange from
+   * setMenuOpen: the menu also closes when the route changes, which happens
+   * through the openedAt snapshot above without setMenuOpen ever running. An
+   * effect on the derived value catches both paths.
+   */
+  useEffect(() => {
+    onOpenChange?.(isMenuOpen);
+  }, [isMenuOpen, onOpenChange]);
 
   // Escape to close + scroll lock while open.
   useEffect(() => {

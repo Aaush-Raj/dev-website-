@@ -13,6 +13,8 @@ export interface NavLink {
   href: string;
   /** Outbound link — renders with target="_blank" and rel="noopener". */
   external?: boolean;
+  /** Opens the Platform mega-menu on hover and focus. */
+  hasMega?: boolean;
 }
 
 export interface NavGroup {
@@ -20,18 +22,128 @@ export interface NavGroup {
   links: NavLink[];
 }
 
+/** One engine in the Platform mega-menu. */
+export interface MegaMenuItem {
+  name: string;
+  description: string;
+  href: string;
+  /** Icon in public/assets/icons/engines. */
+  icon: string;
+}
+
+export interface MegaMenuColumn {
+  title: string;
+  items: MegaMenuItem[];
+}
+
 /**
  * Primary header navigation.
  * TODO(routes): point these at real pages as they are built.
  */
 export const mainNav: NavLink[] = [
-  { label: "Platform", href: "/platform" },
+  /** `hasMega` opens the Platform mega-menu; see platformMenu below. */
+  { label: "Platform", href: "/platform", hasMega: true },
   { label: "Solutions", href: "/solutions" },
   { label: "Industries", href: "/industries" },
   { label: "Customers", href: "/customers" },
   { label: "Resources", href: "/resources" },
   { label: "Company", href: "/company" },
 ];
+
+/**
+ * PLATFORM MEGA-MENU
+ * ---------------------------------------------------------------------------
+ * Three columns of three engines, grouped by what they are for, plus a footer
+ * band. Opens from the "Platform" item in mainNav.
+ *
+ * Icons live in public/assets/icons/engines. Each already includes the
+ * lavender disc behind the glyph, so nothing draws a circle around them.
+ *
+ * TODO(routes): these hrefs follow the /platform/* pattern already used by the
+ * footer. Only /platform/pitch exists today; the rest 404 until built.
+ */
+export const platformMenu: {
+  columns: MegaMenuColumn[];
+  footer: { title: string[]; action: NavLink };
+} = {
+  columns: [
+    {
+      title: "Build capability",
+      items: [
+        {
+          name: "LurnyPulse",
+          description: "Role readiness and capability intelligence",
+          href: "/platform/pulse",
+          icon: "pulse",
+        },
+        {
+          name: "LurnyMagic",
+          description: "AI content creation and transformation",
+          href: "/platform/magic",
+          icon: "magic",
+        },
+        {
+          name: "Lurny KxP",
+          description: "Learning, journeys and distribution",
+          href: "/platform/kxp",
+          icon: "kxp",
+        },
+      ],
+    },
+    {
+      title: "Enable performance",
+      items: [
+        {
+          name: "LurnyChat",
+          description: "Trusted knowledge in the flow of work",
+          href: "/platform/chat",
+          icon: "chat",
+        },
+        {
+          name: "LurnyPitch",
+          description: "Conversation intelligence and coaching",
+          href: "/platform/pitch",
+          icon: "pitch",
+        },
+        {
+          name: "LurnyEvents",
+          description: "Instructor-led learning, end to end",
+          href: "/platform/events",
+          icon: "events",
+        },
+      ],
+    },
+    {
+      title: "Work in the flow",
+      items: [
+        {
+          name: "LurnySaathi",
+          description: "Voice-first mobile companion",
+          href: "/platform/saathi",
+          icon: "saathi",
+        },
+        {
+          name: "LurnyBiz",
+          description: "CRM-led next-best action",
+          href: "/platform/biz",
+          icon: "biz",
+        },
+        {
+          name: "LurnySense",
+          description: "Conversational analytics for leaders",
+          href: "/platform/sense",
+          icon: "sense",
+        },
+      ],
+    },
+  ],
+
+  footer: {
+    /** Two lines, as the design sets them. */
+    title: ["One capability model.", "Nine connected engines."],
+    action: { label: "Explore the full platform", href: "/platform" },
+  },
+};
 
 /** Header call-to-action buttons. */
 export const headerActions = {

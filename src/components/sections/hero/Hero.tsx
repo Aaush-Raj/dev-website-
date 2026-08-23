@@ -44,8 +44,19 @@ export function Hero() {
     <section
       className={cn(
         "relative overflow-hidden",
-        // Pull content up under the floating nav pill, then pad clear of it.
-        "-mt-[5.5rem] pt-[8.5rem] lg:-mt-[6.25rem] lg:pt-[10rem]",
+        /*
+          Padding clear of the floating nav pill, which overlays the page
+          rather than sitting above it — the header cancels its own flow space
+          (see Header.tsx), so this section starts at y=0 and this padding is
+          the only thing keeping content out from under the pill.
+
+          The pill ends at 88px (top-5 inset + its h-[4.25rem]), so anything
+          below ~5.5rem clears it. These values keep the spacing the page had
+          before the header stopped reserving flow: the old rule paired a
+          -5.5rem margin with 8.5rem padding, which rendered as 8.5rem from the
+          top of the viewport once the header's own 68px was counted.
+        */
+        "pt-[8.5rem] lg:pt-[10rem]",
         "pb-section",
       )}
     >
