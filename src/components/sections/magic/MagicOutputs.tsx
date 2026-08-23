@@ -44,10 +44,13 @@ const stepTones = {
   amber: "bg-accent-500",
 } as const;
 
-/** Shared card chrome: near-black glass panel with a violet hairline. */
+/** Shared card chrome: near-black glass panel with a violet hairline, plus a
+ *  smooth ring/shadow bloom on hover (the lift itself is the motion gesture). */
 const cardChrome = cn(
   "rounded-2xl bg-[#140f22]/85 ring-1 ring-brand-400/20 backdrop-blur-sm",
   "shadow-[0_30px_70px_-30px_rgb(0_0_0/0.9)]",
+  "transition duration-400 ease-out",
+  "hover:shadow-[0_40px_90px_-28px_rgb(88_40_180/0.6)] hover:ring-brand-300/45",
 );
 
 /** The floating label above each card, as in the design. */
@@ -186,10 +189,28 @@ export function MagicOutputs({ className }: { className?: string }) {
     },
   });
 
+  // A gentle lift toward the pointer — a soft spring, reduced-motion opt-out.
+  // The spring lives on the hover target so it shapes only the hover, leaving
+  // the `arrive` entrance easing untouched.
+  const hover = reduce
+    ? {}
+    : {
+        whileHover: {
+          y: -6,
+          scale: 1.015,
+          transition: { type: "spring", stiffness: 280, damping: 20 } as const,
+        },
+      };
+
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn("space-y-6", className)}>
       {/* ========================= Storybook ========================== */}
-      <Uncopyable as={motion.div} {...arrive(0.15)} className="relative">
+      <Uncopyable
+        as={motion.div}
+        {...arrive(0.15)}
+        {...hover}
+        className="relative"
+      >
         <div className={cn(cardChrome, "relative p-2")}>
           <CardTag>{outputs.storybook.tag}</CardTag>
 
@@ -247,12 +268,17 @@ export function MagicOutputs({ className }: { className?: string }) {
         illustration, and hiding it from assistive technology would leave a
         play button no screen reader could find.
       */}
-      <motion.div {...arrive(0.28)} className="relative select-none">
+      <motion.div {...arrive(0.28)} {...hover} className="relative select-none">
         <VideoCard />
       </motion.div>
 
       {/* ========================== Practice ========================== */}
-      <Uncopyable as={motion.div} {...arrive(0.41)} className="relative">
+      <Uncopyable
+        as={motion.div}
+        {...arrive(0.41)}
+        {...hover}
+        className="relative"
+      >
         <div className={cn(cardChrome, "relative px-3.5 pt-4 pb-3.5")}>
           <CardTag>{outputs.practice.tag}</CardTag>
 

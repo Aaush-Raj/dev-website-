@@ -42,17 +42,46 @@ const easeOut = [0.16, 1, 0.3, 1] as const;
 const { hero } = magic;
 
 /**
- * The three connector paths, in percentages of the connector box.
+ * CONNECTOR GEOMETRY (pixel-space, origin = panel right-edge centre)
+ * ---------------------------------------------------------------------------
+ * The three cards do not sit symmetrically around the panel: measured on a
+ * 1440-frame the panel centre lines up near the TOP of the stack, so all three
+ * paths mostly travel down-and-across. Rather than fight a percentage box, the
+ * SVG uses a pixel-like viewBox whose y=0 IS the panel centre, and the paths
+ * are authored against the cards' real vertical offsets. `--conn-*` custom
+ * properties keep the three endpoints in one place so the arrowheads (drawn as
+ * HTML, to stay crisp) and the SVG stay in sync.
  *
- * Each leaves the panel's right edge and elbows to a card: up to the
- * storybook, straight across to the video, down to the practice card. Drawn
- * as rounded elbows rather than diagonals, which is what the design shows.
+ * X: 0 = panel edge · ~118 = card left edge.
+ * Y (relative to panel centre): storybook ≈ -54, video ≈ +205, practice ≈ +456.
  */
+const CONN = {
+  x0: 6, // launch dot, just off the panel edge
+  xTrunk: 60, // where the shared vertical trunk sits
+  xEnd: 116, // the card edge
+  yStory: -25,
+  yVideo: 205,
+  yPractice: 484,
+} as const;
+
 const connectorPaths = [
-  "M 2 50 H 26 Q 34 50 34 40 V 12 Q 34 6 42 6 H 98",
-  "M 2 50 H 98",
-  "M 2 50 H 26 Q 34 50 34 60 V 88 Q 34 94 42 94 H 98",
+  // to the storybook card (up a little, then across)
+  `M ${CONN.x0} 0 H ${CONN.xTrunk - 8} Q ${CONN.xTrunk} 0 ${CONN.xTrunk} -8 V ${CONN.yStory + 8} Q ${CONN.xTrunk} ${CONN.yStory} ${CONN.xTrunk + 8} ${CONN.yStory} H ${CONN.xEnd}`,
+  // to the video card (down, then across)
+  `M ${CONN.x0} 0 H ${CONN.xTrunk - 8} Q ${CONN.xTrunk} 0 ${CONN.xTrunk} 8 V ${CONN.yVideo - 8} Q ${CONN.xTrunk} ${CONN.yVideo} ${CONN.xTrunk + 8} ${CONN.yVideo} H ${CONN.xEnd}`,
+  // to the practice card (further down, then across)
+  `M ${CONN.x0} 0 H ${CONN.xTrunk - 8} Q ${CONN.xTrunk} 0 ${CONN.xTrunk} 8 V ${CONN.yPractice - 8} Q ${CONN.xTrunk} ${CONN.yPractice} ${CONN.xTrunk + 8} ${CONN.yPractice} H ${CONN.xEnd}`,
 ] as const;
+
+/** Endpoints in the same viewBox units, for the HTML arrowheads. */
+const connectorEnds = [
+  { x: CONN.xEnd, y: CONN.yStory },
+  { x: CONN.xEnd, y: CONN.yVideo },
+  { x: CONN.xEnd, y: CONN.yPractice },
+] as const;
+
+// The viewBox that holds all of the above, with a little breathing room.
+const CONN_VB = { minX: 0, minY: -90, w: 122, h: 600 } as const;
 
 export function MagicHero() {
   const reduce = useReducedMotion();
@@ -125,8 +154,10 @@ export function MagicHero() {
               side by side, and the panel and cards both have wide minimum
               content, so a pure fr split starves it and the buttons stack.
             */
-            "xl:grid-cols-[minmax(26rem,1.05fr)_minmax(0,0.95fr)_minmax(0,0.9fr)]",
-            "xl:gap-x-10",
+            "xl:grid-cols-[minmax(24rem,1fr)_minmax(0,0.92fr)_minmax(0,0.9fr)]",
+            // A generous gap between the panel and the card stack, so the
+            // connectors have real distance to travel — as the design shows.
+            "xl:gap-x-16",
           )}
         >
           {/* =========================== Statement ===================== */}
@@ -288,49 +319,134 @@ export function MagicHero() {
 
             {/* ---------------------- Connectors ------------------- */}
             {/*
-              Sits in the gap between this column and the cards. Only on xl,
-              where the two are side by side; below that the columns stack and
-              these would point at nothing.
+              Sits in the gap between this column and the cards, spanning the
+              full distance across to the card stack. Only on xl, where the two
+              are side by side; below that the columns stack and these would
+              point at nothing.
+
+              Two layers share one positioning box:
+                · the SVG draws the dotted elbow paths (+ a glow + a slow flow)
+                · absolutely-placed HTML arrowheads and the launch dot, so they
+                  keep their shape under the SVG's non-uniform scaling.
             */}
-            <motion.svg
+            <div
               aria-hidden="true"
-              focusable="false"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
               className={cn(
-                "pointer-events-none absolute top-1/2 left-full hidden",
-                // Spans the grid gap (xl:gap-x-10 = 2.5rem).
-                "h-[21rem] w-10 -translate-y-1/2 xl:block",
+                "pointer-events-none absolute left-full hidden xl:block",
+                // 1 viewBox unit = 1px. The box's own top sits CONN_VB.minY (-90)
+                // above the panel centre; translate up by that so viewBox y=0
+                // lands exactly on the panel's right-edge centre (the origin).
+                "top-1/2",
               )}
-              initial={reduce ? "shown" : "hidden"}
-              whileInView="shown"
-              viewport={{ once: true, amount: "some" }}
+              style={{
+                width: CONN_VB.w,
+                height: CONN_VB.h,
+                transform: `translateY(${CONN_VB.minY}px)`,
+              }}
             >
-              {connectorPaths.map((d, index) => (
-                <motion.path
-                  key={d}
-                  d={d}
-                  fill="none"
-                  stroke="#9b7ae8"
-                  strokeOpacity={0.55}
-                  strokeWidth={0.8}
-                  strokeDasharray="3 3"
-                  vectorEffect="non-scaling-stroke"
-                  variants={{
-                    hidden: { pathLength: 0, opacity: 0 },
-                    shown: {
-                      pathLength: 1,
-                      opacity: 1,
-                      transition: {
-                        duration: 0.7,
-                        delay: 0.35 + index * 0.12,
-                        ease: easeOut,
-                      },
-                    },
+              <motion.svg
+                focusable="false"
+                viewBox={`${CONN_VB.minX} ${CONN_VB.minY} ${CONN_VB.w} ${CONN_VB.h}`}
+                className="absolute inset-0 h-full w-full overflow-visible"
+                initial={reduce ? "shown" : "hidden"}
+                whileInView="shown"
+                viewport={{ once: true, amount: "some" }}
+              >
+                <defs>
+                  {/* Soft violet bloom around the lines. */}
+                  <filter
+                    id="magic-connector-glow"
+                    x="-20%"
+                    y="-20%"
+                    width="140%"
+                    height="140%"
+                  >
+                    <feGaussianBlur stdDeviation="2" result="b" />
+                    <feMerge>
+                      <feMergeNode in="b" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <linearGradient
+                    id="magic-connector-stroke"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="0"
+                  >
+                    <stop offset="0%" stopColor="#7f52dc" />
+                    <stop offset="100%" stopColor="#bba7f1" />
+                  </linearGradient>
+                </defs>
+
+                {connectorPaths.map((d, index) => (
+                  <g key={d} filter="url(#magic-connector-glow)">
+                    {/* The drawn dotted line. pathLength draws it in on scroll;
+                        the dashed stroke gives the design's dotted look. */}
+                    <motion.path
+                      d={d}
+                      fill="none"
+                      stroke="url(#magic-connector-stroke)"
+                      strokeWidth={1.5}
+                      strokeLinecap="round"
+                      strokeDasharray="1 6"
+                      variants={{
+                        hidden: { pathLength: 0, opacity: 0 },
+                        shown: {
+                          pathLength: 1,
+                          opacity: 0.95,
+                          transition: {
+                            duration: 0.7,
+                            delay: 0.35 + index * 0.12,
+                            ease: easeOut,
+                          },
+                        },
+                      }}
+                    />
+                  </g>
+                ))}
+              </motion.svg>
+
+              {/* Launch dot at the origin (panel right-edge centre). */}
+              <motion.span
+                className={cn(
+                  "absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full",
+                  "bg-brand-200 shadow-[0_0_12px_3px_rgb(155_122_232/0.8)]",
+                )}
+                style={{ left: CONN.x0, top: -CONN_VB.minY }}
+                initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: "some" }}
+                transition={{ duration: 0.4, delay: 0.3, ease: easeOut }}
+              />
+
+              {/* Arrowheads where each line meets its card. Positioned in the
+                  same px units as the viewBox; kept as HTML so they stay crisp
+                  and don't distort. */}
+              {connectorEnds.map((end, index) => (
+                <motion.span
+                  key={`${end.x}-${end.y}`}
+                  className="absolute -translate-x-1/2 -translate-y-1/2"
+                  style={{ left: end.x, top: end.y - CONN_VB.minY }}
+                  initial={reduce ? { opacity: 1 } : { opacity: 0, x: -6 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: "some" }}
+                  transition={{
+                    duration: 0.4,
+                    delay: 0.95 + index * 0.12,
+                    ease: easeOut,
                   }}
-                />
+                >
+                  <span
+                    className={cn(
+                      "block size-0",
+                      "border-y-[6px] border-l-[9px] border-y-transparent border-l-brand-200",
+                      "drop-shadow-[0_0_6px_rgb(155_122_232/0.9)]",
+                    )}
+                  />
+                </motion.span>
               ))}
-            </motion.svg>
+            </div>
           </motion.div>
 
           {/* =========================== Outputs ======================= */}

@@ -1,0 +1,35 @@
+
+
+
+Update the logo - @elurnyLogo.png in the header.
+and
+Update the logo in footer - @elurnyMiniLogo.png
+
+
+
+Now let's focus on section 2 - @section2.png /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnymagic screen assets/section2.png , reUse the existing components. 
+
+
+
+Now let's focus on section 3 - @section3.png - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnymagic screen assets/section2.png
+
+You can use the 
+dummy images as -
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnymagic screen assets/dummyImage.jpg
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/homepage/dummyCardImage.jpg
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/homepage/dummyCardImage2.jpg
+
+video -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnymagic screen assets/dummyvideo.mp4
+Just make sure the Images /, videos , right side containers decent small so UI can look as accurate as the image. 
+
+
+
+
+
+Now let's focus on section 4 - @/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnymagic screen assets/section4.png
+You can use dummy images
+
+
+
+Now let's focus on section 2 - @section2
+
