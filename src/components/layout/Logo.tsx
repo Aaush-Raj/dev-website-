@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { siteConfig } from "@/lib/site";
@@ -6,90 +7,100 @@ import { cn } from "@/lib/utils";
 /**
  * LOGO
  * ---------------------------------------------------------------------------
- * The eLurny wordmark, rebuilt as inline SVG from the design.
+ * The eLurny brand marks, in the two forms the brand supplies.
  *
- * It is drawn rather than set in a typeface because the letterforms are custom
- * geometry — every glyph is composed of squared-off rectangles with a uniform
- * 4-unit stroke, and the R/N are reduced to a bracket form with no leg or
- * diagonal. No font reproduces that.
+ *   "wordmark" — the full horizontal lockup: amber bars plus LURNY. Used in
+ *                the header.
+ *   "mark"     — the stacked square mark: amber bars over a squared L. Used in
+ *                the footer.
  *
- * Inline SVG (rather than an <img>) buys three things:
- *   - it inherits currentColor, so the mark can be recoloured per surface
- *   - no extra network request, and no flash of missing logo
- *   - it stays crisp at any size and on any pixel density
+ * These are the supplied PNGs rather than the redrawn SVG this file used to
+ * hold. The SVG approximated the letterforms; these are the real artwork, so
+ * the brand owns its own shapes and a future logo revision is a file swap
+ * rather than an edit to hand-authored path data.
  *
- * Geometry is on a 175x24 viewBox, matching the proportions measured from the
- * source PNG (amber bars 28x5 with 4 gaps; wordmark 147x23; stroke 4).
+ * Both were cropped to their alpha bounds — the sources carried a lot of empty
+ * canvas, the mark especially (272x461 of art inside 732x971) — and converted
+ * to WebP with alpha preserved. Together they are under 5KB.
+ *
+ * The trade-off versus inline SVG: these cannot inherit `currentColor`, so a
+ * surface cannot recolour them. That matters in the footer — see the note on
+ * `variant="mark"` in Footer.tsx.
  */
+
+/** The two supplied lockups, with their cropped intrinsic sizes. */
+const variants = {
+  wordmark: {
+    src: "/assets/images/logo-wordmark.webp",
+    width: 600,
+    height: 71,
+    className: "h-6 w-auto",
+  },
+  mark: {
+    src: "/assets/images/logo-mark.webp",
+    width: 280,
+    height: 475,
+    className: "h-11 w-auto",
+  },
+} as const;
+
+export type LogoVariant = keyof typeof variants;
 
 interface LogoProps {
   className?: string;
+  /** Which lockup to render. Defaults to the horizontal wordmark. */
+  variant?: LogoVariant;
   /** Where the logo links to. Defaults to home. */
   href?: string;
   /**
    * Render the mark only, without the link wrapper — for use inside another
-   * anchor (e.g. the footer) where nesting links would be invalid HTML.
+   * anchor where nesting links would be invalid HTML.
    */
   asStatic?: boolean;
+  /**
+   * Load eagerly. The header logo is in the initial viewport on every page,
+   * so it should not lazy-load; the footer's should.
+   */
+  priority?: boolean;
 }
 
-function LogoMark({ className }: { className?: string }) {
+function LogoImage({
+  variant,
+  className,
+  priority,
+}: {
+  variant: LogoVariant;
+  className?: string;
+  priority?: boolean;
+}) {
+  const lockup = variants[variant];
+
   return (
-    <svg
-      viewBox="0 0 186 24"
-      role="img"
-      aria-label={`${siteConfig.name} logo`}
-      className={cn("h-6 w-auto", className)}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Three amber bars — the "e" of eLurny, reduced to a glyph. */}
-      <g fill="var(--accent-400)">
-        <rect x="0" y="0" width="28" height="5" rx="0.5" />
-        <rect x="0" y="9.5" width="28" height="5" rx="0.5" />
-        <rect x="0" y="19" width="28" height="5" rx="0.5" />
-      </g>
-
-      {/* LURNY — each glyph built from rectangles on a 4-unit stroke. */}
-      {/*
-        The wordmark colour is a custom property with a brand-violet default,
-        so a caller on a dark ground can override it — the footer sets
-        `[--logo-wordmark:#ffffff]` — without duplicating this SVG.
-      */}
-      <g fill="var(--logo-wordmark, var(--brand-600))">
-        {/* L — stem + foot */}
-        <rect x="40" y="0" width="4" height="24" />
-        <rect x="40" y="20" width="22" height="4" />
-
-        {/* U — two stems joined by a foot */}
-        <rect x="70" y="0" width="4" height="24" />
-        <rect x="70" y="20" width="26" height="4" />
-        <rect x="92" y="0" width="4" height="24" />
-
-        {/* R — bracket form: head + stem, no leg */}
-        <rect x="104" y="0" width="4" height="24" />
-        <rect x="104" y="0" width="22" height="4" />
-        <rect x="122" y="0" width="4" height="10" />
-
-        {/* N — bracket form: head + two stems */}
-        <rect x="134" y="0" width="4" height="24" />
-        <rect x="134" y="0" width="22" height="4" />
-        <rect x="152" y="0" width="4" height="24" />
-
-        {/* Y — squared 'y': short left stem, full right stem, joined by a
-            foot bar. Matches the design, where the left stroke stops at the
-            crossbar rather than running the full height. */}
-        <rect x="164" y="0" width="4" height="14" />
-        <rect x="182" y="0" width="4" height="24" />
-        <rect x="164" y="20" width="22" height="4" />
-      </g>
-    </svg>
+    <Image
+      src={lockup.src}
+      // The link wrapper carries the accessible name, so the image itself is
+      // decorative there. When rendered static it is the only thing present,
+      // so it names itself.
+      alt={`${siteConfig.name} logo`}
+      width={lockup.width}
+      height={lockup.height}
+      priority={priority}
+      className={cn(lockup.className, "select-none", className)}
+    />
   );
 }
 
-export function Logo({ className, href = "/", asStatic = false }: LogoProps) {
+export function Logo({
+  className,
+  variant = "wordmark",
+  href = "/",
+  asStatic = false,
+  priority = false,
+}: LogoProps) {
   if (asStatic) {
-    return <LogoMark className={className} />;
+    return (
+      <LogoImage variant={variant} className={className} priority={priority} />
+    );
   }
 
   return (
@@ -102,7 +113,7 @@ export function Logo({ className, href = "/", asStatic = false }: LogoProps) {
         className,
       )}
     >
-      <LogoMark />
+      <LogoImage variant={variant} priority={priority} />
     </Link>
   );
 }

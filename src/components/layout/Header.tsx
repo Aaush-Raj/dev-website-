@@ -219,7 +219,8 @@ export function Header() {
             isScrolled ? "shadow-lg" : "shadow-sm",
           )}
         >
-          <Logo />
+          {/* In the initial viewport on every page, so it loads eagerly. */}
+          <Logo priority />
 
           {/* Desktop links — hidden below lg, where MobileMenu takes over. */}
           <ul className="hidden items-center gap-7 lg:flex xl:gap-9">

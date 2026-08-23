@@ -124,9 +124,26 @@ export function Footer() {
           >
             {/* ------------------------ Brand block ------------------ */}
             <div className="lg:pr-10">
-              {/* The footer's logo inverts: amber bars stay, wordmark goes
-                  white against the violet ground. */}
-              <Logo className="[--logo-wordmark:#ffffff]" />
+              {/*
+                The stacked mark, on a light plate.
+
+                The mark's violet is rgb(126,82,186) and this footer's ground
+                is #38206a — about 2.4:1, so the violet half of the artwork
+                would all but vanish against it. The plate restores it: on
+                white the same violet reads at 5.5:1.
+
+                A plate rather than a recolour because these lockups are
+                images and cannot inherit currentColor the way the old inline
+                SVG did. Recolouring would also mean shipping a second,
+                footer-only version of the artwork to keep in sync.
+              */}
+              <Logo
+                variant="mark"
+                className={cn(
+                  "rounded-xl bg-white/95 px-3.5 py-2.5",
+                  "duration-fast transition-colors hover:bg-white",
+                )}
+              />
 
               <span
                 aria-hidden="true"
