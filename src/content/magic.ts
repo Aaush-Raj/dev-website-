@@ -3,8 +3,8 @@
  * ---------------------------------------------------------------------------
  * Copy for the LurnyMagic product page at /platform/magic.
  *
- * Section 1 is defined below; further sections are added here as their designs
- * land.
+ * Sections 1 and 2 are defined below, in page order; further sections are added
+ * here as their designs land.
  *
  * As on the LurnyPulse page, the hero's product cards are DRAWN rather than
  * shipped as a flat screenshot, so the values below are the data the
@@ -139,5 +139,50 @@ export const magic = {
         ],
       },
     },
+  },
+
+  /**
+   * SECTION 2 — the problem LurnyMagic solves.
+   *
+   * Rendered by the shared ProblemSection (components/sections/shared), which
+   * the LurnyPitch and LurnyPulse pages use too. `problem` is in the
+   * ProblemContent shape that component expects.
+   */
+  problem: {
+    eyebrow: "The problem Magic solves",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: [
+      "When knowledge is",
+      "trapped in files, learning",
+      "cannot move at the",
+      "speed of work.",
+    ] as const,
+
+    description:
+      "Teams have expertise, policies and updates everywhere—but turning them into useful, engaging learning is slow, expensive and difficult to scale.",
+
+    items: [
+      {
+        title: "Content creation takes too long",
+        description:
+          "Subject-matter experts and L&D teams spend weeks converting source material into publishable learning.",
+      },
+      {
+        title: "One source creates one format",
+        description:
+          "A document becomes a PDF course—rather than a video, story, quiz or practice experience for different learners.",
+      },
+      {
+        title: "Knowledge becomes stale before it reaches people",
+        description:
+          "Product, policy and process updates move faster than traditional content-production cycles.",
+      },
+      {
+        title: "Engagement is designed in after the fact",
+        description:
+          "Teams are left choosing between fast, basic content and rich experiences that people actually complete.",
+      },
+    ],
   },
 } as const;

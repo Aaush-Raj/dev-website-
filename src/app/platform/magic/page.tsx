@@ -1,4 +1,5 @@
 import { MagicHero } from "@/components/sections/magic/MagicHero";
+import { MagicProblem } from "@/components/sections/magic/MagicProblem";
 import { magic } from "@/content/magic";
 import { buildMetadata } from "@/lib/seo";
 
@@ -19,6 +20,8 @@ export default function MagicPage() {
   return (
     <>
       <MagicHero />
+
+      <MagicProblem />
 
       {/* TODO(sections): remaining LurnyMagic sections go here as designs
           land. */}
