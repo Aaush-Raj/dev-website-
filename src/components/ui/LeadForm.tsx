@@ -85,8 +85,11 @@ export interface LeadFormContent {
   };
 }
 
-/** Button tone. The homepage uses violet; product pages use amber. */
-export type LeadFormTone = "brand" | "accent";
+/**
+ * Button tone. The homepage uses violet; product pages use one of the two
+ * ambers — see the note on `gold` below for why there are two.
+ */
+export type LeadFormTone = "brand" | "accent" | "gold";
 
 const toneStyles = {
   brand: cn(
@@ -98,6 +101,19 @@ const toneStyles = {
     "bg-accent-500 text-neutral-900 hover:bg-accent-600",
     "hover:shadow-[0_14px_30px_-12px_rgb(252_154_22/0.6)]",
     "focus-visible:ring-accent-500/50",
+  ),
+  /**
+   * The softer golden amber the LurnyMagic design uses — sampled from it at
+   * roughly #e3ab54, which sits on `accent-400` rather than the vivid
+   * `accent-500` orange above.
+   *
+   * A separate tone rather than a change to `accent`: LurnyPitch already
+   * ships that button, and its design does call for the stronger orange.
+   */
+  gold: cn(
+    "bg-accent-400 text-neutral-900 hover:bg-accent-500",
+    "hover:shadow-[0_14px_30px_-12px_rgb(254_180_66/0.6)]",
+    "focus-visible:ring-accent-400/50",
   ),
 } as const;
 

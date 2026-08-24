@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { Container } from "@/components/ui/Container";
@@ -30,22 +29,32 @@ import { MagicStarfield } from "./MagicStarfield";
  * rising amber line.
  *
  * THE STAIRCASE
- * `lift` in the content is the only place a card's height is decided. It is a
- * fraction of `LIFT_RANGE`, and it drives BOTH the card's upward offset and
- * the y of its node on the connector — so the line can never come unstuck
- * from the cards it joins. Changing a card's height is a one-number edit.
+ * `lift` in the content sets how far each card rises, as a fraction of
+ * `LIFT_RANGE`. Changing a card's height in the design is a one-number edit
+ * here.
  *
  * The staircase only exists on xl, where four cards genuinely sit side by
  * side. Below that they stack, a diagonal line would point at nothing, and
  * both the lift and the connector layer are dropped.
  *
  * THE CONNECTOR
- * One SVG behind the row, on a 0..100 percentage viewBox with
+ * One SVG over the row, on a 0..100 percentage viewBox with
  * `preserveAspectRatio="none"` so its nodes track the cards at any width;
- * `vectorEffect` keeps the stroke even despite that distortion. It draws
- * itself on scroll (`pathLength` 0 to 1), the node dots pop in behind the
- * advancing tip, and a short bright dash then runs the length of it on a
- * loop — the "signal travelling up the path".
+ * `vectorEffect` keeps the stroke even despite that distortion.
+ *
+ * Its geometry is MEASURED from the rendered cards, not derived from `lift`
+ * — see the note on `measure()` for why that distinction matters. Each node
+ * sits on its card's TOP-LEFT CORNER, and the path runs corner to corner and
+ * then EXTENDS OFF BOTH EDGES of the section, so the staircase reads as one
+ * leg of a longer climb. That is how the design draws it.
+ *
+ * The layer sits ABOVE the cards: behind them, each run is clipped the moment
+ * it reaches the next card and the line survives only in the gaps. It is
+ * `pointer-events-none` and aria-hidden, so raising it costs nothing.
+ *
+ * It draws itself on scroll (`pathLength` 0 to 1), the node dots pop in
+ * behind the advancing tip, and a short bright dash then runs the length of
+ * it on a loop — the "signal travelling up the path".
  *
  * THE PANELS
  * Every card's inner panel is DRAWN from content, not shipped as a
@@ -76,19 +85,29 @@ const easeOut = [0.16, 1, 0.3, 1] as const;
  */
 const LIFT_RANGE = 9;
 
+/**
+ * How far in from a grid cell's edge the card's visible corner sits, in
+ * percent of the row. Accounts for the column gap and the corner radius, so
+ * the dot lands on the rounded corner's arc rather than out in the gutter.
+ */
+const CORNER_NUDGE_X = 0.6;
+const CORNER_NUDGE_Y = 1.4;
+
 /** Shared chrome for a card and for the panels inside it. */
 const cardChrome = "rounded-2xl bg-[#0d0a1b]/85 ring-1 ring-white/8";
 const panelChrome = "rounded-xl bg-[#0a0814] ring-1 ring-white/6";
 
 /** The status pill on a course row — the design's muted red. */
 const statusPill = cn(
-  "rounded-md px-[1.6cqw] py-[0.5cqw] text-[1.9cqw] font-semibold",
+  "max-w-full truncate rounded-md px-[1.6cqw] py-[0.5cqw]",
+  "text-[1.9cqw] font-semibold",
   "bg-[#4a1520] text-[#f08a8a] ring-1 ring-[#7d2532]",
 );
 
 /** The module-count pill beside it. */
 const modulePill = cn(
-  "rounded-md px-[1.6cqw] py-[0.5cqw] text-[1.9cqw] font-semibold",
+  "max-w-full truncate rounded-md px-[1.6cqw] py-[0.5cqw]",
+  "text-[1.9cqw] font-semibold",
   "bg-brand-500/20 text-brand-200 ring-1 ring-brand-400/30",
 );
 
@@ -259,7 +278,13 @@ function GridPanel({ item }: { item: Extract<Item, { kind: "grid" }> }) {
 
               {/* The pills sit ON the thumbnail's lower edge, as the design
                   overlaps them. */}
-              <div className="absolute inset-x-[1.2cqw] bottom-[1.2cqw] flex flex-wrap gap-[1cqw]">
+              {/*
+                `items-start` + `w-fit`, not a stretched row: without them the
+                two pills share the tile's full width and the longer label
+                overflows its own pill, which reads as a pill clipped by the
+                tile edge.
+              */}
+              <div className="absolute inset-x-0 bottom-0 flex w-full flex-wrap items-start gap-[1cqw] p-[1.2cqw]">
                 <span className={cn(modulePill, "uppercase")}>
                   {tile.modules}
                 </span>
@@ -609,68 +634,91 @@ export function MagicJourneys() {
   /**
    * Where each card's connector node sits, in percent of the diagram box.
    *
-   * MEASURED, not derived. The obvious approach — computing y from the same
-   * `lift` that offsets the card — is wrong here: the cards hang from a
-   * shared bottom edge (`items-end`) and they are NOT the same height, so a
-   * card's top is `bottom − lift − ownHeight`. Deriving y from lift alone
-   * puts the line through the cards rather than along their top edges, and
-   * any reflow (a wrapping title, a different font) moves the real edge
-   * again.
+   * COMPUTED, not measured. Because the cards stretch to a shared height and
+   * are pushed down by `(1 - lift) * LIFT_RANGE`, a card's top edge is a pure
+   * function of its `lift` — so the geometry is known at render time and
+   * there is nothing to observe.
    *
-   * So each card reports its own top edge and centre, and the path is built
-   * from those. It re-measures on resize, which is also what keeps the line
-   * attached while the grid reflows between breakpoints.
+   * The earlier version measured the rendered cards with a ResizeObserver.
+   * That is what made the line unreliable: the observer fired repeatedly
+   * while the cards animated in, the path string changed on every tick, and
+   * the SVG (keyed on that string) remounted and restarted its draw each
+   * time — so the line never finished and showed as disconnected fragments.
+   *
+   * x is the card's LEFT EDGE and y its TOP EDGE, both nudged in by the
+   * corner radius so the dot sits on the rounded corner's arc: that is where
+   * the design puts it.
    */
-  const boxRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [nodes, setNodes] = useState<{ x: number; y: number }[]>([]);
+  const CARD_COUNT = journeys.items.length;
 
-  const measure = useCallback(() => {
-    const box = boxRef.current;
-    if (!box) return;
+  /*
+    The node positions.
 
-    const bounds = box.getBoundingClientRect();
-    if (!bounds.width || !bounds.height) return;
+    x is a percentage across the row; y is in REM, matching the card's own
+    `--drop` exactly. The SVG's viewBox uses those same units on its y axis
+    (see `connectorViewBox` below), so a node's y needs no conversion and no
+    guess about how tall the row is — the one thing that kept putting the line
+    slightly off the corners.
+  */
+  const nodes = journeys.items.map((item, index) => ({
+    // Plus a nudge for the column gap and the corner radius, so the dot lands
+    // on the card's visible rounded corner rather than the grid cell's edge.
+    x: +((index / CARD_COUNT) * 100 + CORNER_NUDGE_X).toFixed(2),
+    y: +((1 - item.lift) * LIFT_RANGE + CORNER_NUDGE_Y).toFixed(2),
+  }));
 
-    const next = cardRefs.current.flatMap((card) => {
-      if (!card) return [];
+  /**
+   * The connector's box, in rem.
+   *
+   * It must cover the FULL y range the path occupies — the lowest node is at
+   * `LIFT_RANGE + CORNER_NUDGE_Y`, not at `LIFT_RANGE`. Sizing the box to
+   * `LIFT_RANGE` alone clipped everything below it, which cut the line off in
+   * mid-air short of each dot.
+   *
+   * A little slack on top of that so the round stroke cap and the extended
+   * tails are not shaved at the edges.
+   */
+  const CONNECTOR_HEIGHT = LIFT_RANGE + CORNER_NUDGE_Y + 1;
 
-      const rect = card.getBoundingClientRect();
+  /**
+   * `preserveAspectRatio="none"` stretches the box over the layer, so the y
+   * axis maps one-to-one onto the staircase's rem offsets whatever the row's
+   * real height turns out to be.
+   */
+  const connectorViewBox = `0 0 100 ${CONNECTOR_HEIGHT}`;
 
-      return [
-        {
-          x: +(
-            ((rect.left + rect.width / 2 - bounds.left) / bounds.width) *
-            100
-          ).toFixed(2),
-          y: +(((rect.top - bounds.top) / bounds.height) * 100).toFixed(2),
-        },
-      ];
-    });
+  /*
+    The path, EXTENDED PAST the first and last cards.
 
-    setNodes((current) =>
-      // Only commit a real change: setState on every observer tick would
-      // re-render this section continuously while the page is resized.
-      current.length === next.length &&
-      current.every((node, i) => node.x === next[i].x && node.y === next[i].y)
-        ? current
-        : next,
-    );
-  }, []);
+    In the design the line does not begin and end at the outer two dots — it
+    enters from off the left edge and leaves off the right, so the staircase
+    reads as one leg of a longer climb rather than a self-contained zig-zag.
 
-  useEffect(() => {
-    measure();
+    Each tail continues along the SAME slope as its neighbouring segment, so
+    the extension is collinear with the run it grows out of and there is no
+    kink where it meets the first or last node.
+  */
+  const linePath = (() => {
+    /** Walks from `from` through `to` and keeps going to the given x. */
+    const extend = (
+      from: { x: number; y: number },
+      to: { x: number; y: number },
+      toX: number,
+    ) => {
+      const run = to.x - from.x;
+      if (run === 0) return { x: toX, y: to.y };
+      const slope = (to.y - from.y) / run;
 
-    const observer = new ResizeObserver(measure);
-    if (boxRef.current) observer.observe(boxRef.current);
-    for (const card of cardRefs.current) if (card) observer.observe(card);
+      return { x: toX, y: +(to.y + (toX - to.x) * slope).toFixed(2) };
+    };
 
-    return () => observer.disconnect();
-  }, [measure]);
+    const head = extend(nodes[1], nodes[0], -8);
+    const tail = extend(nodes[nodes.length - 2], nodes[nodes.length - 1], 108);
 
-  const linePath = nodes
-    .map((node, index) => `${index === 0 ? "M" : "L"} ${node.x} ${node.y}`)
-    .join(" ");
+    return [head, ...nodes, tail]
+      .map((node, index) => `${index === 0 ? "M" : "L"} ${node.x} ${node.y}`)
+      .join(" ");
+  })();
 
   return (
     <section className="relative isolate overflow-hidden bg-[#0a0715] py-section-lg text-white">
@@ -737,55 +785,85 @@ export function MagicJourneys() {
         </div>
 
         {/* ============================= Cards ======================== */}
-        <div ref={boxRef} className="relative mt-12 xl:mt-16">
+        <div className="relative mt-12 xl:mt-16">
           {/* ------------------------ Connector ------------------- */}
           {/*
             One layer behind the row. xl only: below that the cards stack and
             a rising diagonal would join nothing. See the note at the top of
             this file for the geometry.
           */}
-          {/* Rendered only once the cards have been measured — before that
-              there is no honest geometry to draw. */}
-          {nodes.length === journeys.items.length && (
-            <svg
-              // Keyed on the geometry: the connector mounts only once the
-              // cards have been measured, which can be AFTER the section has
-              // scrolled into view. Without a key change the children keep
-              // their already-settled `whileInView` state and the path stays
-              // at pathLength 0 — drawn, but invisible.
-              key={linePath}
-              aria-hidden="true"
-              focusable="false"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              className="pointer-events-none absolute inset-0 -z-0 hidden size-full xl:block"
-            >
-              {/* The line itself, drawing on from the left. */}
-              <motion.path
-                d={linePath}
-                fill="none"
-                stroke="var(--accent-400)"
-                strokeOpacity={0.75}
-                strokeWidth={1.4}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                // The viewBox is distorted by preserveAspectRatio="none", so
-                // without this the stroke would stretch unevenly too.
-                vectorEffect="non-scaling-stroke"
-                initial={reduce ? "shown" : "hidden"}
-                whileInView="shown"
-                viewport={{ once: true, amount: "some" }}
-                variants={{
-                  hidden: { pathLength: 0, opacity: 0 },
-                  shown: {
-                    pathLength: 1,
-                    opacity: 1,
-                    transition: { duration: 1.5, delay: 0.2, ease: easeOut },
-                  },
-                }}
-              />
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            viewBox={connectorViewBox}
+            preserveAspectRatio="none"
+            /*
+                ABOVE the cards, not behind them.
 
-              {/*
+                Behind, each run is clipped the moment it reaches the next
+                card's edge — the cards are opaque and come later in the DOM
+                — leaving four disconnected stubs instead of one climbing
+                path. In front, the line reads as a single thread strung
+                across the staircase, which is how the design draws it.
+
+                Safe to raise because the layer is `pointer-events-none` and
+                aria-hidden: it can never intercept a click or reach a
+                screen reader.
+              */
+            className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden xl:block"
+            style={{ height: `${CONNECTOR_HEIGHT}rem` }}
+          >
+            {/* The line itself, drawing on from the left. */}
+            <motion.path
+              d={linePath}
+              fill="none"
+              stroke="var(--accent-400)"
+              /*
+                  Fully opaque, and the heaviest stroke in this layer: this IS
+                  the line, and the pulse below only ever adds a highlight to
+                  it. When the pulse was the thicker stroke it overpainted the
+                  base, and the unlit 94% of its dash pattern read as gaps —
+                  which is what broke the connector into disconnected sticks.
+                */
+              strokeOpacity={1}
+              strokeWidth={1.6}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              // The viewBox is distorted by preserveAspectRatio="none", so
+              // without this the stroke would stretch unevenly too.
+              vectorEffect="non-scaling-stroke"
+              /*
+                The draw-on.
+
+                `pathLength` is only animated when motion is allowed. Motion
+                implements it with an inline stroke-dasharray/dashoffset, and
+                leaving those in play for a reduced-motion user left the line
+                permanently part-drawn — the symmetric gaps either side of
+                each node. With the variants omitted entirely there is no dash
+                on the element at all, so the line is simply solid.
+              */
+              {...(reduce
+                ? {}
+                : {
+                    initial: "hidden",
+                    whileInView: "shown",
+                    viewport: { once: true, amount: "some" as const },
+                    variants: {
+                      hidden: { pathLength: 0, opacity: 0 },
+                      shown: {
+                        pathLength: 1,
+                        opacity: 1,
+                        transition: {
+                          duration: 1.5,
+                          delay: 0.2,
+                          ease: easeOut,
+                        },
+                      },
+                    },
+                  })}
+            />
+
+            {/*
               A short bright dash that runs the length of the path on a loop —
               the signal travelling up toward the finished journey.
 
@@ -794,72 +872,105 @@ export function MagicJourneys() {
               motion: it is ambient, endless movement, which is exactly what
               that setting asks us not to ship.
             */}
-              {!reduce && (
-                <motion.path
-                  d={linePath}
-                  fill="none"
-                  stroke="var(--accent-200)"
-                  strokeWidth={1.8}
-                  strokeLinecap="round"
-                  vectorEffect="non-scaling-stroke"
-                  pathLength={1}
-                  strokeDasharray="0.08 0.92"
-                  initial={{ strokeDashoffset: 1, opacity: 0 }}
-                  whileInView={{ strokeDashoffset: 0, opacity: [0, 1, 1, 0] }}
-                  viewport={{ once: true, amount: "some" }}
-                  transition={{
+            {!reduce && (
+              <motion.path
+                d={linePath}
+                fill="none"
+                stroke="var(--accent-100)"
+                /*
+                  ADDITIVE blending, so the highlight can only ever brighten
+                  the line beneath it. Painted normally, a dash pattern still
+                  composites over the base between its lit segments, which is
+                  what left visible nicks in an otherwise solid line.
+                */
+                style={{ mixBlendMode: "screen" }}
+                /*
+                    THINNER than the base line, deliberately: this rides on
+                    top as a travelling highlight. Anything heavier hides the
+                    line it is meant to light up.
+                  */
+                strokeWidth={1}
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+                pathLength={1}
+                strokeDasharray="0.06 0.94"
+                initial={{ strokeDashoffset: 1, opacity: 0 }}
+                whileInView={{ strokeDashoffset: 0, opacity: [0, 1, 1, 0] }}
+                viewport={{ once: true, amount: "some" }}
+                transition={{
+                  duration: 2.6,
+                  delay: 1.6,
+                  ease: "linear",
+                  repeat: Infinity,
+                  repeatDelay: 1.4,
+                  opacity: {
                     duration: 2.6,
                     delay: 1.6,
-                    ease: "linear",
+                    times: [0, 0.12, 0.85, 1],
                     repeat: Infinity,
                     repeatDelay: 1.4,
-                    opacity: {
-                      duration: 2.6,
-                      delay: 1.6,
-                      times: [0, 0.12, 0.85, 1],
-                      repeat: Infinity,
-                      repeatDelay: 1.4,
-                    },
-                  }}
-                />
-              )}
+                  },
+                }}
+              />
+            )}
+          </svg>
 
-              {/* A node dot per card, popping in behind the advancing tip. */}
-              {nodes.map((node, index) => (
-                <motion.circle
-                  key={index}
-                  cx={node.x}
-                  cy={node.y}
-                  r={1.1}
-                  fill="var(--accent-400)"
-                  // Same distortion problem as the stroke: an ellipse would be
-                  // squashed by the viewBox, so the radius is held in px.
-                  vectorEffect="non-scaling-stroke"
-                  initial={reduce ? "shown" : "hidden"}
-                  whileInView="shown"
-                  viewport={{ once: true, amount: "some" }}
-                  variants={{
-                    hidden: { scale: 0, opacity: 0 },
-                    shown: {
-                      scale: 1,
-                      opacity: 1,
-                      transition: {
-                        duration: 0.4,
-                        delay: 0.35 + index * 0.36,
-                        ease: easeOut,
-                      },
+          {/*
+            The node dots.
+
+            HTML, not SVG <circle>: the connector's viewBox uses
+            `preserveAspectRatio="none"` so it can track the cards at any
+            width, and that squashes a circle into an ellipse. `vectorEffect`
+            rescues the stroke width but not the geometry. Positioned in the
+            same coordinate space by CSS, an HTML dot stays perfectly round.
+          */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 z-30 hidden xl:block"
+            style={{ height: `${CONNECTOR_HEIGHT}rem` }}
+          >
+            {nodes.map((node, index) => (
+              <motion.span
+                key={index}
+                className={cn(
+                  "absolute block size-2.5 rounded-full bg-accent-400",
+                  "shadow-[0_0_12px_2px_rgb(254_180_66/0.55)]",
+                )}
+                style={{
+                  left: `${node.x}%`,
+                  // REM, not a percentage: `node.y` is in the same rem units
+                  // as the card's own `--drop`, so the dot lands exactly on
+                  // its card's top-left corner. A percentage here put every
+                  // dot in a row near the layer's top.
+                  top: `${node.y}rem`,
+                  translate: "-50% -50%",
+                }}
+                initial={reduce ? "shown" : "hidden"}
+                whileInView="shown"
+                viewport={{ once: true, amount: "some" }}
+                variants={{
+                  hidden: { scale: 0, opacity: 0 },
+                  shown: {
+                    scale: 1,
+                    opacity: 1,
+                    transition: {
+                      // Timed to land just behind the drawing tip, so each
+                      // dot appears as the line reaches its card.
+                      duration: 0.4,
+                      delay: 0.35 + index * 0.36,
+                      ease: easeOut,
                     },
-                  }}
-                  style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-                />
-              ))}
-            </svg>
-          )}
+                  },
+                }}
+              />
+            ))}
+          </div>
 
           {/* -------------------------- Row ----------------------- */}
-          {/* `items-end` so the cards hang from a shared baseline and the
-              lift raises them off it. */}
-          <ul className="relative grid gap-6 sm:grid-cols-2 xl:grid-cols-4 xl:items-end xl:gap-4">
+          {/* `items-stretch` so every card is the same height — which is what
+              makes each card's top edge a pure function of its `lift`, and so
+              the connector's geometry computable rather than measured. */}
+          <ul className="relative grid gap-6 sm:grid-cols-2 xl:grid-cols-4 xl:items-stretch xl:gap-4">
             {journeys.items.map((item, index) => {
               const Badge =
                 journeyBadgeIcons[item.icon as keyof typeof journeyBadgeIcons];
@@ -867,9 +978,6 @@ export function MagicJourneys() {
               return (
                 <motion.li
                   key={item.title}
-                  ref={(node) => {
-                    cardRefs.current[index] = node;
-                  }}
                   initial={reduce ? "shown" : "hidden"}
                   whileInView="shown"
                   viewport={{ once: true, amount: "some" }}
@@ -889,24 +997,30 @@ export function MagicJourneys() {
                   }}
                   className={cn(
                     cardChrome,
-                    "group flex flex-col p-4 backdrop-blur-sm",
+                    "group flex flex-col p-3.5 backdrop-blur-sm",
                     "duration-normal transition-[box-shadow,translate,--tw-ring-color] ease-out",
                     "will-change-[translate]",
                     "hover:-translate-y-1.5 hover:ring-brand-400/35",
                     "hover:shadow-[0_28px_60px_-30px_rgb(127_82_220/0.65)]",
-                    "xl:[margin-bottom:var(--lift)]",
+                    "xl:[margin-top:var(--drop)]",
                   )}
                   /*
                     The staircase.
 
-                    The lift is published as a custom property and consumed by
-                    the `xl:[margin-bottom:var(--lift)]` utility above, rather
-                    than written as an inline margin — an inline style has no
-                    breakpoint, and below xl the cards stack, where a raised
-                    card would just leave a hole in the column.
+                    Cards are pushed DOWN from a shared top by the INVERSE of
+                    their lift, rather than raised from a shared bottom. Both
+                    look identical, but this way every card is the same height
+                    (`items-stretch`), so a card's top edge is exactly
+                    `(1 - lift) * LIFT_RANGE` below the row — a pure function
+                    of the content, with nothing to measure.
+
+                    Published as a custom property and consumed by the
+                    `xl:[margin-top:var(--drop)]` utility above: an inline
+                    style has no breakpoint, and below xl the cards stack,
+                    where an offset card would just leave a hole.
                   */
                   style={{
-                    ["--lift" as string]: `${item.lift * LIFT_RANGE}rem`,
+                    ["--drop" as string]: `${(1 - item.lift) * LIFT_RANGE}rem`,
                   }}
                 >
                   {/* --------------------- Panel ------------------- */}
@@ -921,7 +1035,7 @@ export function MagicJourneys() {
                   </Uncopyable>
 
                   {/* ---------------------- Label ------------------ */}
-                  <div className="mt-5">
+                  <div className="mt-4">
                     <span
                       className={cn(
                         "grid size-10 place-items-center rounded-xl",

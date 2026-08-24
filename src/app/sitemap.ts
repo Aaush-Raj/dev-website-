@@ -24,6 +24,7 @@ const routes: Route[] = [
   { path: "/platform/pulse", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/magic", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/chat", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/platform/saathi", priority: 0.8, changeFrequency: "monthly" },
   // TODO(routes): add pages as they are created, e.g.
   // { path: "/about",   priority: 0.7, changeFrequency: "monthly" },
   // { path: "/privacy", priority: 0.3, changeFrequency: "yearly"  },

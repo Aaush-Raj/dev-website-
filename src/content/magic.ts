@@ -3,8 +3,7 @@
  * ---------------------------------------------------------------------------
  * Copy for the LurnyMagic product page at /platform/magic.
  *
- * Sections 1 to 5 are defined below, in page order; further sections are added
- * here as their designs land.
+ * All six sections are defined below, in page order.
  *
  * As on the LurnyPulse page, the hero's product cards are DRAWN rather than
  * shipped as a flat screenshot, so the values below are the data the
@@ -44,9 +43,18 @@ export const magic = {
     description:
       "Transform a document, webpage, video or prompt into multilingual microlessons, storybooks, videos, quizzes and interactive practice—in minutes.",
 
+    /*
+      Both point at section 6's booking form on this page.
+
+      They used to point at `/demo`, which is a 404 — that route does not
+      exist anywhere on the site. Now that the form is on this page there is
+      a real destination, and an in-page anchor is the honest one.
+
+      TODO(routes): revisit if a standalone /demo page is ever built.
+    */
     actions: {
-      primary: { label: "Book a demo", href: "/demo" },
-      secondary: { label: "See Magic in action", href: "/demo" },
+      primary: { label: "Book a demo", href: "#demo" },
+      secondary: { label: "See Magic in action", href: "#demo" },
     },
 
     /**
@@ -676,5 +684,111 @@ export const magic = {
         },
       },
     ],
+  },
+
+  /**
+   * SECTION 6 — book a LurnyMagic demo.
+   *
+   * The pitch on the left, the booking form on a raised card to the right.
+   * `form` is in the LeadFormContent shape the shared LeadForm expects — the
+   * same component the homepage and the LurnyPitch page use, so this page
+   * gets identical fields, validation and success behaviour with its own
+   * copy and the design's amber button.
+   *
+   * NOTE: the form does not send anywhere yet. See the TODO at the top of
+   * components/ui/LeadForm.tsx — the destination is unchosen, and that is
+   * one fix for every page rather than one per page.
+   */
+  demo: {
+    eyebrow: "Book a LurnyMagic demo",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: [
+      "Bring one source.",
+      "Leave with a",
+      "learning experience.",
+    ] as const,
+
+    description:
+      "Share a document, webpage, video or business challenge. We'll show you how LurnyMagic turns it into engaging, ready-to-use learning for your people.",
+
+    /** The two lines under the rule, each with an icon. */
+    points: [
+      { icon: "clock", text: "30 minutes · tailored to your content" },
+      {
+        icon: "sparkle",
+        text: "See microlearning, video, storybooks and practice in one session",
+      },
+    ],
+
+    form: {
+      name: {
+        name: "fullName",
+        label: "Full name",
+        placeholder: "Your name",
+        autoComplete: "name",
+      },
+      email: {
+        name: "workEmail",
+        label: "Work email",
+        placeholder: "name@company.com",
+        autoComplete: "email",
+      },
+
+      selectA: {
+        name: "sourceType",
+        label: "What will you bring?",
+        options: [
+          "Document, webpage, video or prompt",
+          "A document or policy",
+          "A webpage or article",
+          "A video or recording",
+          "Just a prompt or an idea",
+        ],
+      },
+      selectB: {
+        name: "primaryGoal",
+        label: "Your primary goal",
+        options: [
+          "Create better learning, faster",
+          "Reach every learner in their format",
+          "Keep knowledge current as it changes",
+          "Publish in multiple languages",
+          "Something else",
+        ],
+      },
+
+      detail: {
+        name: "contentDetail",
+        label: "Tell us about your content (optional)",
+        placeholder: "e.g. New policy rollout for frontline teams",
+        autoComplete: "off",
+      },
+
+      consent: {
+        name: "sendGuide",
+        label: "Send me a short guide to AI content creation.",
+      },
+
+      submit: "Book a Magic Demo",
+
+      success: {
+        title: "Request received.",
+        description:
+          "We will be in touch within one business day to arrange a time.",
+      },
+
+      errors: {
+        name: "Please enter your name.",
+        email: "Please enter your work email.",
+        emailFormat: "Please enter a valid email address.",
+      },
+
+      /** {0} is replaced by the link below. */
+      footnote: {
+        text: "Prefer to talk first? {0}.",
+        links: [{ label: "Contact Sales", href: "/contact" }],
+      },
+    },
   },
 } as const;

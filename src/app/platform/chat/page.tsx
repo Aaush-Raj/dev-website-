@@ -1,4 +1,9 @@
+import { ChatConnected } from "@/components/sections/chat/ChatConnected";
+import { ChatDemo } from "@/components/sections/chat/ChatDemo";
 import { ChatHero } from "@/components/sections/chat/ChatHero";
+import { ChatMoment } from "@/components/sections/chat/ChatMoment";
+import { ChatProblem } from "@/components/sections/chat/ChatProblem";
+import { ChatTrusted } from "@/components/sections/chat/ChatTrusted";
 import { chat } from "@/content/chat";
 import { buildMetadata } from "@/lib/seo";
 
@@ -19,6 +24,16 @@ export default function ChatPage() {
   return (
     <>
       <ChatHero />
+
+      <ChatProblem />
+
+      <ChatConnected />
+
+      <ChatTrusted />
+
+      <ChatMoment />
+
+      <ChatDemo />
 
       {/* TODO(sections): remaining LurnyChat sections go here as designs
           land. */}

@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { Container } from "@/components/ui/Container";
@@ -11,10 +12,14 @@ import { cn } from "@/lib/utils";
  * The "the problem <product> solves" section: a statement on the left, four
  * numbered problems on the right, on the warm off-white ground.
  *
- * Shared by the LurnyPitch and LurnyPulse pages, whose designs for this section
- * are identical apart from the copy. Pass a `ProblemContent` object; every
- * product page that needs this layout gets the same structure, rules and
- * entrance without a second copy of the markup.
+ * Shared by the LurnyPitch, LurnyPulse, LurnyChat, LurnyMagic and LurnySaathi
+ * pages, whose designs for this section are identical apart from the copy. Pass
+ * a `ProblemContent` object; every product page that needs this layout gets the
+ * same structure, rules and entrance without a second copy of the markup.
+ *
+ * LurnySaathi's design adds two things the others do not have — a pastel
+ * gradient ground and a journey diagram under the statement. Both are opt-in
+ * (`tinted`, `aside`), so the four existing pages render exactly as before.
  *
  * LAYOUT
  * On lg the statement is sticky. Its column is much shorter than the list
@@ -38,6 +43,12 @@ export interface ProblemContent {
   /** One entry per line, as the design breaks them on lg+. */
   headline: readonly string[];
   description: string;
+  /**
+   * An optional closing line under the description, whose tail is set in the
+   * brand violet — LurnySaathi's "The employee is left to connect the dots."
+   * Split so only the emphasised half is coloured.
+   */
+  kicker?: { readonly lead: string; readonly emphasis: string };
   items: readonly { readonly title: string; readonly description: string }[];
 }
 
@@ -54,15 +65,43 @@ interface ProblemSectionProps {
    */
   nowrapHeadline?: boolean;
   /**
-   * Column split. Defaults to giving the statement slightly more than the
-   * list, which is what both current designs measure.
+   * Rendered under the statement, below the kicker — LurnySaathi puts its
+   * Know → Learn → Practise → Perform → Improve journey diagram there. Left
+   * out, the statement column ends at the copy as on the other four pages.
    */
+  aside?: ReactNode;
+  /**
+   * Swap the flat off-white ground for the pastel wash LurnySaathi's design
+   * uses: violet, pink and peach bleeding in from the corners. Off by default,
+   * so the pages already using this section are untouched.
+   */
+  tinted?: boolean;
+  /**
+   * Override the statement/list column split on lg+.
+   *
+   * Defaults to the 1.12fr the first four designs measure. LurnySaathi's
+   * headline has a longer first line and needs more room, or it wraps to four
+   * lines where the design shows three.
+   */
+  columns?: string;
+  /**
+   * Override the xl headline size. Defaults to the ~52px the first four
+   * designs measure. LurnySaathi's longest line is wider than that size fits
+   * in its column, so its design sets the type smaller relative to the column
+   * — passing a smaller size here is what keeps its three authored lines as
+   * three lines.
+   */
+  headlineSize?: string;
   className?: string;
 }
 
 export function ProblemSection({
   content,
   nowrapHeadline = false,
+  aside,
+  tinted = false,
+  columns = "lg:grid-cols-[minmax(0,1.12fr)_minmax(0,1fr)]",
+  headlineSize,
   className,
 }: ProblemSectionProps) {
   const reduce = useReducedMotion();
@@ -82,15 +121,40 @@ export function ProblemSection({
   });
 
   return (
-    <section className={cn("bg-[#f7f5f2] py-section-lg", className)}>
+    <section
+      className={cn(
+        "relative isolate py-section-lg",
+        tinted ? "bg-[#fbf6f5]" : "bg-[#f7f5f2]",
+        className,
+      )}
+    >
+      {/* The pastel wash: violet from the top-left and bottom-right, pink from
+          the top-right, peach from the bottom-left, over the warm off-white
+          ground. Four soft radials rather than a shipped image — it costs
+          nothing and reflows with the section at any height. */}
+      {tinted && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background: [
+              "radial-gradient(46rem 34rem at 0% 0%, rgb(216 195 250 / 0.52), transparent 66%)",
+              "radial-gradient(42rem 32rem at 100% 0%, rgb(252 208 218 / 0.50), transparent 66%)",
+              "radial-gradient(42rem 34rem at 0% 100%, rgb(253 210 194 / 0.45), transparent 66%)",
+              "radial-gradient(48rem 36rem at 100% 100%, rgb(206 184 250 / 0.55), transparent 68%)",
+            ].join(","),
+          }}
+        />
+      )}
+
       <Container width="hero">
         <div
           className={cn(
-            "grid gap-12",
-            // The statement column takes slightly more than the list so the
-            // headline keeps the design's line breaks — at an even split the
-            // longest line wraps and adds one.
-            "lg:grid-cols-[minmax(0,1.12fr)_minmax(0,1fr)] lg:gap-14 xl:gap-20",
+            "grid gap-12 lg:gap-14 xl:gap-20",
+            // The statement column takes more than the list so the headline
+            // keeps the design's line breaks — at an even split the longest
+            // line wraps and adds one. See the `columns` prop.
+            columns,
           )}
         >
           {/* =========================== Statement ===================== */}
@@ -111,7 +175,8 @@ export function ProblemSection({
                 "mt-8 font-display font-bold tracking-[-0.03em]",
                 "leading-[1.14] text-neutral-900",
                 // Measured from the design at ~52px on a 1440 frame.
-                "text-[1.875rem] sm:text-[2.375rem] xl:text-[3.25rem]",
+                "text-[1.875rem] sm:text-[2.375rem]",
+                headlineSize ?? "xl:text-[3.25rem]",
               )}
             >
               {/*
@@ -140,6 +205,27 @@ export function ProblemSection({
             >
               {content.description}
             </motion.p>
+
+            {content.kicker && (
+              <motion.p
+                {...rise(0.22)}
+                className={cn(
+                  "mt-6 max-w-120 leading-relaxed text-pretty",
+                  "text-[1.0625rem] text-neutral-600 sm:text-lg",
+                )}
+              >
+                {content.kicker.lead}{" "}
+                <strong className="font-semibold text-brand-600">
+                  {content.kicker.emphasis}
+                </strong>
+              </motion.p>
+            )}
+
+            {aside && (
+              <motion.div {...rise(0.3)} className="mt-12">
+                {aside}
+              </motion.div>
+            )}
           </div>
 
           {/* ============================= List ======================== */}
