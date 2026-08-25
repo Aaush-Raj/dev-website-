@@ -196,4 +196,129 @@ export const industriesPage = {
       },
     ],
   },
+
+  /**
+   * SECTION 3 — banking, financial services & insurance.
+   *
+   * Copy and three icon points on the left; on the right a photo with a
+   * LurnyPitch overlay — a live-conversation panel and three signal cards.
+   *
+   * THE OVERLAY IS DRAWN from the values below, not shipped as the flat PNG
+   * supplied with the design. That export bakes every label into pixels: it
+   * cannot re-flow, its text is invisible to search and unreadable when
+   * scaled into a narrow column. The same choice the LurnyMagic page makes
+   * for its product panels.
+   */
+  bfsi: {
+    eyebrow: "Banking, Financial Services & Insurance",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: [
+      "Turn every customer",
+      "conversation into",
+      "timely, compliant action.",
+    ] as const,
+
+    description:
+      "Help distributed banking and insurance teams stay current, understand customer needs, communicate products clearly and follow through consistently—across branches, contact centres and field teams.",
+
+    /** The three points under the description. `icon` keys BfsiIcons. */
+    points: [
+      {
+        icon: "readiness",
+        title: "Build frontline readiness",
+        description:
+          "Keep teams current on products, processes, suitability and compliance expectations.",
+      },
+      {
+        icon: "conversation",
+        title: "Understand every conversation",
+        description:
+          "Identify customer intent, objections, missed opportunities and important compliance gaps.",
+      },
+      {
+        icon: "target",
+        title: "Turn insight into action",
+        description:
+          "Trigger follow-ups, manager coaching and targeted learning based on what happened.",
+      },
+    ],
+
+    /** The photograph the overlay sits on. */
+    photo: {
+      src: "/assets/images/industries/bfsi-conversation.webp",
+      /**
+       * Decorative: it is scene-setting behind a drawn product overlay, and
+       * the section's copy already says what the scene is.
+       */
+      alt: "",
+      width: 1200,
+      height: 750,
+    },
+
+    /**
+     * THE LIVE-CONVERSATION PANEL
+     *
+     * `tone` keys the value's colour in IndustriesBfsi: "blue" for a neutral
+     * reading, "amber" for something needing attention. A row with no value
+     * is a full-width alert, which the design sets entirely in amber.
+     */
+    panel: {
+      product: "LurnyPitch",
+      state: "Live conversation",
+      rows: [
+        {
+          icon: "intent",
+          label: "Customer intent",
+          value: "Vehicle Loan",
+          tone: "blue",
+        },
+        { icon: "alert", label: "Rate objection detected", tone: "amber" },
+        {
+          icon: "shield",
+          label: "Compliance coverage",
+          value: "86%",
+          tone: "blue",
+        },
+        {
+          icon: "trend",
+          label: "Missed opportunity",
+          value: "Motor Insurance",
+          tone: "amber",
+        },
+        {
+          icon: "calendar",
+          label: "Follow-up commitment",
+          value: "Tomorrow · 11:00 AM",
+          tone: "blue",
+        },
+      ],
+    },
+
+    /**
+     * The three signal cards beneath the panel. `tone` sets the leading rule
+     * and the label colour — the design marks the last one amber, as the
+     * commercial opportunity rather than a coaching note.
+     */
+    signals: [
+      {
+        icon: "calendar",
+        tone: "blue",
+        label: "Next action",
+        text: "Share repayment illustration and reconnect tomorrow.",
+      },
+      {
+        icon: "coach",
+        tone: "blue",
+        label: "Coaching signal",
+        text: "Handling rate objections",
+      },
+      {
+        icon: "shield",
+        tone: "amber",
+        label: "Motor insurance renewal",
+        text: "Coverage needs identified · Follow-up due",
+      },
+    ],
+  },
 } as const;

@@ -1,3 +1,4 @@
+import { IndustriesBfsi } from "@/components/sections/industries-page/IndustriesBfsi";
 import { IndustriesHero } from "@/components/sections/industries-page/IndustriesHero";
 import { IndustriesServe } from "@/components/sections/industries-page/IndustriesServe";
 import { industriesPage } from "@/content/industries-page";
@@ -22,6 +23,8 @@ export default function IndustriesPage() {
       <IndustriesHero />
 
       <IndustriesServe />
+
+      <IndustriesBfsi />
 
       {/* TODO(sections): remaining Industries sections go here as designs
           land. */}
