@@ -1,3 +1,4 @@
+import { SaathiContext } from "@/components/sections/saathi/SaathiContext";
 import { SaathiHero } from "@/components/sections/saathi/SaathiHero";
 import { SaathiLoop } from "@/components/sections/saathi/SaathiLoop";
 import { SaathiProblem } from "@/components/sections/saathi/SaathiProblem";
@@ -28,6 +29,8 @@ export default function SaathiPage() {
       <SaathiLoop />
 
       <SaathiStory />
+
+      <SaathiContext />
 
       {/* TODO(sections): remaining LurnySaathi sections go here as designs
           land. */}

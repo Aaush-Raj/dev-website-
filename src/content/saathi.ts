@@ -318,4 +318,116 @@ export const saathi = {
       },
     },
   },
+
+  /**
+   * SECTION 6 — role-aware, context-aware, employee-aware.
+   *
+   * The statement on the left, and a panel showing the two halves of the
+   * argument: the context Saathi holds about one employee, and the actions it
+   * recommends from it. See SaathiContext.tsx.
+   */
+  context: {
+    eyebrow: "Role-aware. Context-aware. Employee-aware.",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: ["Every employee", "sees a different", "Saathi."],
+
+    description:
+      "Saathi understands the employee's role, expected proficiency, current capability gaps, learning history, practice performance and real-world evidence. It uses this context to recommend what matters now—not simply what content is available.",
+
+    /** The pulled-out closing line, set beside a coral rule in the design. */
+    pullquote:
+      "Saathi does not give every employee the same answer. It gives each employee the next action that makes sense for them.",
+
+    /**
+     * The photographic ground. Used as a bleed image rather than keyed —
+     * unlike the hero's cut-out, the whole scene is the background here, and
+     * its left side is already dark enough to carry the copy.
+     */
+    image: {
+      src: "/assets/images/saathi/saathi-context-bg.webp",
+      alt: "",
+      width: 1672,
+      height: 941,
+    },
+
+    panel: {
+      title: "Ananya's context today",
+
+      employee: {
+        name: "Ananya Menon",
+        role: "Relationship Manager",
+        languages: "English + Malayalam",
+      },
+
+      /** The left half: the signals Saathi holds. `engine` is the product each
+       *  one comes from, which the design tags in periwinkle. */
+      understands: {
+        title: "What Saathi understands",
+        items: [
+          {
+            icon: "person",
+            label: "Role baseline",
+            value: "Handling objections 75%",
+            engine: "Pulse",
+          },
+          {
+            icon: "signal",
+            label: "Current Pulse",
+            value: "68%",
+            engine: "Pulse",
+          },
+          {
+            icon: "book",
+            label: "Learning history",
+            value: "Rate objections lurny completed",
+            engine: "KxP",
+          },
+          {
+            icon: "chat",
+            label: "Practice evidence",
+            value: "Simulation score 72%",
+            engine: "Sim",
+          },
+          {
+            icon: "mic",
+            label: "Workplace evidence",
+            value: "Value-framing gap detected",
+            engine: "Pitch",
+          },
+          {
+            icon: "target",
+            label: "Current priority",
+            value: "Improve cross-sell conversion",
+          },
+        ],
+      },
+
+      /** The hinge between the two halves. */
+      hinge: ["Context", "becomes", "action"],
+
+      /** The right half: what that context produces. */
+      recommended: {
+        title: "Recommended for Ananya today",
+        items: [
+          {
+            title: "Practise value framing",
+            meta: "12 min",
+            action: "Start practice",
+          },
+          {
+            title: "Continue Gold Loan learning journey",
+            meta: "60% complete",
+            action: "Continue",
+          },
+          {
+            title: "Record and review today's customer pitch",
+            meta: "Ready to record",
+            action: "Start recording",
+          },
+        ],
+        cta: "View today's plan",
+      },
+    },
+  },
 } as const;

@@ -236,6 +236,58 @@
       translate: var(--magic-drift, 5%) calc(var(--magic-drift, 5%) * -0.6);
     }
   }
+
+  /* --------------------------------------------------------------------
+     `saathi-twinkle` breathes a single star in the LurnySaathi hero's
+     field. Each star sets its own duration, delay and `--twinkle-peak`
+     inline, so no two brighten together — a field pulsing in step reads as
+     a blinking error, not a sky.
+
+     Only `opacity` and `scale` animate, both compositor properties, so a
+     field of forty costs no layout or paint. The star never fades fully
+     out: dropping to zero makes it read as a rendering glitch rather than
+     as atmosphere.
+
+     The global prefers-reduced-motion block below neutralises this, and
+     SaathiStarfield also drops the class outright for those users.
+     -------------------------------------------------------------------- */
+  --animate-saathi-twinkle: saathi-twinkle var(--twinkle-duration, 5s)
+    ease-in-out infinite alternate;
+
+  @keyframes saathi-twinkle {
+    from {
+      opacity: calc(var(--twinkle-peak, 0.7) * 0.35);
+      scale: 0.72;
+    }
+    to {
+      opacity: var(--twinkle-peak, 0.7);
+      scale: 1;
+    }
+  }
+
+  /* --------------------------------------------------------------------
+     `industry-float` gives each card in the Industries hero mosaic a slow
+     vertical drift, so the grid breathes instead of sitting still. Each
+     card sets its own duration and delay inline, so no two move in step —
+     uniform motion is what makes a floating grid look mechanical.
+
+     Only `translate` animates: a compositor property, so the whole mosaic
+     costs no layout or paint.
+
+     Neutralised by the global prefers-reduced-motion block below, and the
+     component drops the class outright for those users.
+     -------------------------------------------------------------------- */
+  --animate-industry-float: industry-float var(--industry-float-duration, 9s)
+    ease-in-out infinite alternate;
+
+  @keyframes industry-float {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 0 var(--industry-float, -0.5rem);
+    }
+  }
 }
 
 /* ============================================================================

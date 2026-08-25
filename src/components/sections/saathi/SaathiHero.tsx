@@ -9,6 +9,7 @@ import { saathi } from "@/content/saathi";
 import { cn } from "@/lib/utils";
 
 import { SaathiCapabilities, SaathiThreads } from "./SaathiCapabilities";
+import { SaathiStarfield } from "./SaathiStarfield";
 import { SaathiPhone } from "./SaathiPhone";
 import { ArrowIcon, HeartIcon } from "./SaathiIcons";
 
@@ -86,22 +87,11 @@ export function SaathiHero() {
         }}
       />
 
-      {/* A faint dusting of light, standing in for the bokeh in the photo's
-          original backdrop so the keyed-out subject does not sit on a flat
-          field. */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 opacity-55"
-        style={{
-          background: [
-            "radial-gradient(2px 2px at 68% 22%, rgb(233 213 255 / 0.55), transparent 60%)",
-            "radial-gradient(2px 2px at 84% 58%, rgb(216 180 254 / 0.45), transparent 60%)",
-            "radial-gradient(3px 3px at 76% 74%, rgb(196 181 253 / 0.35), transparent 60%)",
-            "radial-gradient(2px 2px at 58% 64%, rgb(233 213 255 / 0.30), transparent 60%)",
-            "radial-gradient(2px 2px at 92% 34%, rgb(216 180 254 / 0.40), transparent 60%)",
-          ].join(","),
-        }}
-      />
+      {/* The starfield, standing in for the bokeh in the photo's original
+          backdrop so the keyed-out subject does not sit on a flat field.
+          See SaathiStarfield for why these are elements rather than gradients
+          or a canvas. */}
+      <SaathiStarfield className="-z-10" />
 
       {/* --------------------- The wave band ------------------------- */}
       {/*
@@ -276,7 +266,15 @@ export function SaathiHero() {
           </div>
 
           {/* ======================= Illustration ====================== */}
-          <div className="relative">
+          {/*
+            `group/art` makes the whole illustration one hover target. The
+            photo cannot be one itself — it is aria-hidden and
+            pointer-events-none — and hovering the phone alone would move the
+            phone against a static backdrop, which reads as a glitch rather
+            than as depth. Hovering anywhere over the art moves both, at
+            different rates.
+          */}
+          <div className="group/art relative">
             {/* ----------------------- The photo ---------------------- */}
             {/*
               Behind the phone and bleeding off the container's right edge, as
@@ -310,6 +308,21 @@ export function SaathiHero() {
                   // The design keeps her softly lit and slightly recessed so
                   // the phone stays the subject.
                   "brightness-[0.92] contrast-[1.02] saturate-[0.95]",
+                  // On hover she comes up out of the recession — a touch
+                  // brighter and warmer, drifting a little toward the phone.
+                  // Slow and small: this is a backdrop, and a backdrop that
+                  // reacts sharply pulls focus from the product it frames.
+                  "transition-[filter,translate,scale] duration-700 ease-out",
+                  "will-change-[translate,scale]",
+                  "group-hover/art:translate-x-[-0.6%]",
+                  "group-hover/art:scale-[1.015]",
+                  "group-hover/art:brightness-[1.02]",
+                  "group-hover/art:saturate-[1.04]",
+                  // Ambient motion is what reduced-motion asks us to drop; the
+                  // brightness shift is not, so only the movement goes.
+                  "motion-reduce:transition-[filter]",
+                  "motion-reduce:group-hover/art:translate-x-0",
+                  "motion-reduce:group-hover/art:scale-100",
                 )}
                 // Fades her lower edge into the section rather than ending on
                 // a hard crop line.
@@ -377,7 +390,18 @@ export function SaathiHero() {
 
               {/* Above the thread overlay, so the curves terminate at the
                   node on the frame's edge instead of crossing the screen. */}
-              <div className="relative z-10 order-1 lg:order-2">
+              <div
+                className={cn(
+                  "relative z-10 order-1 lg:order-2",
+                  // Lifts further than the photo behind it on hover. The
+                  // difference between the two rates is what reads as depth —
+                  // matching them would just slide the whole picture.
+                  "transition-[translate] duration-700 ease-out",
+                  "will-change-[translate]",
+                  "group-hover/art:lg:-translate-y-1.5",
+                  "motion-reduce:group-hover/art:lg:translate-y-0",
+                )}
+              >
                 <SaathiPhone />
               </div>
             </div>

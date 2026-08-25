@@ -749,3 +749,58 @@ export function TrendIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+/* ========================== Context panel =============================== */
+
+/** A target with an arrow — the "current priority" signal. */
+function TargetIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M20.4 8.4a9 9 0 1 1-4.8-4.8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M16.6 11a4.7 4.7 0 1 1-3.6-3.6"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="m12 12 6.4-6.4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M15.6 4.4h4v4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/**
+ * Keyed by the `icon` field on each context signal in content/saathi.ts.
+ * Reuses the journey glyphs where the signal is the same one.
+ */
+export const contextIcons = {
+  person: PersonIcon,
+  signal: SignalIcon,
+  book: OpenBookIcon,
+  chat: SpeechIcon,
+  mic: MicrophoneIcon,
+  target: TargetIcon,
+} as const;
+
+export type ContextIconName = keyof typeof contextIcons;
