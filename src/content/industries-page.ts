@@ -321,4 +321,118 @@ export const industriesPage = {
       },
     ],
   },
+
+  /**
+   * SECTION 4 — healthcare.
+   *
+   * The inverse of the BFSI section: a light ground, copy and three points on
+   * the left, and a full-bleed photograph carrying five cards down the right,
+   * strung on a vertical rail.
+   *
+   * The icons here SHIP AS IMAGES, unlike the BFSI section's. These arrive as
+   * 184-260px artwork with their tinted tiles already drawn in — blue for the
+   * knowledge cards, green for the approved/readiness ones — so redrawing
+   * them would mean reproducing the tile treatment by hand for no gain. They
+   * are ~2KB each as WebP.
+   *
+   * The background is likewise the supplied asset: its left fade into cream
+   * is baked in, which is what lets the copy sit over the photograph with no
+   * scrim of our own.
+   */
+  healthcare: {
+    eyebrow: "Healthcare",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: [
+      "Turn changing protocols",
+      "into consistent everyday",
+      "practice.",
+    ] as const,
+
+    description:
+      "Help clinical and non-clinical teams stay current on approved protocols, processes and patient-service expectations—without taking them away from the flow of work.",
+
+    /** The photograph behind the whole section. */
+    scene: {
+      src: "/assets/images/industries/healthcare-scene.webp",
+      /**
+       * Decorative: scene-setting behind the copy and a drawn card stack,
+       * and the section's own text already says what the scene is.
+       */
+      alt: "",
+      width: 1600,
+      height: 900,
+    },
+
+    /** The three points under the description. */
+    points: [
+      {
+        icon: "/assets/images/industries/healthcare/keep-knowledge-current.webp",
+        title: "Keep knowledge current",
+        description:
+          "Turn updated protocols, SOPs and policies into accessible guidance.",
+      },
+      {
+        icon: "/assets/images/industries/healthcare/point-of-work-support.webp",
+        title: "Support people at the point of work",
+        description:
+          "Give employees approved, role-relevant answers when they need them.",
+      },
+      {
+        icon: "/assets/images/industries/healthcare/measurable-readiness.webp",
+        title: "Build measurable readiness",
+        description:
+          "Reinforce critical practices and identify teams needing support.",
+      },
+    ],
+
+    /**
+     * THE CARD STACK
+     *
+     * Five cards down the right, joined by a vertical rail with a node at
+     * each. `kind` selects what sits under the title:
+     *
+     *   "meta"   -> `meta`, a two-part caption; the first half takes the
+     *               design's blue.
+     *   "prompt" -> `prompt`, a question. The design tints this whole card.
+     *   "lines"  -> `lines`, N placeholder rules standing in for a body of
+     *               guidance that has not been written yet.
+     *   "meter"  -> `meter`, a filled progress track.
+     */
+    cards: [
+      {
+        kind: "meta",
+        icon: "/assets/images/industries/healthcare/protocol-update.webp",
+        title: "Protocol update",
+        meta: { lead: "Infection Prevention", tail: "Updated today" },
+      },
+      {
+        kind: "prompt",
+        icon: "/assets/images/industries/healthcare/ask-lurny.webp",
+        title: "Ask Lurny",
+        prompt: "What is the approved discharge handover process?",
+      },
+      {
+        kind: "lines",
+        icon: "/assets/images/industries/healthcare/approved-guidance.webp",
+        title: "Approved guidance",
+        /** Widths as percentages, so the stack of rules is not uniform. */
+        lines: [100, 88, 62],
+      },
+      {
+        kind: "lines",
+        icon: "/assets/images/industries/healthcare/refresher-assigned.webp",
+        title: "5-minute refresher assigned",
+        lines: [100, 74],
+      },
+      {
+        kind: "meter",
+        icon: "/assets/images/industries/healthcare/readiness-on-track.webp",
+        /** Split so the status can take the design's lighter weight. */
+        title: { lead: "Readiness", tail: "On track" },
+        /** Fraction of the track filled. */
+        meter: 0.68,
+      },
+    ],
+  },
 } as const;
