@@ -2,6 +2,7 @@ import { IndustriesBfsi } from "@/components/sections/industries-page/Industries
 import { IndustriesHealthcare } from "@/components/sections/industries-page/IndustriesHealthcare";
 import { IndustriesHero } from "@/components/sections/industries-page/IndustriesHero";
 import { IndustriesServe } from "@/components/sections/industries-page/IndustriesServe";
+import { IndustriesSpecialist } from "@/components/sections/industries-page/IndustriesSpecialist";
 import { industriesPage } from "@/content/industries-page";
 import { buildMetadata } from "@/lib/seo";
 
@@ -28,6 +29,8 @@ export default function IndustriesPage() {
       <IndustriesBfsi />
 
       <IndustriesHealthcare />
+
+      <IndustriesSpecialist />
 
       {/* TODO(sections): remaining Industries sections go here as designs
           land. */}

@@ -149,6 +149,24 @@ export function CoachIcon({ className }: IconProps) {
   );
 }
 
+/**
+ * A map pin dropped on a route. The specialist section's third point.
+ *
+ * Here rather than in ModelIcons because it is specific to this page, and in
+ * this file rather than a new one because a single glyph does not earn its
+ * own module.
+ */
+export function PinIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M15.4 9.9c0 3.4-4.4 8.3-4.4 8.3s-4.4-4.9-4.4-8.3a4.4 4.4 0 0 1 8.8 0Z" />
+      <circle cx="11" cy="9.8" r="1.5" />
+      {/* The smaller, secondary pin the design sets behind it. */}
+      <path d="M20.4 15.2c0 2-2.4 4.6-2.4 4.6s-2.4-2.6-2.4-4.6a2.4 2.4 0 0 1 4.8 0Z" />
+    </svg>
+  );
+}
+
 /** The three point icons, keyed by the `icon` strings in the content file. */
 export const bfsiPointIcons = {
   readiness: ReadinessIcon,

@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { headerActions, mainNav } from "@/content/navigation";
+import { headerActions, mainNav, platformMenu } from "@/content/navigation";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,6 +19,17 @@ import { cn } from "@/lib/utils";
  *  - Escape closes
  *  - body scroll is locked while open, so the page behind does not move
  *  - route changes close the menu
+ *
+ * THE PLATFORM DISCLOSURE
+ * A nav item marked `hasMega` opens the desktop mega-menu on hover, which a
+ * touch device never fires. Rendered as a plain link here, its nine engine
+ * pages were unreachable on mobile entirely — the only route to them was the
+ * footer.
+ *
+ * So such an item renders as a SPLIT ROW: the label still navigates to the
+ * section, and a separate toggle beside it expands the engines inline. Two
+ * controls rather than one because the parent is a real page in its own
+ * right; collapsing it into a toggle would remove a destination.
  */
 
 interface MobileMenuProps {
@@ -40,6 +52,18 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
   // closed on the very same render — no effect, no second render pass.
   const [openedAt, setOpenedAt] = useState(pathname);
   const isMenuOpen = isOpen && openedAt === pathname;
+
+  /**
+   * Which mega-menu section is expanded, by href. Only one at a time, so the
+   * panel never grows past a phone's height with several open at once.
+   *
+   * DERIVED against the sheet's open state rather than reset in an effect:
+   * setState inside an effect triggers a second render pass, which is the
+   * same cascade the openedAt snapshot above exists to avoid. Closing the
+   * sheet therefore collapses the disclosure on the very same render.
+   */
+  const [expandedHref, setExpandedHref] = useState<string | null>(null);
+  const expanded = isMenuOpen ? expandedHref : null;
 
   const setMenuOpen = useCallback(
     (open: boolean) => {
@@ -133,21 +157,148 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
           {mainNav.map((link) => {
             const isActive = pathname.startsWith(link.href);
 
+            const isExpanded = expanded === link.href;
+            const rowStyles = cn(
+              "duration-fast rounded-xl px-4 py-3 text-base transition-colors",
+              isActive
+                ? "bg-brand-50 font-semibold text-brand-700"
+                : "font-medium text-neutral-700 hover:bg-neutral-100",
+            );
+
+            /*
+              A plain item is a link. An item with a mega-menu is a split row:
+              the label navigates, the toggle beside it expands the engines.
+              See the note at the top of this file for why both.
+            */
+            if (!link.hasMega) {
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(rowStyles, "block")}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            }
+
+            const panelId = `mobile-menu-${link.href.replace(/\W+/g, "-")}`;
+
             return (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  aria-current={isActive ? "page" : undefined}
-                  className={cn(
-                    "duration-fast block rounded-xl px-4 py-3 text-base transition-colors",
-                    isActive
-                      ? "bg-brand-50 font-semibold text-brand-700"
-                      : "font-medium text-neutral-700 hover:bg-neutral-100",
-                  )}
-                >
-                  {link.label}
-                </Link>
+                <div className="flex items-center gap-1">
+                  <Link
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(rowStyles, "min-w-0 flex-1")}
+                  >
+                    {link.label}
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setExpandedHref(isExpanded ? null : link.href)
+                    }
+                    aria-expanded={isExpanded}
+                    aria-controls={panelId}
+                    // The label names what it opens: several rows could carry
+                    // a toggle, and "Expand" alone would not tell them apart.
+                    aria-label={`${isExpanded ? "Collapse" : "Expand"} ${link.label} menu`}
+                    className={cn(
+                      "inline-flex size-11 shrink-0 items-center justify-center",
+                      "duration-fast rounded-xl text-neutral-500 transition-colors",
+                      "hover:bg-neutral-100 hover:text-neutral-900",
+                      "focus-visible:ring-2 focus-visible:ring-brand-500/40",
+                      "focus-visible:outline-none",
+                    )}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      className={cn(
+                        "size-4",
+                        "duration-normal transition-transform ease-out",
+                        isExpanded && "rotate-180",
+                      )}
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* The engines, grouped as the desktop menu groups them. */}
+                <div id={panelId} hidden={!isExpanded} className="pb-2">
+                  {platformMenu.columns.map((column) => (
+                    <div key={column.title} className="mt-3">
+                      <p
+                        className={cn(
+                          "px-4 text-[0.625rem] font-bold tracking-[0.1em]",
+                          "text-brand-600 uppercase",
+                        )}
+                      >
+                        {column.title}
+                      </p>
+
+                      <ul className="mt-1.5 flex flex-col">
+                        {column.items.map((item) => (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              onClick={() => setMenuOpen(false)}
+                              className={cn(
+                                "duration-fast flex items-center gap-3 rounded-xl",
+                                "px-4 py-2.5 transition-colors",
+                                "hover:bg-neutral-100",
+                              )}
+                            >
+                              {/* The lavender disc is part of the icon
+                                  asset, so no circle is drawn here. */}
+                              <Image
+                                src={`/assets/icons/engines/${item.icon}.png`}
+                                alt=""
+                                aria-hidden="true"
+                                width={128}
+                                height={128}
+                                className="size-9 shrink-0"
+                              />
+
+                              <span className="min-w-0">
+                                <span className="block text-[0.9375rem] font-semibold text-neutral-900">
+                                  {item.name}
+                                </span>
+                                <span className="mt-0.5 block text-[0.8125rem] leading-snug text-pretty text-neutral-500">
+                                  {item.description}
+                                </span>
+                              </span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+
+                  <Link
+                    href={platformMenu.footer.action.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={cn(
+                      "mt-3 block rounded-xl bg-brand-50/70 px-4 py-3",
+                      "text-[0.9375rem] font-semibold text-brand-700",
+                      "duration-fast transition-colors hover:bg-brand-50",
+                    )}
+                  >
+                    {platformMenu.footer.action.label}
+                  </Link>
+                </div>
               </li>
             );
           })}

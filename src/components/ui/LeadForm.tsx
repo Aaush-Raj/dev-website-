@@ -59,20 +59,52 @@ interface SelectFieldContent {
   label: string;
   /** First entry is the resting value. */
   options: readonly string[];
+  /**
+   * Marks the field required AND validates it — the two go together on
+   * purpose. The resting option ("Select your industry") is a real value the
+   * form would otherwise accept, so an asterisk without the check would
+   * promise a validation that never happens.
+   *
+   * When set, leaving the select on its resting option is an error.
+   */
+  required?: boolean;
+  /** Shown when a required select is left on its resting option. */
+  error?: string;
 }
 
 export interface LeadFormContent {
   name: TextFieldContent;
   email: TextFieldContent;
+  /**
+   * OPTIONAL second text field, sitting between the email and the selects.
+   *
+   * Added for the Industries page, whose design asks for an organisation
+   * field. Optional so the four pages that already ship this form are
+   * unaffected — omit it and the layout is exactly as before.
+   */
+  organisation?: TextFieldContent;
   /** The two selects, left then right. */
   selectA: SelectFieldContent;
   selectB: SelectFieldContent;
+  /**
+   * OPTIONAL third select, following the other two.
+   *
+   * Same reasoning as `organisation`: the Industries design needs six fields
+   * in a 2x3 grid where the rest of the site needs four.
+   */
+  selectC?: SelectFieldContent;
   /** Free-text field spanning both columns. */
   detail: TextFieldContent;
   consent: { name: string; label: string };
   submit: string;
   success: { title: string; description: string };
-  errors: { name: string; email: string; emailFormat: string };
+  errors: {
+    name: string;
+    email: string;
+    emailFormat: string;
+    /** Required only when `organisation` is supplied. */
+    organisation?: string;
+  };
   /**
    * The line under the button. `links` are spliced into `text` wherever it
    * contains {0}, {1} … so a caller can have one link or several without the
@@ -277,6 +309,10 @@ function Footnote({ content }: { content: LeadFormContent["footnote"] }) {
 interface Errors {
   fullName?: string;
   workEmail?: string;
+  organisation?: string;
+  selectA?: string;
+  selectB?: string;
+  selectC?: string;
 }
 
 export function LeadForm({
@@ -302,9 +338,11 @@ export function LeadForm({
   const [values, setValues] = useState({
     fullName: "",
     workEmail: "",
+    organisation: "",
     detail: "",
     selectA: content.selectA.options[0] as string,
     selectB: content.selectB.options[0] as string,
+    selectC: (content.selectC?.options[0] ?? "") as string,
     consent: false,
   });
 
@@ -324,6 +362,18 @@ export function LeadForm({
     if (!next.workEmail.trim()) found.workEmail = content.errors.email;
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(next.workEmail.trim()))
       found.workEmail = content.errors.emailFormat;
+    // Only enforced when the caller asks for the field at all.
+    if (content.organisation && !next.organisation.trim())
+      found.organisation = content.errors.organisation ?? "";
+
+    // A required select is invalid while it still sits on its resting
+    // option, which is the first entry in its own list.
+    for (const key of ["selectA", "selectB", "selectC"] as const) {
+      const field = content[key];
+      if (field?.required && next[key] === field.options[0])
+        found[key] = field.error ?? "";
+    }
+
     return found;
   };
 
@@ -469,9 +519,47 @@ export function LeadForm({
           <FieldError id={errorId("workEmail")}>{errors.workEmail}</FieldError>
         </div>
 
+        {/* ------------------------ Organisation -------------------- */}
+        {/* Rendered only when the caller asks for it; see the note on the
+            field in LeadFormContent. */}
+        {content.organisation && (
+          <div>
+            <FieldLabel htmlFor={fieldId("organisation")} required>
+              {content.organisation.label}
+            </FieldLabel>
+            <input
+              id={fieldId("organisation")}
+              name={content.organisation.name}
+              type="text"
+              required
+              autoComplete={content.organisation.autoComplete}
+              placeholder={content.organisation.placeholder}
+              value={values.organisation}
+              onChange={(event) => update("organisation", event.target.value)}
+              aria-invalid={errors.organisation ? true : undefined}
+              aria-describedby={
+                errors.organisation ? errorId("organisation") : undefined
+              }
+              className={cn(
+                fieldStyles,
+                "mt-2 h-11",
+                errors.organisation
+                  ? "border-status-danger"
+                  : "border-neutral-300",
+              )}
+            />
+            <FieldError id={errorId("organisation")}>
+              {errors.organisation}
+            </FieldError>
+          </div>
+        )}
+
         {/* --------------------------- Select A --------------------- */}
         <div>
-          <FieldLabel htmlFor={fieldId("selectA")}>
+          <FieldLabel
+            htmlFor={fieldId("selectA")}
+            required={content.selectA?.required}
+          >
             {content.selectA.label}
           </FieldLabel>
           <SelectField
@@ -481,11 +569,15 @@ export function LeadForm({
             options={content.selectA.options}
             onChange={(value) => update("selectA", value)}
           />
+          <FieldError id={errorId("selectA")}>{errors.selectA}</FieldError>
         </div>
 
         {/* --------------------------- Select B --------------------- */}
         <div>
-          <FieldLabel htmlFor={fieldId("selectB")}>
+          <FieldLabel
+            htmlFor={fieldId("selectB")}
+            required={content.selectB?.required}
+          >
             {content.selectB.label}
           </FieldLabel>
           <SelectField
@@ -495,7 +587,28 @@ export function LeadForm({
             options={content.selectB.options}
             onChange={(value) => update("selectB", value)}
           />
+          <FieldError id={errorId("selectB")}>{errors.selectB}</FieldError>
         </div>
+
+        {/* --------------------------- Select C --------------------- */}
+        {content.selectC && (
+          <div>
+            <FieldLabel
+              htmlFor={fieldId("selectC")}
+              required={content.selectC?.required}
+            >
+              {content.selectC.label}
+            </FieldLabel>
+            <SelectField
+              id={fieldId("selectC")}
+              name={content.selectC.name}
+              value={values.selectC}
+              options={content.selectC.options}
+              onChange={(value) => update("selectC", value)}
+            />
+            <FieldError id={errorId("selectC")}>{errors.selectC}</FieldError>
+          </div>
+        )}
 
         {/* ---------------------------- Detail ---------------------- */}
         <div className="sm:col-span-2">

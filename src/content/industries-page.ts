@@ -41,7 +41,18 @@ export const industriesPage = {
     actions: {
       /* Both are in-page or existing routes — see the note in the hero. */
       primary: { label: "Explore industries", href: "#industries" },
-      secondary: { label: "Book a demo", href: "/demo" },
+      /*
+        Points at section 6's form on this page.
+
+        It used to point at `/demo`, which is a 404 — that route does not
+        exist anywhere on the site. Now that the specialist form is on this
+        page there is a real destination, and an in-page anchor is the honest
+        one.
+
+        TODO(routes): revisit if a standalone /demo page is ever built. The
+        form's own footnote link still points there.
+      */
+      secondary: { label: "Book a demo", href: "#specialist" },
     },
 
     /**
@@ -434,5 +445,155 @@ export const industriesPage = {
         meter: 0.68,
       },
     ],
+  },
+
+  /**
+   * SECTION 6 — talk to an industry specialist.
+   *
+   * Copy and three points on the left, the booking form on a raised card to
+   * the right. `form` is in the LeadFormContent shape the shared LeadForm
+   * expects.
+   *
+   * This design asks for SIX fields where the rest of the site uses four, so
+   * it supplies the optional `organisation` and `selectC` the form now
+   * accepts — see the notes on those in components/ui/LeadForm.tsx. Every
+   * other page omits them and is unchanged.
+   *
+   * NOTE: the form does not send anywhere yet. See the TODO at the top of
+   * components/ui/LeadForm.tsx — the destination is unchosen, and that is one
+   * fix for every page rather than one per page.
+   */
+  specialist: {
+    eyebrow: "Talk to an industry specialist",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: [
+      "Build capability around",
+      "the way work happens",
+      "in your industry.",
+    ] as const,
+
+    description:
+      "Tell us about the roles, workflows and performance outcomes that matter in your sector. We'll show how Lurny can connect knowledge, practice, guidance and intelligence around the way your teams actually work.",
+
+    /** The three lines under the rule, each with an icon. */
+    points: [
+      {
+        icon: "clock",
+        text: "30 minutes \u00b7 focused on your industry priorities",
+      },
+      {
+        icon: "bubble",
+        text: "Explore relevant use cases across roles and workflows",
+      },
+      {
+        icon: "pin",
+        text: "Identify where Lurny can create the greatest impact",
+      },
+    ],
+
+    form: {
+      name: {
+        name: "fullName",
+        label: "Full name",
+        placeholder: "Your name",
+        autoComplete: "name",
+      },
+      email: {
+        name: "workEmail",
+        label: "Work email",
+        placeholder: "name@company.com",
+        autoComplete: "email",
+      },
+
+      /** The optional second text field — see the note above. */
+      organisation: {
+        name: "organisation",
+        label: "Organisation",
+        placeholder: "Company name",
+        autoComplete: "organization",
+      },
+
+      selectA: {
+        name: "industry",
+        label: "Industry",
+        options: [
+          "Select your industry",
+          "Banking & Financial Services",
+          "Telecom",
+          "Healthcare",
+          "Manufacturing",
+          "Professional Services",
+          "Retail",
+          "Something else",
+        ],
+        /* Marked required in the design, so it is validated too — see the
+           note on `required` in LeadFormContent. */
+        required: true,
+        error: "Please select your industry.",
+      },
+      selectB: {
+        name: "workforceSize",
+        label: "Workforce size",
+        options: [
+          "Select workforce size",
+          "Under 500",
+          "500 \u2013 2,000",
+          "2,000 \u2013 10,000",
+          "10,000 \u2013 50,000",
+          "50,000+",
+        ],
+      },
+      /** The optional third select — see the note above. */
+      selectC: {
+        name: "primaryPriority",
+        label: "Primary priority",
+        options: [
+          "Select a priority",
+          "Frontline capability and readiness",
+          "Knowledge and guidance at the point of work",
+          "Customer conversations and performance",
+          "Compliance and process adherence",
+          "Something else",
+        ],
+        /* Marked required in the design; workforce size is not. */
+        required: true,
+        error: "Please select a priority.",
+      },
+
+      detail: {
+        name: "teams",
+        label: "Which teams or roles would you like to enable? (optional)",
+        placeholder:
+          "e.g. Relationship managers, field engineers, frontline teams or supervisors",
+        autoComplete: "off",
+      },
+
+      consent: {
+        name: "sendOverview",
+        label: "Send me the Lurny industries overview.",
+      },
+
+      submit: "Talk to an Industry Specialist",
+
+      success: {
+        title: "Request received.",
+        description:
+          "We will be in touch within one business day to arrange a time.",
+      },
+
+      errors: {
+        name: "Please enter your name.",
+        email: "Please enter your work email.",
+        emailFormat: "Please enter a valid email address.",
+        organisation: "Please enter your organisation.",
+      },
+
+      /** {0} is replaced by the link below. */
+      footnote: {
+        text: "Prefer a product walkthrough? {0}",
+        links: [{ label: "Book a Demo.", href: "/demo" }],
+      },
+    },
   },
 } as const;
