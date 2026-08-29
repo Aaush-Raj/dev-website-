@@ -13,21 +13,32 @@ export interface NavLink {
   href: string;
   /** Outbound link — renders with target="_blank" and rel="noopener". */
   external?: boolean;
-  /** Opens the Platform mega-menu on hover and focus. */
-  hasMega?: boolean;
+  /**
+   * Opens a mega-menu on hover and focus. The value names which panel — see
+   * `megaMenus` below. Absent means the item is a plain link.
+   */
+  mega?: MegaMenuKey;
 }
+
+/** The mega-menus the header can open, keyed by nav item. */
+export type MegaMenuKey = "platform" | "resources";
 
 export interface NavGroup {
   title: string;
   links: NavLink[];
 }
 
-/** One engine in the Platform mega-menu. */
+/** One entry in a mega-menu column. */
 export interface MegaMenuItem {
   name: string;
   description: string;
   href: string;
-  /** Icon in public/assets/icons/engines. */
+  /**
+   * For the Platform menu, a file in public/assets/icons/engines. For the
+   * Resources menu, a key into the drawn icon set in ResourcesMenuIcons —
+   * those are line glyphs rather than the engines' painted discs, so they are
+   * SVG in the bundle rather than another nine PNG downloads.
+   */
   icon: string;
 }
 
@@ -41,12 +52,12 @@ export interface MegaMenuColumn {
  * TODO(routes): point these at real pages as they are built.
  */
 export const mainNav: NavLink[] = [
-  /** `hasMega` opens the Platform mega-menu; see platformMenu below. */
-  { label: "Platform", href: "/platform", hasMega: true },
+  /** `mega` names the panel this item opens; see megaMenus below. */
+  { label: "Platform", href: "/platform", mega: "platform" },
   { label: "Solutions", href: "/solutions" },
   { label: "Industries", href: "/industries" },
   { label: "Customers", href: "/customers" },
-  { label: "Resources", href: "/resources" },
+  { label: "Resources", href: "/resources", mega: "resources" },
   { label: "Company", href: "/company" },
 ];
 
@@ -144,6 +155,83 @@ export const platformMenu: {
     action: { label: "Explore the full platform", href: "/platform" },
   },
 };
+
+/**
+ * RESOURCES MEGA-MENU
+ * ---------------------------------------------------------------------------
+ * The five resource types, in two columns, plus a footer band pointing at the
+ * featured guide. Opens from the "Resources" item in mainNav.
+ *
+ * Deliberately the SAME panel shape as the Platform menu — two-line entries
+ * with an icon, column headings, a closing band — so the header behaves
+ * consistently whichever item you open. It is narrower only because five items
+ * do not need three columns.
+ *
+ * Icons are drawn line glyphs rather than the engines' painted PNG discs; see
+ * the note on MegaMenuItem.icon.
+ *
+ * TODO(routes): these hrefs follow the /resources/* pattern. Only /resources
+ * exists today; the rest 404 until built.
+ */
+export const resourcesMenu: {
+  columns: MegaMenuColumn[];
+  footer: { title: string[]; action: NavLink };
+} = {
+  columns: [
+    {
+      title: "Read",
+      items: [
+        {
+          name: "Insights",
+          description: "Research and points of view on capability",
+          href: "/resources/insights",
+          icon: "insights",
+        },
+        {
+          name: "Guides and Playbooks",
+          description: "Practical frameworks you can put to work",
+          href: "/resources/guides",
+          icon: "guides",
+        },
+        {
+          name: "Case Studies",
+          description: "How teams turned capability into performance",
+          href: "/resources/case-studies",
+          icon: "cases",
+        },
+      ],
+    },
+    {
+      title: "Watch and attend",
+      items: [
+        {
+          name: "Webinars and Events",
+          description: "Live sessions with practitioners and leaders",
+          href: "/resources/events",
+          icon: "events",
+        },
+        {
+          name: "Videos",
+          description: "Short explainers, demos and customer stories",
+          href: "/resources/videos",
+          icon: "videos",
+        },
+      ],
+    },
+  ],
+
+  footer: {
+    /** Two lines, matching the Platform menu's footer treatment. */
+    title: ["From roles to readiness.", "The AI-era competency guide."],
+    action: { label: "Download the guide", href: "/resources#download" },
+  },
+};
+
+/** Every mega-menu the header can open, addressed by a nav item's `mega`. */
+export const megaMenus = {
+  platform: platformMenu,
+  resources: resourcesMenu,
+} as const;
 
 /** Header call-to-action buttons. */
 export const headerActions = {

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { headerActions, mainNav, platformMenu } from "@/content/navigation";
+import { ResourceIcon } from "@/components/layout/ResourcesMenuIcons";
+import { headerActions, mainNav, megaMenus } from "@/content/navigation";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,7 +22,7 @@ import { cn } from "@/lib/utils";
  *  - route changes close the menu
  *
  * THE PLATFORM DISCLOSURE
- * A nav item marked `hasMega` opens the desktop mega-menu on hover, which a
+ * A nav item marked `mega` opens the desktop mega-menu on hover, which a
  * touch device never fires. Rendered as a plain link here, its nine engine
  * pages were unreachable on mobile entirely — the only route to them was the
  * footer.
@@ -170,7 +171,7 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
               the label navigates, the toggle beside it expands the engines.
               See the note at the top of this file for why both.
             */
-            if (!link.hasMega) {
+            if (!link.mega) {
               return (
                 <li key={link.href}>
                   <Link
@@ -186,6 +187,7 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
             }
 
             const panelId = `mobile-menu-${link.href.replace(/\W+/g, "-")}`;
+            const { columns, footer } = megaMenus[link.mega];
 
             return (
               <li key={link.href}>
@@ -236,9 +238,9 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
                   </button>
                 </div>
 
-                {/* The engines, grouped as the desktop menu groups them. */}
+                {/* The entries, grouped as the desktop menu groups them. */}
                 <div id={panelId} hidden={!isExpanded} className="pb-2">
-                  {platformMenu.columns.map((column) => (
+                  {columns.map((column) => (
                     <div key={column.title} className="mt-3">
                       <p
                         className={cn(
@@ -261,16 +263,24 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
                                 "hover:bg-neutral-100",
                               )}
                             >
-                              {/* The lavender disc is part of the icon
-                                  asset, so no circle is drawn here. */}
-                              <Image
-                                src={`/assets/icons/engines/${item.icon}.png`}
-                                alt=""
-                                aria-hidden="true"
-                                width={128}
-                                height={128}
-                                className="size-9 shrink-0"
-                              />
+                              {/* Platform's icons bake the lavender disc into
+                                  the asset; Resources draws its own. Same
+                                  split as the desktop panel. */}
+                              {link.mega === "platform" ? (
+                                <Image
+                                  src={`/assets/icons/engines/${item.icon}.png`}
+                                  alt=""
+                                  aria-hidden="true"
+                                  width={128}
+                                  height={128}
+                                  className="size-9 shrink-0"
+                                />
+                              ) : (
+                                <ResourceIcon
+                                  name={item.icon}
+                                  className="size-9 rounded-xl"
+                                />
+                              )}
 
                               <span className="min-w-0">
                                 <span className="block text-[0.9375rem] font-semibold text-neutral-900">
@@ -288,7 +298,7 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
                   ))}
 
                   <Link
-                    href={platformMenu.footer.action.href}
+                    href={footer.action.href}
                     onClick={() => setMenuOpen(false)}
                     className={cn(
                       "mt-3 block rounded-xl bg-brand-50/70 px-4 py-3",
@@ -296,7 +306,7 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
                       "duration-fast transition-colors hover:bg-brand-50",
                     )}
                   >
-                    {platformMenu.footer.action.label}
+                    {footer.action.label}
                   </Link>
                 </div>
               </li>

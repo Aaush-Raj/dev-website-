@@ -5,14 +5,20 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 
 import { ArrowRightIcon } from "@/components/sections/hero/DashboardIcons";
-import { platformMenu } from "@/content/navigation";
+import { ResourceIcon } from "@/components/layout/ResourcesMenuIcons";
+import { megaMenus, type MegaMenuKey } from "@/content/navigation";
 import { cn } from "@/lib/utils";
 
 /**
- * PLATFORM MENU
+ * MEGA MENU
  * ---------------------------------------------------------------------------
- * The mega-menu panel that drops from the "Platform" nav item: three columns
- * of engines divided by vertical rules, then a footer band.
+ * The panel that drops from a nav item marked `mega`: columns of entries
+ * divided by vertical rules, then a footer band. One component serves every
+ * such menu — pass the key naming which one to render.
+ *
+ * The two panels differ only in their icons. Platform ships painted PNGs with
+ * the lavender disc baked in; Resources draws stroked glyphs inside a disc of
+ * its own. See the note in ResourcesMenuIcons for why.
  *
  * This component renders the PANEL only. Open/close state, hover intent and
  * keyboard handling live in Header, because they involve the trigger too.
@@ -28,8 +34,9 @@ import { cn } from "@/lib/utils";
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
 
-export function PlatformMenu({ id }: { id: string }) {
+export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
   const reduce = useReducedMotion();
+  const { columns, footer } = megaMenus[menu];
 
   return (
     <motion.div
@@ -45,8 +52,16 @@ export function PlatformMenu({ id }: { id: string }) {
       )}
     >
       {/* =========================== Columns ======================== */}
-      <div className="grid gap-x-8 gap-y-10 p-8 md:grid-cols-3 lg:gap-x-12 lg:p-10">
-        {platformMenu.columns.map((column, columnIndex) => (
+      {/* The column count follows the data: Platform has three, Resources two.
+          Hard-coding three would leave the narrower panel with an empty
+          trailing column. */}
+      <div
+        className={cn(
+          "grid gap-x-8 gap-y-10 p-8 lg:gap-x-12 lg:p-10",
+          columns.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3",
+        )}
+      >
+        {columns.map((column, columnIndex) => (
           <div
             key={column.title}
             className={cn(
@@ -75,23 +90,28 @@ export function PlatformMenu({ id }: { id: string }) {
                       "focus-visible:bg-neutral-50 focus-visible:outline-none",
                     )}
                   >
-                    {/* The lavender disc is part of the icon asset, so no
-                        circle is drawn here. */}
-                    <Image
-                      src={`/assets/icons/engines/${item.icon}.png`}
-                      alt=""
-                      width={128}
-                      height={128}
-                      // Decorative: the engine name beside it is the label.
-                      aria-hidden="true"
-                      className={cn(
-                        "size-14 shrink-0",
-                        // `scale`, not `transform` — Tailwind v4 compiles the
-                        // scale utilities to the standalone property.
-                        "transition-[scale] duration-300 ease-out",
-                        "group-hover:scale-105",
-                      )}
-                    />
+                    {/* Platform's icons are painted PNGs with the lavender
+                        disc already in the asset, so nothing is drawn around
+                        them. Resources draws its own — see ResourceIcon. */}
+                    {menu === "platform" ? (
+                      <Image
+                        src={`/assets/icons/engines/${item.icon}.png`}
+                        alt=""
+                        width={128}
+                        height={128}
+                        // Decorative: the engine name beside it is the label.
+                        aria-hidden="true"
+                        className={cn(
+                          "size-14 shrink-0",
+                          // `scale`, not `transform` — Tailwind v4 compiles
+                          // the scale utilities to the standalone property.
+                          "transition-[scale] duration-300 ease-out",
+                          "group-hover:scale-105",
+                        )}
+                      />
+                    ) : (
+                      <ResourceIcon name={item.icon} />
+                    )}
 
                     <span className="min-w-0">
                       <span
@@ -135,7 +155,7 @@ export function PlatformMenu({ id }: { id: string }) {
               "leading-snug text-neutral-900 sm:text-xl",
             )}
           >
-            {platformMenu.footer.title.map((line) => (
+            {footer.title.map((line) => (
               <span key={line} className="block">
                 {line}
               </span>
@@ -143,14 +163,14 @@ export function PlatformMenu({ id }: { id: string }) {
           </p>
 
           <Link
-            href={platformMenu.footer.action.href}
+            href={footer.action.href}
             className={cn(
               "group inline-flex shrink-0 items-center gap-2 rounded-md",
               "text-[0.9375rem] font-semibold text-brand-700",
               "duration-fast transition-colors hover:text-brand-600",
             )}
           >
-            {platformMenu.footer.action.label}
+            {footer.action.label}
             <ArrowRightIcon
               className={cn(
                 "duration-normal size-4 transition-transform ease-out",

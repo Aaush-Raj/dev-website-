@@ -10,11 +10,48 @@ for background and lady in bg you can use this one image - @/Users/aaushraj/Desk
 
 
 
+--------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
 
 
 
-INDUSTRY PAGE -
-lets add section 6 , we will add section 5 later - 
-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/industries all assets/section6.png -
+RESOURCES PAGE -
 
-Add above design 
+
+SEction 6 -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/elurny website resources landing section/section6.png
+
+all the card images in this folder -
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/elurny website resources landing section/lurny_resources_section6_assets
+
+
+Section7 - 
+
+
+--------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
+
+
+lets work on 
+
+Resources > Insights page (http://localhost:3000/resources/insights)
+section 1 -
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resourcespage_insights/section1.png
+Background image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resourcespage_insights/bg1.png
+
+
+
+section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resourcespage_insights/section2.png
+all the cards have one image on top , you can find all the 6 images in this folder - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resourcespage_insights/insights_latest_thinking_assets
+
+
+section3 - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resourcespage_insights/secton3.png
+side image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resourcespage_insights/insights_from_the_field_assets/evidence_network_no_text.png
+
+
+section4 - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resourcespage_insights/section4.png
+section4 image on right side - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resourcespage_insights/section4img.png
+
+
+--------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-

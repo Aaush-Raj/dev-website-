@@ -7,15 +7,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Logo } from "@/components/layout/Logo";
 import { MobileMenu } from "@/components/layout/MobileMenu";
-import { PlatformMenu } from "@/components/layout/PlatformMenu";
+import { MegaMenu } from "@/components/layout/MegaMenu";
 import { ChevronDownIcon } from "@/components/sections/hero/DashboardIcons";
 import { Container } from "@/components/ui/Container";
-import { headerActions, mainNav } from "@/content/navigation";
+import { headerActions, mainNav, type MegaMenuKey } from "@/content/navigation";
 import { useScrollDirection } from "@/lib/use-scroll-direction";
 import { cn } from "@/lib/utils";
 
 /** Ties the Platform trigger to its panel via aria-controls. */
-const PLATFORM_MENU_ID = "platform-menu";
+/** One panel id per menu, so `aria-controls` points at the right one. */
+const MEGA_MENU_ID = (menu: MegaMenuKey) => `${menu}-menu`;
 
 /**
  * HEADER
@@ -46,7 +47,7 @@ const PLATFORM_MENU_ID = "platform-menu";
  *     it — scroll from an errant wheel nudge should not snatch it away.
  *
  * PLATFORM MEGA-MENU
- * The "Platform" item opens PlatformMenu on hover and on focus. State lives
+ * A nav item marked `mega` opens MegaMenu on hover and on focus. State lives
  * here rather than in the panel because it spans the trigger and the panel
  * both; see the note on the close delay below.
  */
@@ -74,10 +75,12 @@ export function Header() {
    * immediately on mouseleave would snatch it away mid-journey. The timer is
    * cancelled the moment the pointer lands on either the trigger or the panel.
    */
-  const [platformOpen, setPlatformOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<MegaMenuKey | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  /** The Platform link, so Escape can return focus to it. */
-  const platformTriggerRef = useRef<HTMLAnchorElement>(null);
+  /** The trigger of whichever menu is open, so Escape can return focus to it. */
+  const triggerRefs = useRef<Partial<Record<MegaMenuKey, HTMLAnchorElement>>>(
+    {},
+  );
 
   /**
    * Route changes close the panel, without a setState-in-effect cascade.
@@ -87,12 +90,12 @@ export function Header() {
    * on the very same render. Same approach as MobileMenu.
    */
   const [openedAt, setOpenedAt] = useState(pathname);
-  const isPlatformOpen = platformOpen && openedAt === pathname;
+  const activeMenu = openedAt === pathname ? openMenu : null;
 
-  const setIsPlatformOpen = useCallback(
-    (open: boolean) => {
+  const setActiveMenu = useCallback(
+    (menu: MegaMenuKey | null) => {
       setOpenedAt(pathname);
-      setPlatformOpen(open);
+      setOpenMenu(menu);
     },
     [pathname],
   );
@@ -104,21 +107,24 @@ export function Header() {
     }
   }, []);
 
-  const openPlatform = useCallback(() => {
-    cancelClose();
-    setIsPlatformOpen(true);
-  }, [cancelClose, setIsPlatformOpen]);
+  const openMega = useCallback(
+    (menu: MegaMenuKey) => {
+      cancelClose();
+      setActiveMenu(menu);
+    },
+    [cancelClose, setActiveMenu],
+  );
 
-  const closePlatform = useCallback(
+  const closeMega = useCallback(
     ({ immediate = false } = {}) => {
       cancelClose();
       if (immediate) {
-        setIsPlatformOpen(false);
+        setActiveMenu(null);
         return;
       }
-      closeTimer.current = setTimeout(() => setIsPlatformOpen(false), 140);
+      closeTimer.current = setTimeout(() => setActiveMenu(null), 140);
     },
-    [cancelClose, setIsPlatformOpen],
+    [cancelClose, setActiveMenu],
   );
 
   // Clear any pending timer if the header unmounts mid-countdown.
@@ -129,19 +135,20 @@ export function Header() {
    * user is not dropped back at the top of the document.
    */
   useEffect(() => {
-    if (!isPlatformOpen) return;
+    if (!activeMenu) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      closePlatform({ immediate: true });
-      platformTriggerRef.current?.focus();
+      closeMega({ immediate: true });
+      triggerRefs.current[activeMenu]?.focus();
     };
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [isPlatformOpen, closePlatform]);
+  }, [activeMenu, closeMega]);
 
-  const isPinned = isMenuOpen || hasFocusWithin || isHovered || isPlatformOpen;
+  const isPinned =
+    isMenuOpen || hasFocusWithin || isHovered || activeMenu !== null;
   const isHidden = !isVisible && !isPinned;
 
   /**
@@ -170,7 +177,7 @@ export function Header() {
           setHasFocusWithin(false);
           // Tabbing out of the header past the last panel link closes it,
           // rather than leaving it open behind the page.
-          closePlatform({ immediate: true });
+          closeMega({ immediate: true });
         }
       }}
       onMouseEnter={() => setIsHovered(true)}
@@ -230,26 +237,31 @@ export function Header() {
               const isActive =
                 pathname === "/" ? index === 0 : pathname.startsWith(link.href);
 
-              const isMegaTrigger = link.hasMega === true;
+              const megaKey = link.mega;
+              const isMegaOpen =
+                megaKey !== undefined && activeMenu === megaKey;
 
               return (
                 <li
                   key={link.href}
-                  {...(isMegaTrigger && {
-                    onMouseEnter: openPlatform,
-                    onMouseLeave: () => closePlatform(),
+                  {...(megaKey && {
+                    onMouseEnter: () => openMega(megaKey),
+                    onMouseLeave: () => closeMega(),
                   })}
                 >
                   <Link
                     href={link.href}
                     aria-current={isActive ? "page" : undefined}
-                    {...(isMegaTrigger && {
-                      ref: platformTriggerRef,
-                      "aria-expanded": isPlatformOpen,
-                      "aria-controls": PLATFORM_MENU_ID,
+                    {...(megaKey && {
+                      ref: (node: HTMLAnchorElement | null) => {
+                        if (node) triggerRefs.current[megaKey] = node;
+                        else delete triggerRefs.current[megaKey];
+                      },
+                      "aria-expanded": isMegaOpen,
+                      "aria-controls": MEGA_MENU_ID(megaKey),
                       // Opening on focus means keyboard users reach the panel
                       // by tabbing onward, rather than needing a pointer.
-                      onFocus: openPlatform,
+                      onFocus: () => openMega(megaKey),
                     })}
                     className={cn(
                       "duration-fast relative flex items-center gap-1.5 py-1.5 text-[0.9375rem] whitespace-nowrap transition-colors",
@@ -262,12 +274,12 @@ export function Header() {
 
                     {/* Chevron, rotating to point up while the panel is open —
                         the affordance the design shows. */}
-                    {isMegaTrigger && (
+                    {megaKey && (
                       <ChevronDownIcon
                         aria-hidden="true"
                         className={cn(
                           "duration-normal size-3.5 transition-transform ease-out",
-                          isPlatformOpen && "rotate-180",
+                          isMegaOpen && "rotate-180",
                         )}
                       />
                     )}
@@ -328,15 +340,27 @@ export function Header() {
           panel is unmounted entirely when closed, so its links are never
           focusable while invisible.
         */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-full hidden px-gutter lg:block"
-          onMouseEnter={openPlatform}
-          onMouseLeave={() => closePlatform()}
-        >
-          <AnimatePresence>
-            {isPlatformOpen && (
-              <div className="pointer-events-auto pt-3">
-                <PlatformMenu id={PLATFORM_MENU_ID} />
+        <div className="pointer-events-none absolute inset-x-0 top-full hidden px-gutter lg:block">
+          <AnimatePresence mode="wait">
+            {activeMenu && (
+              // Keyed so moving between triggers swaps the panel rather than
+              // morphing one into the other, which would animate the columns
+              // sideways as the count changes.
+              //
+              // The hover handlers sit HERE, not on the wrapper above. That
+              // wrapper spans the full width and is only pointer-events-none;
+              // crossing it on the way anywhere still fires its mouseenter,
+              // which cancelled the close timer and left the panel stuck open
+              // after the pointer had left. This element is the one that
+              // actually takes pointer events, so it is the one whose bounds
+              // should govern.
+              <div
+                key={activeMenu}
+                className="pointer-events-auto pt-3"
+                onMouseEnter={() => openMega(activeMenu)}
+                onMouseLeave={() => closeMega()}
+              >
+                <MegaMenu id={MEGA_MENU_ID(activeMenu)} menu={activeMenu} />
               </div>
             )}
           </AnimatePresence>
