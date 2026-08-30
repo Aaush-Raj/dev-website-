@@ -432,4 +432,247 @@ export const resources = {
       },
     ],
   },
+
+  /**
+   * SECTION 7 — webinars and demonstrations.
+   *
+   * One upcoming live session beside two on-demand recordings. The live card
+   * is the subject: it takes ~1.7x the stacked pair and carries the date, the
+   * presenter and a filled Register button, where the recordings carry only a
+   * runtime and a Watch button.
+   */
+  sessions: {
+    eyebrow: "Webinars & demonstrations",
+    headline: "See the ideas in action.",
+    description:
+      "Join practical live sessions or watch selected recordings on demand.",
+
+    action: { label: "View all sessions", href: "/resources/events" },
+
+    /**
+     * The upcoming live session.
+     *
+     * `date` and `time` are display strings rather than a real Date: they are
+     * copy set by the design (including the IST timezone and the runtime), and
+     * formatting them at render would mean picking a locale and timezone that
+     * the design has already decided.
+     */
+    live: {
+      badge: "Upcoming live session",
+      date: "18 Sep 2026",
+      time: "11:00 AM IST · 45 min",
+      title: "From Roles to Readiness",
+      description:
+        "How to build an AI-era competency framework in 10 practical steps.",
+
+      /**
+       * TODO(assets): the design shows a photograph of the presenter, but no
+       * avatar was supplied in the section's asset folder. Until one lands the
+       * component draws a monogram disc in the same violet ring — see
+       * SessionAvatar in ResourcesSessions.tsx.
+       */
+      presenter: {
+        name: "Krishnesh Nair",
+        role: "Founder & CEO, Lurny",
+        initials: "KN",
+      },
+
+      action: {
+        label: "Register",
+        href: "/resources/events/roles-to-readiness",
+      },
+
+      art: {
+        src: "/assets/images/resources/session-live.webp",
+        alt: "",
+        width: 1586,
+        height: 992,
+      },
+    },
+
+    /** The shared badge and button label on both recordings. */
+    onDemandBadge: "On demand",
+    watchLabel: "Watch Recording",
+
+    /**
+     * The two recordings. `accent` keys into the tone maps in
+     * ResourcesSessions — mint for the first, amber for the second, matching
+     * the dominant colour of each card's own artwork.
+     */
+    recordings: [
+      {
+        title: "AI-native learning beyond the LMS",
+        runtime: "28 min",
+        href: "/resources/events/ai-native-learning",
+        accent: "mint",
+        art: {
+          src: "/assets/images/resources/session-ai-native.webp",
+          alt: "",
+          width: 1672,
+          height: 941,
+        },
+      },
+      {
+        title:
+          "Conversation intelligence: finding the opportunities teams miss",
+        runtime: "32 min",
+        href: "/resources/events/conversation-intelligence",
+        accent: "amber",
+        art: {
+          src: "/assets/images/resources/session-conversation.webp",
+          alt: "",
+          width: 1672,
+          height: 941,
+        },
+      },
+    ],
+  },
+
+  /**
+   * SECTION 8 — how-tos and help videos.
+   *
+   * One large video beside a mosaic of three. Each entry is a real <video>
+   * with a poster, not a still with a decorative play triangle — the design
+   * draws a play button, so it should actually play.
+   *
+   * PLACEHOLDER MEDIA
+   * No thumbnails or clips were supplied for this section, so every entry
+   * points at the existing LurnyMagic demo clip and reuses posters from
+   * elsewhere in the site. The `alt` text describes the PLACEHOLDER rather
+   * than the lesson each card claims to show, because that is what is actually
+   * on screen — describing the intended content would misdescribe the image.
+   *
+   * TODO(assets): swap `video` and `poster` on each entry when the real
+   * recordings land, and rewrite each `posterAlt` to match.
+   */
+  videos: {
+    eyebrow: "How-tos & help videos",
+    headline: "Learn Lurny, one step at a time.",
+    description:
+      "Quick, practical videos to help learners, creators, managers and administrators get more from Lurny.",
+
+    actions: {
+      primary: {
+        label: "Explore Self-Help Library",
+        href: "/resources/videos",
+      },
+      secondary: {
+        label: "Visit YouTube Channel",
+        href: "https://www.youtube.com/@lurny",
+      },
+    },
+
+    viewAll: { label: "View all help videos", href: "/resources/videos" },
+
+    /**
+     * The featured video — the one the design gives the whole left column.
+     * `accent` keys into the kicker tones in ResourcesVideos.
+     */
+    featured: {
+      kicker: "Getting started",
+      title: "Getting started with Lurny",
+      duration: "4:32",
+      href: "/resources/videos/getting-started",
+      accent: "violet",
+      video: "/assets/video/magic-demo.mp4",
+      poster: "/assets/images/magic/video-poster.webp",
+      posterAlt: "",
+      width: 900,
+      height: 506,
+    },
+
+    /** The three in the mosaic beside it. */
+    items: [
+      {
+        kicker: "Content creation",
+        title: "Create your first microlesson with LurnyMagic",
+        duration: "6:18",
+        href: "/resources/videos/create-a-microlesson",
+        accent: "green",
+        video: "/assets/video/magic-demo.mp4",
+        poster: "/assets/images/magic/format-microlesson.webp",
+        posterAlt: "",
+        width: 560,
+        height: 315,
+      },
+      {
+        kicker: "Learner help",
+        title: "Check your Pulse and follow your GrowthPath",
+        duration: "5:04",
+        href: "/resources/videos/pulse-and-growthpath",
+        accent: "amber",
+        video: "/assets/video/magic-demo.mp4",
+        poster: "/assets/images/magic/format-storybook.webp",
+        posterAlt: "",
+        width: 560,
+        height: 315,
+      },
+      {
+        kicker: "Manager help",
+        title: "Review conversations and coach with LurnyPitch",
+        duration: "7:21",
+        href: "/resources/videos/coach-with-lurnypitch",
+        accent: "violet",
+        video: "/assets/video/magic-demo.mp4",
+        poster: "/assets/images/pulse/pulse-workplace.webp",
+        posterAlt: "",
+        width: 1600,
+        height: 854,
+      },
+    ],
+  },
+
+  /**
+   * SECTION 9 — the closing call to action.
+   *
+   * The statement on the left, the ecosystem sculpture on the right with its
+   * four parts labelled.
+   */
+  closing: {
+    eyebrow: "The connected Lurny ecosystem",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: ["Ready to connect", "learning with", "performance?"],
+
+    description: [
+      "Explore how Lurny brings capability, learning,",
+      "practice and workplace performance into",
+      "one connected system.",
+    ],
+
+    action: { label: "Book a Demo", href: "/demo" },
+
+    /**
+     * The sculpture, trimmed and converted by
+     * scripts/build-ecosystem-sculpture.cjs. Despite belonging here, the
+     * source file ships in the section 8 asset folder — that is how it was
+     * supplied.
+     */
+    sculpture: {
+      src: "/assets/images/resources/ecosystem-sculpture.webp",
+      /**
+       * Described rather than left empty: the four labels below name the
+       * pieces, but the arrangement — four parts interlocking into one form —
+       * is the section's whole argument, and a screen reader gets that only
+       * from here.
+       */
+      alt: "Four sculptural pieces interlocking into a single square form.",
+      width: 861,
+      height: 947,
+    },
+
+    /**
+     * The labels overlaid on the sculpture. `x` and `y` are percentages of the
+     * ARTWORK, measured off the design — which is why the asset is trimmed of
+     * its transparent padding first; see the build script.
+     *
+     * `dot` is each piece's own colour, sampled from the design.
+     */
+    parts: [
+      { label: "Capability", x: 17.3, y: 17.5, dot: "#632dc3" },
+      { label: "Learning", x: 67.1, y: 19.5, dot: "#daa149" },
+      { label: "Practice", x: 16.6, y: 73, dot: "#42a8a4" },
+      { label: "Performance", x: 71, y: 73, dot: "#fd7357" },
+    ],
+  },
 } as const;
