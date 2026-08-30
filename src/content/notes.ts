@@ -1,0 +1,196 @@
+/**
+ * LURNYNOTES PAGE CONTENT
+ * ---------------------------------------------------------------------------
+ * Copy for the LurnyNotes product page at /platform/notes.
+ *
+ * Section 1 is defined below; further sections are added here as their designs
+ * land. Copy is verbatim from the supplied "LurnyNotes text content.txt".
+ */
+
+export const notes = {
+  /** Page-level metadata, consumed by the route's `generateMetadata`. */
+  meta: {
+    title: "LurnyNotes — Conversations to Next Steps",
+    description:
+      "Capture client meetings, distil what matters and move instantly from decisions to action items, follow-ups and ready-to-send emails.",
+    path: "/platform/notes",
+  },
+
+  hero: {
+    eyebrow: "LurnyNotes",
+
+    /**
+     * Split so the lines break where the design breaks them on lg+. The design
+     * sets an amber full stop after the last word, so the headline is split
+     * from its terminal period rather than carrying it inline.
+     */
+    headline: ["Turn every conversation", "into clear next steps"],
+
+    description:
+      "Capture client meetings, distil what matters and move instantly from decisions to action items, follow-ups and ready-to-send emails.",
+
+    actions: {
+      primary: { label: "Book a demo", href: "/demo" },
+      secondary: { label: "See how it works", href: "#how-it-works" },
+    },
+
+    /**
+     * The three notes under the hero, each behind its own outlined icon.
+     * `accent` keys into the tone map in NotesHero.
+     */
+    features: [
+      {
+        icon: "capture",
+        title: "Capture what matters",
+        description: "Clear meeting and conversation summaries.",
+        accent: "violet",
+      },
+      {
+        icon: "action",
+        title: "Turn decisions into action",
+        description: "Owners, due dates and next steps.",
+        accent: "amber",
+      },
+      {
+        icon: "send",
+        title: "Follow up with confidence",
+        description: "Ready-to-edit messages and emails.",
+        accent: "green",
+      },
+    ],
+
+    /**
+     * The photograph behind the product panel.
+     *
+     * PLACEHOLDER: the design shows a man at a laptop in a dark office; no
+     * such photograph was supplied, so this reuses the LurnySaathi context
+     * shot — see scripts/build-notes-assets.cjs. The `alt` is empty because
+     * the image is decorative here: the panel in front of it carries the
+     * meaning, and describing a stand-in would misdescribe what ships.
+     */
+    backdrop: {
+      src: "/assets/images/notes/hero-backdrop.webp",
+      alt: "",
+      width: 1672,
+      height: 941,
+    },
+
+    /**
+     * The product panel. Drawn in markup rather than shipped as an image so it
+     * stays sharp at every density — see NotesPanel.tsx.
+     */
+    panel: {
+      appInitial: "N",
+      title: "Client Meeting · Quarterly Review",
+
+      summary: {
+        title: "Conversation summary",
+        body: "Discussed Q2 performance, budget realignment, and roadmap priorities. Agreed to focus on customer onboarding improvements and Q3 launch timeline.",
+      },
+
+      decisions: {
+        title: "Key decisions",
+        items: [
+          "Reallocate 10% of budget to onboarding enhancements",
+          "Delay mobile app launch to September",
+          "Pilot new onboarding flow with Segment A customers",
+        ],
+      },
+
+      actions: {
+        title: "Action items",
+        /** `tone` keys into the avatar colours in NotesPanel. */
+        items: [
+          {
+            label: "Share updated onboarding plan",
+            initials: "MK",
+            owner: "Maya K.",
+            due: "May 24",
+            tone: "violet",
+          },
+          {
+            label: "Prepare Q3 launch timeline",
+            initials: "AC",
+            owner: "Alex C.",
+            due: "May 28",
+            tone: "amber",
+          },
+          {
+            label: "Set up pilot with Segment A",
+            initials: "JR",
+            owner: "Jordan R.",
+            due: "May 30",
+            tone: "green",
+          },
+        ],
+        cta: "Generate follow-up",
+      },
+
+      /** The draft panel floating over the main one's right edge. */
+      draft: {
+        title: "Follow-up draft",
+        to: { label: "To:", value: "Client Team" },
+        subject: {
+          label: "Subject:",
+          value: "Follow-up from today's meeting",
+        },
+        body: [
+          "Hi team,",
+          "Thanks for the productive discussion today.",
+          "Please find below a summary of key decisions and next steps.",
+          "Let me know if anything needs adjusting.",
+        ],
+        signOff: ["Best regards,", "Your Name"],
+        actions: { secondary: "Edit", primary: "Send" },
+      },
+
+      /** The sync pill beneath the draft. */
+      sync: { lines: ["Synced with", "Microsoft Teams"] },
+    },
+  },
+
+  /**
+   * SECTION 2 — the problem.
+   *
+   * Rendered by the shared ProblemSection, as on the five other product pages.
+   * LurnyNotes' design differs only in its accents — blue rather than the
+   * brand violet, with an amber full stop closing the headline — both of which
+   * are props on that component.
+   */
+  problem: {
+    eyebrow: "The problem LurnyNotes solves",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: [
+      "Important conversations",
+      "happen every day. Too",
+      "much gets lost afterwards",
+    ],
+
+    description:
+      "Client meetings create decisions, commitments and next steps. But when people rely on hurried notes and memory, summaries arrive late, actions scatter across inboxes and follow-ups lose context.",
+
+    items: [
+      {
+        title: "The real meaning gets lost in manual notes",
+        description:
+          "People divide their attention between listening and typing. LurnyNotes turns the conversation into a concise, structured summary.",
+      },
+      {
+        title: "Actions disappear across notes and inboxes",
+        description:
+          "Owners, commitments and deadlines are easy to miss. LurnyNotes identifies action items and organises them into a clear follow-through list.",
+      },
+      {
+        title: "Follow-ups take too long to compose",
+        description:
+          "Employees reconstruct the discussion before they can respond. LurnyNotes drafts contextual messages and emails while the conversation is still fresh.",
+      },
+      {
+        title: "Meeting context stays trapped in the meeting",
+        description:
+          "Decisions and customer insight rarely reach the tools where work continues. LurnyNotes connects with Microsoft Teams so notes and next steps stay within the workflow.",
+      },
+    ],
+  },
+} as const;

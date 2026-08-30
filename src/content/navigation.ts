@@ -64,8 +64,10 @@ export const mainNav: NavLink[] = [
 /**
  * PLATFORM MEGA-MENU
  * ---------------------------------------------------------------------------
- * Three columns of three engines, grouped by what they are for, plus a footer
- * band. Opens from the "Platform" item in mainNav.
+ * Three columns of engines, grouped by what they are for, plus a footer band.
+ * Opens from the "Platform" item in mainNav. The columns are not all the same
+ * length — "Work in the flow" carries four — so the panel's grid sizes each
+ * column to its own content rather than assuming a fixed count.
  *
  * Icons live in public/assets/icons/engines. Each already includes the
  * lavender disc behind the glyph, so nothing draws a circle around them.
@@ -145,13 +147,28 @@ export const platformMenu: {
           href: "/platform/sense",
           icon: "sense",
         },
+        {
+          name: "LurnyNotes",
+          description: "Capture and act on what matters",
+          href: "/platform/notes",
+          /**
+           * TODO(assets): `notes.png` is a PLACEHOLDER — a copy of the Lurny
+           * KxP icon, so the menu renders while the real artwork is prepared.
+           * Replace the file at public/assets/icons/engines/notes.png; nothing
+           * here needs to change when it lands.
+           */
+          icon: "notes",
+        },
       ],
     },
   ],
 
   footer: {
-    /** Two lines, as the design sets them. */
-    title: ["One capability model.", "Nine connected engines."],
+    /**
+     * Two lines, as the design sets them. The count tracks the engines listed
+     * above — it read "Nine" until LurnyNotes was added.
+     */
+    title: ["One capability model.", "Ten connected engines."],
     action: { label: "Explore the full platform", href: "/platform" },
   },
 };

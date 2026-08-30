@@ -27,11 +27,14 @@ import { cn } from "@/lib/utils";
  * reordered.
  *
  * THE ARTWORK FRAME
- * The four renders are not the same shape: three are wide clipboards, while
- * task 01's is a narrow strip cropped out of the hero cluster (see
- * content/guides.ts). Letting each size itself would make the column jump on
- * every switch, so they share one fixed-ratio frame and are fitted inside it
- * with `object-contain`. Only the artwork crossfades; the frame never moves.
+ * The clipboard renders arrive at different aspects, so letting each size
+ * itself would make the column jump on every switch. They share one
+ * fixed-ratio frame instead and are fitted inside it with `object-contain`:
+ * only the artwork crossfades, the frame never moves.
+ *
+ * Only three renders were supplied for four tasks (see content/guides.ts), so
+ * one task has no artwork. That task drops the middle column altogether and
+ * widens the panel, rather than holding open an empty box.
  */
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
@@ -52,14 +55,14 @@ export function GuidesNavigator() {
   const active = nav.tasks.find((t) => t.id === activeId) ?? nav.tasks[0];
   const { resource } = active;
 
-  /* Hoisted rather than read off `resource` inline: the property is a union
-     across the four tasks, and TypeScript widens it at each use site. */
+  /* Hoisted so the null check narrows it. Read off `resource` inline, the
+     property re-widens across the task union and the narrowing is lost. */
   const artwork: {
     src: string;
     alt: string;
     width: number;
     height: number;
-  } = resource.image;
+  } | null = resource.image;
 
   /**
    * Roving focus across the tablist. Selection follows focus, which is the
@@ -149,8 +152,12 @@ export function GuidesNavigator() {
           className={cn(
             "mt-10 grid gap-10 sm:mt-12",
             // Measured from the design: the task list takes ~38%, the artwork
-            // and the resource panel share the rest.
-            "lg:grid-cols-[minmax(0,0.62fr)_minmax(0,0.52fr)_minmax(0,0.5fr)]",
+            // and the resource panel share the rest. A task with no render
+            // drops the middle column and gives its width to the panel, rather
+            // than holding open an empty box.
+            artwork
+              ? "lg:grid-cols-[minmax(0,0.62fr)_minmax(0,0.52fr)_minmax(0,0.5fr)]"
+              : "lg:grid-cols-[minmax(0,0.62fr)_minmax(0,0.72fr)]",
             "lg:items-start lg:gap-8 xl:gap-10",
           )}
         >
@@ -243,41 +250,45 @@ export function GuidesNavigator() {
             portraits and the panel's copy is short, so nesting them would
             either crop the artwork or leave the panel mostly empty.
           */}
-          <div className="relative mx-auto w-full max-w-88 lg:mx-0 lg:max-w-none">
-            {/*
+          {artwork && (
+            <div className="relative mx-auto w-full max-w-88 lg:mx-0 lg:max-w-none">
+              {/*
               The shared frame. Its ratio is fixed so the column holds its
               height across switches — see the note at the top of this file.
               Each render is absolutely positioned inside it so the outgoing
               and incoming artwork overlap during the crossfade rather than
               reflowing past each other.
             */}
-            <div className="relative aspect-3/4">
-              <AnimatePresence initial={false}>
-                <motion.div
-                  key={active.id}
-                  initial={
-                    reduce ? { opacity: 1 } : { opacity: 0, scale: 0.97, y: 10 }
-                  }
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.02 }}
-                  transition={{ duration: 0.45, ease: easeOut }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={artwork.src}
-                    alt={artwork.alt}
-                    width={artwork.width}
-                    height={artwork.height}
-                    sizes="(min-width: 1024px) 30vw, 88vw"
-                    className={cn(
-                      "h-full w-full object-contain object-center",
-                      "drop-shadow-[0_28px_48px_rgb(60_44_20/0.22)]",
-                    )}
-                  />
-                </motion.div>
-              </AnimatePresence>
+              <div className="relative aspect-3/4">
+                <AnimatePresence initial={false}>
+                  <motion.div
+                    key={active.id}
+                    initial={
+                      reduce
+                        ? { opacity: 1 }
+                        : { opacity: 0, scale: 0.97, y: 10 }
+                    }
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.02 }}
+                    transition={{ duration: 0.45, ease: easeOut }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={artwork.src}
+                      alt={artwork.alt}
+                      width={artwork.width}
+                      height={artwork.height}
+                      sizes="(min-width: 1024px) 30vw, 88vw"
+                      className={cn(
+                        "h-full w-full object-contain object-center",
+                        "drop-shadow-[0_28px_48px_rgb(60_44_20/0.22)]",
+                      )}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* ---------------------- Resource panel ------------------ */}
           <div

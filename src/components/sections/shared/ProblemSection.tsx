@@ -92,6 +92,20 @@ interface ProblemSectionProps {
    * three lines.
    */
   headlineSize?: string;
+  /**
+   * Override the accent applied to the eyebrow, the numerals and the kicker's
+   * emphasis. Defaults to the brand violet the first five designs use;
+   * LurnyNotes sets its own blue.
+   *
+   * A full utility class rather than a colour value, so callers can reach for
+   * a token (`text-brand-600`) or an arbitrary value as their design needs.
+   */
+  accent?: string;
+  /**
+   * A terminal full stop set in a second colour, as LurnyNotes' design draws
+   * it. Omitted, the headline ends on its own last word.
+   */
+  headlineStop?: string;
   className?: string;
 }
 
@@ -102,6 +116,8 @@ export function ProblemSection({
   tinted = false,
   columns = "lg:grid-cols-[minmax(0,1.12fr)_minmax(0,1fr)]",
   headlineSize,
+  accent = "text-brand-600",
+  headlineStop,
   className,
 }: ProblemSectionProps) {
   const reduce = useReducedMotion();
@@ -163,7 +179,8 @@ export function ProblemSection({
               {...rise(0)}
               className={cn(
                 "font-mono text-[0.6875rem] font-medium uppercase",
-                "tracking-[0.14em] text-brand-600 sm:text-xs",
+                "tracking-[0.14em] sm:text-xs",
+                accent,
               )}
             >
               {content.eyebrow}
@@ -183,7 +200,7 @@ export function ProblemSection({
                 Below xl the lines wrap naturally, which is what a narrow
                 column needs. See `nowrapHeadline` for why xl can differ.
               */}
-              {content.headline.map((line) => (
+              {content.headline.map((line, index) => (
                 <span
                   key={line}
                   className={cn(
@@ -191,7 +208,16 @@ export function ProblemSection({
                     nowrapHeadline && "xl:whitespace-nowrap",
                   )}
                 >
-                  {line}{" "}
+                  {line}
+                  {/* The coloured full stop closing the last line, where a
+                      design asks for one. Decorative punctuation on a heading,
+                      so it is hidden from screen readers rather than announced
+                      as a stray character. */}
+                  {headlineStop && index === content.headline.length - 1 && (
+                    <span aria-hidden="true" className={headlineStop}>
+                      .
+                    </span>
+                  )}{" "}
                 </span>
               ))}
             </motion.h2>
@@ -215,7 +241,7 @@ export function ProblemSection({
                 )}
               >
                 {content.kicker.lead}{" "}
-                <strong className="font-semibold text-brand-600">
+                <strong className={cn("font-semibold", accent)}>
                   {content.kicker.emphasis}
                 </strong>
               </motion.p>
@@ -258,7 +284,8 @@ export function ProblemSection({
                 <p
                   className={cn(
                     "font-mono text-[0.8125rem] font-medium",
-                    "tracking-[0.06em] text-brand-600 tabular-nums",
+                    "tracking-[0.06em] tabular-nums",
+                    accent,
                   )}
                 >
                   {String(index + 1).padStart(2, "0")}

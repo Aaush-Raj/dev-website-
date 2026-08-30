@@ -20,6 +20,9 @@ section 3 image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/re
  img assets - are all in this folder
 /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resources_guides and playbooks/3
 
+section 2 image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resources_guides and playbooks/section2.png
+ img assets
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resources_guides and playbooks/2/section2img.png
 
 
 
@@ -50,6 +53,16 @@ Let's add section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/design
 
 
 --------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
+LURNY NOTES - 
+
+Add section 3 - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnynotes-all assets/section3.png
+
+Add section4 - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnynotes-all assets/section4.png
+
+Add section 5 -
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnynotes-all assets/section5.png
 
 
 

@@ -83,12 +83,15 @@ export const guides = {
    * Four tasks on the left; selecting one swaps the recommended resource on
    * the right. Task 01 is selected on load, as the design shows it.
    *
-   * ARTWORK. Three of the four tasks have a supplied clipboard render. Task
-   * 01's was never delivered on its own, so it is cropped out of the
-   * section-1 hero cluster, where the cover is visible apart from its right
-   * margin — see TASK_ONE_CROP in scripts/build-guides-hero.cjs. Being a
-   * narrow strip rather than a full clipboard, it is presented differently in
-   * the component: cropped tall rather than fitted whole.
+   * ARTWORK. Only three clipboard renders were supplied for the four tasks.
+   * section2img.png — the clipboard the design shows in the middle of this
+   * section — is task 01's, the state the section loads with. Note its printed
+   * sheet reads "30-Day Capability Framework Action Plan" while task 01's
+   * panel is the Competency Framework Quality Test: the artwork and the copy
+   * disagree, which is how the asset was supplied.
+   *
+   * That leaves task 04 with no render, so its panel runs full width instead.
+   * Give it an `image` and it picks up the shared frame like the others.
    */
   navigator: {
     eyebrow: "Find your starting point",
@@ -123,10 +126,10 @@ export const guides = {
           primary: "Download the diagnostic",
           secondary: "Preview the questions",
           image: {
-            src: "/assets/images/guides/task-quality-test.webp",
+            src: "/assets/images/guides/clipboard-action-plan.webp",
             alt: "",
-            width: 240,
-            height: 670,
+            width: 883,
+            height: 1202,
           },
         },
       },
@@ -190,13 +193,155 @@ export const guides = {
           meta: ["4 weeks", "PDF", "Roadmap"],
           primary: "Download the action plan",
           secondary: "Preview the 30-day roadmap",
-          image: {
-            src: "/assets/images/guides/task-action-plan.webp",
-            alt: "",
-            width: 883,
-            height: 1202,
-          },
+          /* No render of its own: only three clipboard images were supplied
+             for four tasks, and the one whose sheet reads "30-Day Action Plan"
+             is used as task 01's per the design's middle image. */
+          image: null,
         },
+      },
+    ],
+  },
+  /**
+   * SECTION 3 — the complete resource library.
+   *
+   * A search box and format filters on the left, the resource rows on the
+   * right. Filtering and search run client-side over the list below: there are
+   * five resources and no backend, so shipping them all and narrowing in the
+   * browser is both simpler and faster than a request per keystroke.
+   *
+   * The format counts in the sidebar are DERIVED from `items`, not written out,
+   * so they cannot drift as resources are added.
+   */
+  library: {
+    eyebrow: "The full library",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: ["Browse every guide,", "checklist and playbook."],
+
+    description:
+      "Practical resources for capability, learning and frontline performance—free to download and ready to use.",
+
+    /** Shown top-right, beside the headline. */
+    freeLabel: "Free to download",
+
+    searchPlaceholder: "Search the library",
+    filterLabel: "Filter by format",
+    allLabel: "All resources",
+    sortLabel: "Show newest first",
+
+    /** Shown under the rows. */
+    note: "More field-tested resources are being developed.",
+
+    /** Empty state, when a search or filter matches nothing. */
+    emptyLabel: "No resources match that search.",
+
+    /**
+     * Format tones, keyed by each resource's `format`. Sampled from the
+     * design, which colours the category tag by format rather than per row.
+     */
+    tones: {
+      playbook: "#ab4eee",
+      diagnostic: "#f86438",
+      checklist: "#819b78",
+      "pilot-guide": "#a371d5",
+      "action-plan": "#eda53a",
+    },
+
+    /** Plural labels for the sidebar filters, keyed by format. */
+    formatLabels: {
+      playbook: "Playbooks",
+      diagnostic: "Diagnostics",
+      checklist: "Checklists",
+      "pilot-guide": "Pilot guides",
+      "action-plan": "Action plans",
+    },
+
+    /**
+     * The resources, in the design's order. `format` drives both the sidebar
+     * filters and the tag colour; `tag` is the singular label on the row.
+     *
+     * Every row points at the same placeholder for now — the PDFs are not in
+     * the repo yet, and five links that all 404 would be worse than one honest
+     * anchor. Swap `href` per item once the files land.
+     */
+    items: [
+      {
+        id: "roles-to-readiness",
+        format: "playbook",
+        tag: "Playbook",
+        title: "From Roles to Readiness",
+        description:
+          "Build an AI-era competency framework in 10 practical steps.",
+        meta: ["42 pages", "PDF", "Templates included"],
+        image: {
+          src: "/assets/images/guides/library-playbook.webp",
+          alt: "",
+          width: 204,
+          height: 125,
+        },
+        href: "#library",
+      },
+      {
+        id: "quality-test",
+        format: "diagnostic",
+        tag: "Diagnostic",
+        title: "Competency Framework Quality Test",
+        description:
+          "Assess whether your framework is clear, observable and ready to use.",
+        meta: ["12 questions", "10 min", "PDF"],
+        image: {
+          src: "/assets/images/guides/library-diagnostic.webp",
+          alt: "",
+          width: 204,
+          height: 106,
+        },
+        href: "#library",
+      },
+      {
+        id: "readiness-checklist",
+        format: "checklist",
+        tag: "Checklist",
+        title: "AI-Era Learning Readiness Checklist",
+        description:
+          "Identify organisational gaps before investing in new learning.",
+        meta: ["18 checks", "10 min", "PDF"],
+        image: {
+          src: "/assets/images/guides/library-checklist.webp",
+          alt: "",
+          width: 204,
+          height: 106,
+        },
+        href: "#library",
+      },
+      {
+        id: "pilot-guide",
+        format: "pilot-guide",
+        tag: "Pilot guide",
+        title: "Conversation Intelligence Pilot Guide",
+        description: "Plan, launch and measure a controlled frontline pilot.",
+        meta: ["15 min read", "PDF", "Field guide"],
+        image: {
+          src: "/assets/images/guides/library-pilot-guide.webp",
+          alt: "",
+          width: 204,
+          height: 106,
+        },
+        href: "#library",
+      },
+      {
+        id: "action-plan",
+        format: "action-plan",
+        tag: "Action plan",
+        title: "30-Day Capability Framework Action Plan",
+        description: "Move from framework design into disciplined action.",
+        meta: ["4 weeks", "PDF", "Roadmap"],
+        image: {
+          src: "/assets/images/guides/library-action-plan.webp",
+          alt: "",
+          width: 204,
+          height: 104,
+        },
+        href: "#library",
       },
     ],
   },

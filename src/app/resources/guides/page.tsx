@@ -1,4 +1,5 @@
 import { GuidesHero } from "@/components/sections/guides/GuidesHero";
+import { GuidesLibrary } from "@/components/sections/guides/GuidesLibrary";
 import { GuidesNavigator } from "@/components/sections/guides/GuidesNavigator";
 import { guides } from "@/content/guides";
 import { buildMetadata } from "@/lib/seo";
@@ -23,9 +24,10 @@ export default function GuidesPage() {
 
       <GuidesNavigator />
 
-      {/* TODO(sections): sections 3-4 (the full library, from page to practice)
-          are specified in the supplied copy and go here as their designs are
-          built. */}
+      <GuidesLibrary />
+
+      {/* TODO(sections): section 4 (from page to practice) is specified in the
+          supplied copy and goes here as its design is built. */}
     </>
   );
 }
