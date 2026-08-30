@@ -3,8 +3,8 @@
  * ---------------------------------------------------------------------------
  * Copy for the LurnyBiz product page at /platform/biz.
  *
- * Section 1 is defined below; further sections are added here as their designs
- * land. Copy is verbatim from the supplied "LURNYBIZ.txt".
+ * Sections 1 and 2 are defined below; further sections are added here as their
+ * designs land. Copy is verbatim from the supplied "LURNYBIZ.txt".
  */
 
 export const biz = {
@@ -176,6 +176,67 @@ export const biz = {
         icon: "connect",
         title: "Connect capability to outcomes",
         description: "Track execution and drive measurable impact.",
+      },
+    ],
+  },
+
+  /**
+   * SECTION 2 — the problem LurnyBiz solves.
+   *
+   * A two-column layout: the statement on the left, four numbered items down
+   * the right separated by hairlines.
+   *
+   * The eyebrow and the item numbers are set in the MONOSPACE face, which is
+   * how the design distinguishes this section's furniture from its prose.
+   * JetBrains Mono is already loaded as the theme's `font-mono`.
+   *
+   * The numbers are content rather than a CSS counter: the design shows them
+   * zero-padded, and a counter would force the padding into a pseudo-element
+   * where it could not be read or translated.
+   */
+  problem: {
+    eyebrow: "The problem LurnyBiz solves",
+
+    /**
+     * Split so the lines break where the design breaks them on lg+.
+     *
+     * The last line ends with a full stop the design sets in amber, kept out
+     * of the string so it can be coloured without splitting the word — see
+     * the `.` span in BizProblem.
+     */
+    headline: [
+      "Businesses have more",
+      "data than ever. Yet the",
+      "next action is still unclear",
+    ] as const,
+
+    description:
+      "CRM records, dashboards, customer conversations and field experience each reveal part of the story. But when these signals remain disconnected, teams react late, managers rely on instinct and valuable execution knowledge stays trapped with a few people.",
+
+    items: [
+      {
+        number: "01",
+        title: "Signals are scattered across systems",
+        description:
+          "CRM, BI and conversation data show fragments of performance. LurnyBiz connects them into one operational context.",
+      },
+      {
+        number: "02",
+        title: "Dashboards stop at \u201cwhat happened\u201d",
+        description:
+          "Leaders can see the gap, but not the action that will close it. LurnyBiz turns signals into explainable next-best actions.",
+      },
+      {
+        number: "03",
+        title: "Execution knowledge stays tribal",
+        description:
+          "The judgement of top managers and performers is difficult to scale. LurnyBiz captures these patterns and makes them available across teams.",
+      },
+      {
+        number: "04",
+        title: "Interventions arrive too late",
+        description:
+          "Coaching and learning are often disconnected from live business needs. LurnyBiz triggers targeted support at the moment of need.",
       },
     ],
   },

@@ -33,8 +33,6 @@ section 2 image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/re
 LURNY BIZ -
 
 
-lets add section-2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnybiz-section 5-full asset-pack (2)/section2.png
-
 Lets add section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnybiz-section 5-full asset-pack (2)/section3.png
 
 
@@ -54,9 +52,6 @@ Let's add section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/design
 
 --------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
 LURNY NOTES - 
-
-Add section 3 - 
-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnynotes-all assets/section3.png
 
 Add section4 - 
 /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnynotes-all assets/section4.png

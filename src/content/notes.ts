@@ -193,4 +193,68 @@ export const notes = {
       },
     ],
   },
+
+  /**
+   * SECTION 3 — context-aware email support.
+   *
+   * The statement on the left with three capability notes, and on the right a
+   * flow diagram: incoming email → context check → drafted reply in Teams.
+   */
+  context: {
+    eyebrow: "Context-aware email support",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: ["Reply faster.", "With the full context."],
+
+    description:
+      "LurnyNotes studies the conversation history and your approved knowledge base to draft timely, relevant and more accurate replies—right inside Microsoft Teams.",
+
+    /**
+     * The three capability notes, each behind its own cyan line icon. The
+     * icons are the supplied artwork, converted by
+     * scripts/build-notes-context-assets.cjs.
+     */
+    features: [
+      {
+        label: "Understands the conversation",
+        icon: {
+          src: "/assets/images/notes/context-understands.webp",
+          width: 62,
+          height: 61,
+        },
+      },
+      {
+        label: "Uses approved organisational knowledge",
+        icon: {
+          src: "/assets/images/notes/context-knowledge.webp",
+          width: 62,
+          height: 58,
+        },
+      },
+      {
+        label: "Prepares a reply for review",
+        icon: {
+          src: "/assets/images/notes/context-review.webp",
+          width: 62,
+          height: 62,
+        },
+      },
+    ],
+
+    /**
+     * The flow diagram.
+     *
+     * Shipped as ONE image rather than rebuilt in markup — see the note in
+     * scripts/build-notes-context-assets.cjs for why. Its `alt` describes the
+     * FLOW rather than transcribing the mockup's text: the three stages are
+     * the point, and the drafted reply inside it is illustrative filler that
+     * would only be noise read aloud.
+     */
+    diagram: {
+      src: "/assets/images/notes/context-flow.webp",
+      alt: "An incoming email is checked against approved sources, then a reply is drafted inside Microsoft Teams.",
+      width: 1071,
+      height: 668,
+    },
+  },
 } as const;
