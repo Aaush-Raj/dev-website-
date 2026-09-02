@@ -1,4 +1,5 @@
 import { BizHero } from "@/components/sections/biz/BizHero";
+import { BizIntegration } from "@/components/sections/biz/BizIntegration";
 import { BizProblem } from "@/components/sections/biz/BizProblem";
 import { biz } from "@/content/biz";
 import { buildMetadata } from "@/lib/seo";
@@ -22,6 +23,8 @@ export default function BizPage() {
       <BizHero />
 
       <BizProblem />
+
+      <BizIntegration />
 
       {/* TODO(sections): remaining LurnyBiz sections go here as designs
           land. */}

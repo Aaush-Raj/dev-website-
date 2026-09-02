@@ -3,7 +3,7 @@
  * ---------------------------------------------------------------------------
  * Copy for the LurnyBiz product page at /platform/biz.
  *
- * Sections 1 and 2 are defined below; further sections are added here as their
+ * Sections 1 to 3 are defined below; further sections are added here as their
  * designs land. Copy is verbatim from the supplied "LURNYBIZ.txt".
  */
 
@@ -239,5 +239,107 @@ export const biz = {
           "Coaching and learning are often disconnected from live business needs. LurnyBiz triggers targeted support at the moment of need.",
       },
     ],
+  },
+
+  /**
+   * SECTION 3 — CRM & business-data integration.
+   *
+   * Copy and three points on the left; on the right a flow diagram — four
+   * source systems feeding the LurnyBiz context layer, which feeds three
+   * outputs.
+   *
+   * THE DIAGRAM IS DRAWN from the values below, not the flat PNG supplied
+   * with the design. That export bakes every label into pixels: it cannot
+   * re-flow, its text is invisible to search and it turns soft when scaled.
+   * The same choice sections 1 makes for its panels.
+   *
+   * `tone` on a source keys BOTH its icon and the connector that runs from
+   * it to the hub, so a route is traceable by colour — which is how the
+   * design distinguishes the three streams.
+   */
+  integration: {
+    eyebrow: "CRM & business-data integration",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: [
+      "Bring every business",
+      "signal into one",
+      "intelligence layer.",
+    ] as const,
+
+    description:
+      "Connect the systems that already hold your customer, performance and operational data. LurnyBiz brings these signals into a shared context—without replacing the tools your teams already use.",
+
+    /** The three points beneath the description. */
+    points: [
+      { icon: "link", tone: "amber", label: "Connect, don't replace" },
+      {
+        icon: "pulse",
+        tone: "violet",
+        label: "Unify customer and performance signals",
+      },
+      { icon: "shield", tone: "green", label: "Secure, governed data access" },
+    ],
+
+    /** The four source systems down the left of the diagram. */
+    sources: [
+      {
+        icon: "person",
+        tone: "amber",
+        title: "CRM",
+        meta: "Accounts · Leads · Activities",
+      },
+      {
+        icon: "bars",
+        tone: "violet",
+        title: "BI & Dashboards",
+        meta: "Targets · Trends · Branch KPIs",
+      },
+      {
+        icon: "chat",
+        tone: "amber",
+        title: "Customer Conversations",
+        meta: "Intent · Objections · Commitments",
+      },
+      {
+        icon: "gear",
+        tone: "green",
+        title: "Operational Systems",
+        meta: "Transactions · Service · Workflow",
+      },
+    ],
+
+    /** The hub in the middle. */
+    hub: {
+      title: "LurnyBiz",
+      subtitle: "Business context layer",
+      rows: [
+        {
+          icon: "people",
+          tone: "amber",
+          label: "Identity & relationship context",
+        },
+        {
+          icon: "trend",
+          tone: "violet",
+          label: "Performance & opportunity signals",
+        },
+        {
+          icon: "sliders",
+          tone: "green",
+          label: "Execution patterns & business rules",
+        },
+      ],
+    },
+
+    /** The three outputs down the right. */
+    outputs: [
+      { icon: "person", tone: "amber", label: "Single Customer View" },
+      { icon: "target", tone: "violet", label: "Action Priorities" },
+      { icon: "bars", tone: "green", label: "Manager Insights" },
+    ],
+
+    footnote:
+      "Existing systems stay in place. LurnyBiz connects the context between them.",
   },
 } as const;

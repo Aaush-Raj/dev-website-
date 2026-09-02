@@ -257,4 +257,78 @@ export const notes = {
       height: 668,
     },
   },
+
+  /**
+   * SECTION 4 — conversation to action.
+   *
+   * The statement on the left with three capability notes, and on the right a
+   * workflow diagram: the meeting note, the actions it produces and the
+   * follow-up it drafts.
+   */
+  action: {
+    eyebrow: "Conversation to action",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: ["Every meeting ends", "with clarity, ownership", "and momentum"],
+
+    description:
+      "LurnyNotes turns client conversations into structured summaries, clear action items and ready-to-send follow-ups—so important commitments do not disappear once the meeting ends.",
+
+    /**
+     * The three capability notes. Each carries a title AND a description here,
+     * unlike section 3's single-line features — so this section renders them
+     * as its own list rather than reusing that markup.
+     *
+     * The icons are the supplied artwork, converted by
+     * scripts/build-notes-action-assets.cjs. They already include the rounded
+     * square around the glyph, so nothing draws a box around them.
+     */
+    features: [
+      {
+        title: "Understand what mattered",
+        description:
+          "Capture the discussion, key decisions, concerns and customer expectations.",
+        icon: {
+          src: "/assets/images/notes/action-understand.webp",
+          width: 70,
+          height: 73,
+        },
+      },
+      {
+        title: "Turn decisions into ownership",
+        description:
+          "Identify action items, responsible people and agreed timelines.",
+        icon: {
+          src: "/assets/images/notes/action-ownership.webp",
+          width: 70,
+          height: 73,
+        },
+      },
+      {
+        title: "Keep the conversation moving",
+        description:
+          "Prepare an accurate follow-up while the discussion is still fresh.",
+        icon: {
+          src: "/assets/images/notes/action-moving.webp",
+          width: 70,
+          height: 73,
+        },
+      },
+    ],
+
+    /**
+     * The workflow diagram.
+     *
+     * Shipped as ONE image — see the note in
+     * scripts/build-notes-action-assets.cjs. Its `alt` describes what the
+     * arrangement SHOWS rather than transcribing the mockup's sample text,
+     * which is illustrative filler and would only be noise read aloud.
+     */
+    diagram: {
+      src: "/assets/images/notes/action-flow.webp",
+      alt: "A completed meeting note producing a list of actions with owners and due dates, and a drafted follow-up message ready for review.",
+      width: 959,
+      height: 716,
+    },
+  },
 } as const;
