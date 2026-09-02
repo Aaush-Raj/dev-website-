@@ -63,3 +63,11 @@ Add section 5 -
 
 
 --------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
+CAMPUS -
+
+Now let's work on the campus page -
+http://localhost:3000/campus
+
+
+
+section6 -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnycampus/section6.png

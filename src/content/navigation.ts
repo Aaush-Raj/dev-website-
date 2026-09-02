@@ -56,7 +56,7 @@ export const mainNav: NavLink[] = [
   { label: "Platform", href: "/platform", mega: "platform" },
   { label: "Solutions", href: "/solutions" },
   { label: "Industries", href: "/industries" },
-  { label: "Customers", href: "/customers" },
+  { label: "Campus", href: "/campus" },
   { label: "Resources", href: "/resources", mega: "resources" },
   { label: "Company", href: "/company" },
 ];
