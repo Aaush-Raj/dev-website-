@@ -1,3 +1,6 @@
+import { BizAction } from "@/components/sections/biz/BizAction";
+import { BizCustomer } from "@/components/sections/biz/BizCustomer";
+import { BizDemo } from "@/components/sections/biz/BizDemo";
 import { BizHero } from "@/components/sections/biz/BizHero";
 import { BizIntegration } from "@/components/sections/biz/BizIntegration";
 import { BizProblem } from "@/components/sections/biz/BizProblem";
@@ -26,8 +29,11 @@ export default function BizPage() {
 
       <BizIntegration />
 
-      {/* TODO(sections): remaining LurnyBiz sections go here as designs
-          land. */}
+      <BizCustomer />
+
+      <BizAction />
+
+      <BizDemo />
     </>
   );
 }

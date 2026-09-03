@@ -269,6 +269,102 @@ export const bizIntegrationIcons = {
   target: TargetArrowIcon,
 } as const;
 
+/** A clipboard with a tick. The open-commitments card. */
+export function ClipboardIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <rect x="4.8" y="4.6" width="14.4" height="15.2" rx="2.4" />
+      <path d="M9.2 3.4h5.6v3.2H9.2z" fill="currentColor" stroke="none" />
+      <path d="m8.8 13.4 1.9 1.9 3.6-3.9" />
+    </svg>
+  );
+}
+
+/** Glyphs used by the Customer 360 panel, keyed by the content's `icon`. */
+export const bizCustomerIcons = {
+  person: PersonIcon,
+  branch: BranchIcon,
+  chat: ChatIcon,
+  clipboard: ClipboardIcon,
+  bars: BarsIcon,
+} as const;
+
+/* ========================================================================== */
+/*  NEXT-BEST-ACTION GLYPHS                                                   */
+/* ========================================================================== */
+
+/** A car, front-on. The vehicle-loan recommendation. */
+export function CarIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M4.4 16.6v2.4a1 1 0 0 1-1 1H2.8a1 1 0 0 1-1-1v-2.4M22.2 16.6v2.4a1 1 0 0 1-1 1h-.6a1 1 0 0 1-1-1v-2.4" />
+      <path d="M2.6 16.6v-3.4l2-4.8A2 2 0 0 1 6.4 7.2h11.2a2 2 0 0 1 1.8 1.2l2 4.8v3.4z" />
+      <path d="M2.8 13.4h18.4" />
+      <circle cx="7" cy="15" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="17" cy="15" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+/** A magnifier. The enquiry-recorded reason. */
+export function SearchIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <circle cx="10.8" cy="10.8" r="6.6" />
+      <path d="m15.6 15.6 4.4 4.4" />
+    </svg>
+  );
+}
+
+/** Two clasped hands. The existing-relationship reason. */
+export function HandshakeIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="m11.4 8.6-2.2 2.2a1.9 1.9 0 0 0 2.7 2.7l1-1 2.4 2.4a1.7 1.7 0 0 0 2.4-2.4" />
+      <path d="M2.6 9.4 6.2 5.8h4l3 3M21.4 9.4 17.8 5.8h-3.6" />
+      <path d="m14.6 15 1.6 1.6a1.7 1.7 0 0 1-2.4 2.4L12.2 17.4" />
+    </svg>
+  );
+}
+
+/** A clock face. The "why now" card. */
+export function ClockIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <circle cx="12" cy="12" r="8.6" />
+      <path d="M12 7.2V12l3.2 2" />
+    </svg>
+  );
+}
+
+/** An upward arrow. The high-priority chip. */
+export function ArrowUpIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M12 19.4V4.6M6.2 10.4 12 4.6l5.8 5.8" />
+    </svg>
+  );
+}
+
+/** A chat bubble with an arrow. The guided-conversation control. */
+export function ChatArrowIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <circle cx="12" cy="12" r="8.6" />
+      <path d="M8.4 12h7.2M12.6 9 15.6 12l-3 3" />
+    </svg>
+  );
+}
+
+/** Glyphs used by the next-best-action panel, keyed by the content's `icon`. */
+export const bizActionIcons = {
+  search: SearchIcon,
+  calendar: CalendarIcon,
+  handshake: HandshakeIcon,
+  person: PersonIcon,
+  chat: ChatArrowIcon,
+} as const;
+
 /** The glyphs used inside the drawn panels. */
 export const bizPanelIcons = {
   alert: AlertIcon,

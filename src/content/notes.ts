@@ -331,4 +331,135 @@ export const notes = {
       height: 716,
     },
   },
+
+  /**
+   * SECTION 5 — the demo request.
+   *
+   * The pitch on the left, the shared LeadForm on a raised card to the right —
+   * the same arrangement every other product page closes with.
+   *
+   * This design asks for six fields rather than four, so it supplies the
+   * optional `organisation` text field and `selectC`; see the notes on those in
+   * components/ui/LeadForm.tsx.
+   */
+  demo: {
+    eyebrow: "See LurnyNotes in action",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: ["Turn every", "meeting into", "clear action."],
+
+    description:
+      "Tell us how your teams capture meetings and follow-ups. We'll show you how LurnyNotes turns conversations into clear summaries, owned actions and context-aware follow-up drafts inside Microsoft Teams.",
+
+    /** The two lines under the rule, each with an icon. */
+    points: [
+      {
+        icon: "clock",
+        text: "30 minutes · tailored to your meeting and communication workflows",
+      },
+      {
+        icon: "check",
+        text: "See how LurnyNotes keeps decisions, owners and follow-ups moving",
+      },
+    ],
+
+    form: {
+      name: {
+        name: "fullName",
+        label: "Full name",
+        placeholder: "Your name",
+        autoComplete: "name",
+      },
+      email: {
+        name: "workEmail",
+        label: "Work email",
+        placeholder: "name@company.com",
+        autoComplete: "email",
+      },
+      organisation: {
+        name: "organisation",
+        label: "Organisation",
+        placeholder: "Company name",
+        autoComplete: "organization",
+      },
+
+      selectA: {
+        name: "workforceSize",
+        label: "Your workforce size",
+        options: [
+          "Select workforce size",
+          "Under 500",
+          "500 – 2,000",
+          "2,000 – 10,000",
+          "10,000 – 50,000",
+          "50,000+",
+        ],
+      },
+      /**
+       * Required, per the asterisk in the design — which means the resting
+       * option is treated as unanswered. See the note on `required` in
+       * LeadForm's SelectFieldContent for why the flag and the error go
+       * together.
+       */
+      selectB: {
+        name: "primaryUseCase",
+        label: "Primary use case",
+        options: [
+          "Select a use case",
+          "Client and customer meetings",
+          "Internal team meetings",
+          "Sales and account reviews",
+          "Project and delivery updates",
+          "Something else",
+        ],
+        required: true,
+        error: "Please select a primary use case.",
+      },
+      selectC: {
+        name: "meetingPlatform",
+        label: "Meeting platform",
+        options: [
+          "Select your meeting platform",
+          "Microsoft Teams",
+          "Zoom",
+          "Google Meet",
+          "In person",
+          "A mix of these",
+        ],
+      },
+
+      detail: {
+        name: "currentChallenge",
+        label: "Current challenge (optional)",
+        placeholder:
+          "e.g. missed actions, delayed follow-ups or fragmented meeting notes",
+        autoComplete: "off",
+      },
+
+      consent: {
+        name: "sendOverview",
+        label: "Send me the LurnyNotes overview.",
+      },
+
+      submit: "Book a LurnyNotes Demo",
+
+      success: {
+        title: "Request received.",
+        description:
+          "We will be in touch within one business day to arrange a time.",
+      },
+
+      errors: {
+        name: "Please enter your name.",
+        email: "Please enter your work email.",
+        emailFormat: "Please enter a valid email address.",
+        organisation: "Please enter your organisation.",
+      },
+
+      footnote: {
+        text: "Want to explore the wider Lurny platform? {0}",
+        links: [{ label: "Talk to a Lurny Specialist.", href: "/contact" }],
+      },
+    },
+  },
 } as const;

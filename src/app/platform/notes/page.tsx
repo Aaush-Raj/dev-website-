@@ -1,5 +1,6 @@
 import { NotesAction } from "@/components/sections/notes/NotesAction";
 import { NotesContext } from "@/components/sections/notes/NotesContext";
+import { NotesDemo } from "@/components/sections/notes/NotesDemo";
 import { NotesHero } from "@/components/sections/notes/NotesHero";
 import { NotesProblem } from "@/components/sections/notes/NotesProblem";
 import { notes } from "@/content/notes";
@@ -28,6 +29,8 @@ export default function NotesPage() {
       <NotesContext />
 
       <NotesAction />
+
+      <NotesDemo />
 
       {/* TODO(sections): remaining LurnyNotes sections go here as designs
           land. */}
