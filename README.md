@@ -146,7 +146,7 @@ at the registrar.
   HTML/CSS/JS to `out/`. No server, no API routes, no server actions.
 - `.github/workflows/azure-static-web-apps.yml` builds on every push to `main`
   and uploads `out/`. Pull requests get a preview URL as a PR comment.
-- `staticwebapp.config.json` carries the security headers, cache headers and
+- `public/staticwebapp.config.json` (copied into `out/` by the build) carries the security headers, cache headers and
   the 404 page (Next's `headers()` is a no-op in export mode).
 - `NEXT_PUBLIC_SITE_URL` is set in the workflow; `AZURE_STATIC_WEB_APPS_API_TOKEN`
   is a repo secret (the SWA deployment token).

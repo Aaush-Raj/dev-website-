@@ -79,7 +79,7 @@ const nextConfig: NextConfig = {
 
   /**
    * Security headers are NOT set here. Under `output: "export"` Next ignores
-   * `headers()`; the equivalents are configured in `staticwebapp.config.json`
+   * `headers()`; the equivalents are configured in `public/staticwebapp.config.json`
    * (Azure Static Web Apps, www.lurny.ai).
    */
 };
