@@ -136,6 +136,21 @@ Adding a page:
 2. Export `metadata` from `buildMetadata({ title, description, path })`
 3. Add the path to the `routes` array in [`src/app/sitemap.ts`](src/app/sitemap.ts)
 
+## Deployment
+
+Hosted on **Azure Static Web Apps** (`lurny-ai-website`, resource group
+`Lurny`) at **https://www.lurny.ai**; the apex `lurny.ai` is forwarded to www
+at the registrar.
+
+- `next.config.ts` uses `output: "export"` — `npm run build` writes plain
+  HTML/CSS/JS to `out/`. No server, no API routes, no server actions.
+- `.github/workflows/azure-static-web-apps.yml` builds on every push to `main`
+  and uploads `out/`. Pull requests get a preview URL as a PR comment.
+- `staticwebapp.config.json` carries the security headers, cache headers and
+  the 404 page (Next's `headers()` is a no-op in export mode).
+- `NEXT_PUBLIC_SITE_URL` is set in the workflow; `AZURE_STATIC_WEB_APPS_API_TOKEN`
+  is a repo secret (the SWA deployment token).
+
 ## Before launch
 
 - [ ] Replace placeholder colours in `tokens/colors.css` with the brand palette

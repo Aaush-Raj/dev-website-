@@ -8,6 +8,14 @@ import type { NextConfig } from "next";
  */
 
 const nextConfig: NextConfig = {
+  /**
+   * Static export. The site has no API routes or server actions, so `next
+   * build` emits plain HTML/CSS/JS into `out/`, which is deployed to Azure
+   * Static Web Apps (www.lurny.ai). Security headers below are ignored in this
+   * mode — the equivalents live in `staticwebapp.config.json`.
+   */
+  output: "export",
+
   // Pin the workspace root. Without this, Turbopack walks up the directory
   // tree and can latch onto an unrelated lockfile in a parent folder.
   turbopack: {
@@ -50,6 +58,9 @@ const nextConfig: NextConfig = {
   trailingSlash: false,
 
   images: {
+    // Static export has no image optimisation server. Assets are already
+    // hand-optimised WebP under public/assets, so serve them as-is.
+    unoptimized: true,
     // AVIF first (smallest), WebP fallback. Next negotiates per request.
     formats: ["image/avif", "image/webp"],
     // Widths generated for responsive srcset. Trimmed to realistic breakpoints
@@ -67,41 +78,10 @@ const nextConfig: NextConfig = {
   compress: true,
 
   /**
-   * Security headers.
-   *
-   * NOTE: these apply to `next start` and Vercel. A pure static export
-   * (`output: "export"` behind a plain CDN) ignores them — configure the
-   * equivalents at the CDN if you go that route.
+   * Security headers are NOT set here. Under `output: "export"` Next ignores
+   * `headers()`; the equivalents are configured in `staticwebapp.config.json`
+   * (Azure Static Web Apps, www.lurny.ai).
    */
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          // Block MIME-type sniffing.
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          // Disallow framing — clickjacking protection.
-          { key: "X-Frame-Options", value: "DENY" },
-          // Send the origin only on cross-origin requests.
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
-          },
-          // Deny powerful APIs this site has no use for.
-          {
-            key: "Permissions-Policy",
-            value:
-              "camera=(), microphone=(), geolocation=(), interest-cohort=()",
-          },
-          // Force HTTPS for two years, subdomains included.
-          {
-            key: "Strict-Transport-Security",
-            value: "max-age=63072000; includeSubDomains; preload",
-          },
-        ],
-      },
-    ];
-  },
 };
 
 export default nextConfig;

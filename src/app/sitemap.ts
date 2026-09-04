@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
 
+// Required for `output: "export"` — metadata routes must opt in to static.
+export const dynamic = "force-static";
+
 import { absoluteUrl } from "@/lib/site";
 
 /**
