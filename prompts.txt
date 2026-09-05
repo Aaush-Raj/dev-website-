@@ -30,23 +30,20 @@ section 2 image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/re
 
 
 
- -
-
 
 
 
 --------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
-LURNY NOTES - 
+SOLUTIONS PAGE - 
 
+
+
+Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Page assets/section5.png
+
+
+Section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Page assets/section6.png
 
 
 
 --------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
 CAMPUS -
-
-Now let's work on the campus page -
-http://localhost:3000/campus
-
-
-
-section6 -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnycampus/section6.png

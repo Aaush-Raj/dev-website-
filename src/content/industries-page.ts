@@ -596,4 +596,153 @@ export const industriesPage = {
       },
     },
   },
+
+  /**
+   * SECTION 5 — telecom.
+   *
+   * Copy and three points on the left; on the right an isometric network
+   * scene overlaid with six drawn panels and five site labels.
+   *
+   * THE SCENE SHIPS AS AN IMAGE — it is a rendered 3D illustration of towers,
+   * a hub and their links, which markup could not reproduce. The PANELS over
+   * it are DRAWN from the values below, as everywhere else on this build: the
+   * design's own composite bakes their labels into pixels, and a picture of
+   * text cannot re-flow or be searched.
+   *
+   * The panels are positioned as percentages of the scene's box, so they
+   * track the artwork at any width rather than drifting from the sites they
+   * annotate.
+   */
+  telecom: {
+    eyebrow: "Telecom",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: [
+      "Build project capability",
+      "for every network rollout.",
+    ] as const,
+
+    description:
+      "Telecom projects demand coordination across design, procurement, field teams, vendors and customers. Lurny turns project methodologies, playbooks and lessons learned into role-based learning, practice and guidance.",
+
+    /** The three points beneath the description. */
+    points: [
+      {
+        icon: "/assets/images/industries/telecom/role-ready-project-teams.webp",
+        title: "Build role-ready project teams",
+        description:
+          "Develop planning, stakeholder and execution capability for every project role.",
+      },
+      {
+        icon: "/assets/images/industries/telecom/critical-project-decisions.webp",
+        title: "Practise critical project decisions",
+        description:
+          "Use realistic scenarios to prepare teams for delays, risks and change.",
+      },
+      {
+        icon: "/assets/images/industries/telecom/project-knowledge.webp",
+        title: "Carry lessons into the next rollout",
+        description:
+          "Turn project experience and institutional knowledge into reusable guidance.",
+      },
+    ],
+
+    /** The isometric scene the panels are laid over. */
+    scene: {
+      src: "/assets/images/industries/telecom/network-scene.webp",
+      /**
+       * Decorative: every fact the illustration carries is also written out
+       * in the panels laid over it and the copy beside it, so describing the
+       * picture again would repeat what a screen reader already reads.
+       */
+      alt: "",
+      width: 1200,
+      height: 675,
+    },
+
+    /** BOX 01 — the rollout phase tracker, top centre. */
+    rollout: {
+      title: "Network Rollout · Phase 3",
+      /** `state` drives each node: done, active, or still to come. */
+      steps: [
+        { label: "Site Survey", state: "done" },
+        { label: "Design", state: "done" },
+        { label: "Permits", state: "done" },
+        { label: "Deployment", state: "active" },
+        { label: "Integration", state: "todo" },
+        { label: "Handover", state: "todo" },
+      ],
+      progress: { label: "Deployment · 62%", value: 62 },
+    },
+
+    /** BOX 02 — the risk callout, top right. */
+    risk: {
+      title: "Risk: Permit delay · Site BLR-07",
+      rows: [
+        { label: "Impact", value: "High" },
+        { label: "Likelihood", value: "Medium" },
+      ],
+      mitigation: { label: "Mitigation", value: "Escalated to city authority" },
+    },
+
+    /** BOX 03 — milestones, lower left of the scene. */
+    milestones: {
+      title: "Milestones & Dependencies",
+      items: [
+        { label: "Site Survey Complete", value: "100%", state: "done" },
+        { label: "Design Approved", value: "100%", state: "done" },
+        { label: "Permits Secured", value: "100%", state: "done" },
+        { label: "Deployment In Progress", value: "62%", state: "active" },
+        { label: "Integration & Testing", value: "0%", state: "todo" },
+        { label: "Handover & Closure", value: "0%", state: "todo" },
+      ],
+    },
+
+    /**
+     * BOXES 04-06 — the three cards along the foot.
+     *
+     * `kind` selects what sits under the copy: a labelled progress bar, a
+     * bare one, or a tag.
+     */
+    cards: [
+      {
+        kind: "progress",
+        icon: "/assets/images/industries/telecom/scenario-practice.webp",
+        title: "Scenario practice",
+        meta: "Vendor delay",
+        description: "Simulate vendor delay impact on schedule and cost.",
+        progress: { label: "72% complete", value: 72 },
+      },
+      {
+        kind: "progress",
+        icon: "/assets/images/industries/telecom/project-manager-readiness.webp",
+        title: "Project Manager",
+        meta: "Readiness L3",
+        description: "Demonstrates capability to lead multi-site rollouts.",
+        progress: { label: "85%", value: 85 },
+      },
+      {
+        kind: "tag",
+        icon: "/assets/images/industries/telecom/change-control-playbook.webp",
+        title: "Change Control Playbook",
+        description:
+          "Standard steps for assessing, approving and communicating changes.",
+        tag: "Playbook",
+      },
+    ],
+
+    /**
+     * The site labels pinned to the scene.
+     *
+     * `left` and `top` are percentages of the scene's box, measured from the
+     * design so each label sits beside the site it names.
+     */
+    sites: [
+      { label: "Site BLR-07", left: 25, top: 47 },
+      { label: "Network Hub", left: 51, top: 62 },
+      { label: "Site HYD-12", left: 88, top: 55 },
+      { label: "Site PUN-21", left: 34, top: 75 },
+      { label: "Site CHN-03", left: 86, top: 71 },
+    ],
+  },
 } as const;
