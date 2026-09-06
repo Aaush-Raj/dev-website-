@@ -146,6 +146,7 @@
   --font-display: var(--font-display);
   --font-serif: var(--font-serif);
   --font-mono: var(--font-mono);
+  --font-hand: var(--font-hand);
 
   --text-xs: var(--text-xs);
   --text-sm: var(--text-sm);

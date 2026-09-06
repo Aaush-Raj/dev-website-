@@ -87,12 +87,32 @@ export interface LeadFormContent {
   selectA: SelectFieldContent;
   selectB: SelectFieldContent;
   /**
+   * Makes `selectB` span both columns instead of sharing a row with
+   * `selectA`.
+   *
+   * Opt-in rather than inferred from the absence of a sixth field: the pages
+   * that ship five fields deliberately pair the two selects, and widening
+   * `selectB` for them would strand `selectA` on a half row with a gap beside
+   * it. The LurnyKxP design is the one that asks for the full-width select.
+   */
+  wideSelectB?: boolean;
+  /**
    * OPTIONAL third select, following the other two.
    *
    * Same reasoning as `organisation`: the Industries design needs six fields
    * in a 2x3 grid where the rest of the site needs four.
    */
   selectC?: SelectFieldContent;
+  /**
+   * OPTIONAL third text field, sitting beside `selectB` in the grid.
+   *
+   * Added for the LurnySense page, whose sixth field is a free-text "current
+   * analytics tool" where the Industries design has a third select. Optional
+   * for the same reason as the two above: every existing caller omits it and
+   * is unchanged. It is never required — the designs that ask for it treat it
+   * as supplementary — so it needs no error copy.
+   */
+  textC?: TextFieldContent;
   /** Free-text field spanning both columns. */
   detail: TextFieldContent;
   consent: { name: string; label: string };
@@ -339,6 +359,7 @@ export function LeadForm({
     fullName: "",
     workEmail: "",
     organisation: "",
+    textC: "",
     detail: "",
     selectA: content.selectA.options[0] as string,
     selectB: content.selectB.options[0] as string,
@@ -573,7 +594,10 @@ export function LeadForm({
         </div>
 
         {/* --------------------------- Select B --------------------- */}
-        <div>
+        {/* Full width only when the caller asks for it — see `wideSelectB`.
+            Defaulting to it would break the pages that pair this select with
+            `selectA` on one row. */}
+        <div className={cn(content.wideSelectB && "sm:col-span-2")}>
           <FieldLabel
             htmlFor={fieldId("selectB")}
             required={content.selectB?.required}
@@ -607,6 +631,27 @@ export function LeadForm({
               onChange={(value) => update("selectC", value)}
             />
             <FieldError id={errorId("selectC")}>{errors.selectC}</FieldError>
+          </div>
+        )}
+
+        {/* --------------------------- Text C ----------------------- */}
+        {/* Optional and never required, so it carries no asterisk and no
+            error region — see the note on `textC`. */}
+        {content.textC && (
+          <div>
+            <FieldLabel htmlFor={fieldId("textC")}>
+              {content.textC.label}
+            </FieldLabel>
+            <input
+              id={fieldId("textC")}
+              name={content.textC.name}
+              type="text"
+              autoComplete={content.textC.autoComplete}
+              placeholder={content.textC.placeholder}
+              value={values.textC}
+              onChange={(event) => update("textC", event.target.value)}
+              className={cn(fieldStyles, "mt-2 h-11 border-neutral-300")}
+            />
           </div>
         )}
 

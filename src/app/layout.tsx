@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import {
+  Caveat,
   Inter_Tight,
   JetBrains_Mono,
   Playfair_Display,
@@ -58,6 +59,19 @@ const fontSerif = Playfair_Display({
   weight: ["400", "500", "600"],
 });
 
+/**
+ * Caveat — the handwriting face used for the annotations that sit outside
+ * product diagrams (the frontline hero's loop is the first to use it). The
+ * designs draw these as marker-pen notes, and a slanted sans reads as emphasis
+ * rather than as a hand-written aside.
+ */
+const fontHand = Caveat({
+  subsets: ["latin"],
+  variable: "--font-hand-src",
+  display: "swap",
+  weight: ["500", "600", "700"],
+});
+
 /** Eyebrow labels — the design sets them in a wide-tracked monospace. */
 const fontMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -108,7 +122,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang={siteConfig.lang}
-      className={`${fontSans.variable} ${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable}`}
+      className={`${fontSans.variable} ${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable} ${fontHand.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-dvh flex-col">

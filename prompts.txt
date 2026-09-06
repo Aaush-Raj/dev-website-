@@ -27,23 +27,36 @@ section 2 image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/re
 
 
 --------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
+SOLUTIONS > PERFORMANCE PAGE > http://localhost:3000/solutions/frontline: 
+
+section 1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/section1.png
+
+bg main -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/1 Solutions - Frontline - Hero Section/ChatGPT Image Sep 6, 2026, 01_36_09 AM (1).png
+second image on top of bg of girl and other text - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/1 Solutions - Frontline - Hero Section/ChatGPT Image Sep 6, 2026, 01_36_09 AM (2).png
 
 
 
 
+section 2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/section2.png
+BG Image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/frontline-performance-problem-assets/01-dark-section-background.png
+Image section - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/frontline-performance-problem-assets/02-customer-interaction-illustration.png
+Then you need to give that containers on top , keep that html but little  transparent 
 
 
---------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
-SOLUTIONS PAGE - 
+section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/section3.png
+Below image in the section - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/frontline-readiness-to-results-assets/02-connected-path-composite.png
+You just have to code the header part of this section, the rest of the section is just this image. 
 
 
+section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/section5.png
+INGORE SECTION 5 , ASSETS NOT PROVIDED CLEARLY
 
-Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Page assets/section5.png
+section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/section6.png
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/pitch-real-conversations-assets/01-pitch-section-background.png
+IGNORE THIS SECTION < ASSETS NOT PROVIDED
 
 
-Section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Page assets/section6.png
+section8 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/section8.png
+IGNORE THIS SECTION < ASSETS NOT PROVIDED
 
 
-
---------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
-CAMPUS -

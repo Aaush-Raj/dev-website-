@@ -22,6 +22,11 @@
                   serif;
   --font-mono:    var(--font-mono-src), ui-monospace, SFMono-Regular, "SF Mono",
                   Menlo, Consolas, "Liberation Mono", monospace;
+  /* Handwritten annotations on product diagrams. The cursive fallbacks matter
+     here: if Caveat fails to load, a grotesque would read as ordinary copy
+     rather than as a margin note. */
+  --font-hand:    var(--font-hand-src), "Segoe Script", "Bradley Hand",
+                  "Comic Sans MS", cursive;
 
   /* ---------------------------------------------------------------------
      FLUID TYPE SCALE
