@@ -1,8 +1,10 @@
 import { SolutionsCaseStudy } from "@/components/sections/solutions-page/SolutionsCaseStudy";
 import { SolutionsEngines } from "@/components/sections/solutions-page/SolutionsEngines";
 import { SolutionsHero } from "@/components/sections/solutions-page/SolutionsHero";
+import { SolutionsInclusive } from "@/components/sections/solutions-page/SolutionsInclusive";
 import { SolutionsNeeds } from "@/components/sections/solutions-page/SolutionsNeeds";
 import { SolutionsRealities } from "@/components/sections/solutions-page/SolutionsRealities";
+import { SolutionsSpecialist } from "@/components/sections/solutions-page/SolutionsSpecialist";
 import { solutionsPage } from "@/content/solutions-page";
 import { buildMetadata } from "@/lib/seo";
 
@@ -32,8 +34,9 @@ export default function SolutionsPage() {
 
       <SolutionsRealities />
 
-      {/* TODO(sections): remaining solutions sections go here as designs
-          land. */}
+      <SolutionsInclusive />
+
+      <SolutionsSpecialist />
     </>
   );
 }

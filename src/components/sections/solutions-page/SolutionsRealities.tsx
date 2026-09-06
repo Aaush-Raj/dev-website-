@@ -131,14 +131,18 @@ export function SolutionsRealities() {
           the labelled list below, which is what a screen reader gets.
         */}
         <div className="relative mt-14 hidden lg:block" aria-hidden="true">
-          <div className="flex items-center gap-5">
+          <div className="flex items-center">
             {/* The waveform at the left end. */}
             <span className="shrink-0 text-[#a96af6]">
               <WaveformIcon className="h-12 w-24" />
             </span>
 
-            {/* The curve itself, filling the space between the two icons. */}
-            <div className="relative min-w-0 flex-1">
+            {/*
+              The curve, filling the space between the icons. Negative margins
+              tuck its ends a few pixels UNDER each icon, so the line visibly
+              meets them instead of stopping short across a gap.
+            */}
+            <div className="relative -mx-2 min-w-0 flex-1">
               <svg
                 viewBox={`0 0 ${VB_W} ${VB_H}`}
                 preserveAspectRatio="none"
@@ -158,25 +162,50 @@ export function SolutionsRealities() {
                   </linearGradient>
                 </defs>
 
-                <motion.path
+                {/*
+                  The reveal is a moving CLIP, not `pathLength`.
+
+                  `pathLength` makes Framer paint the line as a normalised dash
+                  pattern, and `vectorEffect="non-scaling-stroke"` then stops
+                  that pattern scaling with the horizontally stretched viewBox —
+                  so the stroke thins out and vanishes toward the right, well
+                  short of the kiosk. A clip rectangle sweeping left to right
+                  gives the same draw-on effect and leaves the stroke solid.
+                */}
+                <defs>
+                  <clipPath id="sol-wave-reveal">
+                    <motion.rect
+                      x="0"
+                      y="0"
+                      height={VB_H}
+                      initial={reduce ? "shown" : "hidden"}
+                      whileInView="shown"
+                      viewport={{ once: true, amount: "some" }}
+                      variants={{
+                        hidden: { width: 0 },
+                        shown: {
+                          width: VB_W,
+                          transition: {
+                            duration: 1.6,
+                            delay: 0.3,
+                            ease: easeOut,
+                          },
+                        },
+                      }}
+                    />
+                  </clipPath>
+                </defs>
+
+                <path
                   d={CURVE_PATH}
                   fill="none"
                   stroke="url(#sol-wave-line)"
                   strokeWidth="2.5"
                   strokeLinecap="round"
-                  // Non-scaling so the stroke stays 2.5px however the viewBox
-                  // is stretched horizontally.
+                  // Non-scaling keeps the stroke an even 2.5px however the
+                  // viewBox is stretched horizontally.
                   vectorEffect="non-scaling-stroke"
-                  initial={reduce ? "shown" : "hidden"}
-                  whileInView="shown"
-                  viewport={{ once: true, amount: "some" }}
-                  variants={{
-                    hidden: { pathLength: 0 },
-                    shown: {
-                      pathLength: 1,
-                      transition: { duration: 1.6, delay: 0.3, ease: easeOut },
-                    },
-                  }}
+                  clipPath="url(#sol-wave-reveal)"
                 />
               </svg>
 
