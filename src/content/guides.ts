@@ -72,8 +72,8 @@ export const guides = {
     cluster: {
       src: "/assets/images/guides/hero-cluster.webp",
       alt: "",
-      width: 1289,
-      height: 941,
+      width: 1536,
+      height: 1024,
     },
   },
 

@@ -30,6 +30,13 @@ const routes: Route[] = [
   { path: "/platform/saathi", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/kxp", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/notes", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/solutions", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/solutions/frontline", priority: 0.8, changeFrequency: "monthly" },
+  {
+    path: "/solutions/sales-enablement",
+    priority: 0.8,
+    changeFrequency: "monthly",
+  },
   { path: "/resources", priority: 0.7, changeFrequency: "weekly" },
   { path: "/resources/insights", priority: 0.7, changeFrequency: "weekly" },
   { path: "/resources/events", priority: 0.7, changeFrequency: "weekly" },

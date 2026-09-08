@@ -60,3 +60,45 @@ section8 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Frontlin
 IGNORE THIS SECTION < ASSETS NOT PROVIDED
 
 
+--------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
+Now lets work on sales enablement page inside solutions https://www.lurny.ai/solutions/sales-enablement
+solutions >>> sales enablement:
+
+
+section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section1.png
+bg image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/Sales_Enablement_Hero_Assets/02_Background/hero_background_reconstructed.png
+card human talking image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/Sales_Enablement_Hero_Assets/01_Photo
+
+
+section 2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section2.png
+bg img - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/2 Lurny_Sales_Enablement_Reality_Assets/01_clean_illustrated_background_reconstructed.png
+
+
+section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section3.png
+ASSETS NOT PROVIDED DONT WORK ON THIS STOP!!
+
+
+section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section4.png
+
+section 5- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section5.png
+bg-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/Lurny_Sales_Enablement_Magic_Assets/backgrounds/bg1.png
+all cards in this - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/Lurny_Sales_Enablement_Magic_Assets/cards
+
+
+-------------------------------------------------------
+
+Lets work on LurnyEvents in platform section -http://localhost:3000/platform/events
+Add smooth animations and effects , make right side cards not copyable- 
+section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section1.png
+
+
+
+
+section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section2.png
+
+
+Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section3.png
+Add smooth animations and effects , make  cards not copyable.
+
+
+Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section4.png
