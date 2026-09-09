@@ -1,8 +1,15 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "motion/react";
 
 import { Container } from "@/components/ui/Container";
 import { Uncopyable } from "@/components/ui/Uncopyable";
@@ -43,6 +50,18 @@ import { ArrowIcon, BadgeIcon, PlusIcon } from "./LurnyEventsIcons";
  * designed proportion as the column narrows rather than the panels swamping
  * it. Below @3xl the record card drops beneath the console instead of
  * overlapping it, where there is no room beside it.
+ *
+ * THE TILT
+ * The console sits at a slight resting angle and leans toward the pointer as
+ * it crosses the panel, on springs rather than a plain transition so it settles
+ * with a little weight instead of snapping to each new position. Everything
+ * shares one perspective, so the record card floating above it separates in
+ * depth as the whole assembly turns, rather than sliding across a flat plane —
+ * a specular sheen tracks the pointer over the surface for the same reason.
+ *
+ * It is decorative: pointer-driven only, never focus-driven, so it cannot move
+ * under a keyboard user, and the whole effect is skipped outright under
+ * prefers-reduced-motion, which leaves the console square and still.
  *
  * IT IS UNCOPYABLE AND ARIA-HIDDEN
  * Asked for directly, and right anyway: it is imitation UI, so the copy on the
@@ -85,6 +104,40 @@ export function LurnyEventsHero() {
 
   const meterFill =
     (ui.glance.registered.value / ui.glance.capacity.value) * 100;
+
+  /* ---------------------------- The tilt ---------------------------- */
+  /* Pointer position over the panel, -0.5 to 0.5 on each axis, and 0 at rest.
+     Springs rather than a transition so the console carries a little weight
+     into each new angle instead of tracking the cursor exactly. */
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const spring = { stiffness: 150, damping: 18, mass: 0.6 } as const;
+  const springX = useSpring(pointerX, spring);
+  const springY = useSpring(pointerY, spring);
+
+  /* The resting angle the design gets from a static transform, plus the lean.
+     Y follows the pointer's X (turning left/right) and X follows its Y,
+     inverted so the panel tips away from the cursor rather than toward it. */
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-11, 5]);
+  const rotateX = useTransform(springY, [-0.5, 0.5], [7, -7]);
+
+  /* A specular sheen that tracks the pointer across the surface. */
+  const sheenX = useTransform(springX, [-0.5, 0.5], ["18%", "82%"]);
+  const sheenY = useTransform(springY, [-0.5, 0.5], ["12%", "88%"]);
+  const sheen = useMotionTemplate`radial-gradient(38rem 26rem at ${sheenX} ${sheenY}, rgb(196 181 253 / 0.16), transparent 62%)`;
+
+  /** Map the pointer onto the panel, as a fraction of its own box. */
+  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const box = event.currentTarget.getBoundingClientRect();
+    pointerX.set((event.clientX - box.left) / box.width - 0.5);
+    pointerY.set((event.clientY - box.top) / box.height - 0.5);
+  };
+
+  /** Back to the resting angle when the pointer leaves. */
+  const handlePointerLeave = () => {
+    pointerX.set(0);
+    pointerY.set(0);
+  };
 
   return (
     <section className="relative isolate overflow-hidden bg-[#110b29]">
@@ -210,7 +263,16 @@ export function LurnyEventsHero() {
 
           {/* ============================ Console ===================== */}
           {/* Uncopyable, as asked, and aria-hidden: imitation UI. */}
-          <Uncopyable aria-hidden className="relative @container">
+          <Uncopyable
+            aria-hidden
+            className="relative @container"
+            /* One perspective for the whole assembly, so the console and the
+               record card above it turn together in depth. Pointer-driven
+               only — see the note on the tilt at the top. */
+            style={reduce ? undefined : { perspective: "1600px" }}
+            onPointerMove={reduce ? undefined : handlePointerMove}
+            onPointerLeave={reduce ? undefined : handlePointerLeave}
+          >
             <motion.div
               initial={
                 reduce
@@ -220,12 +282,29 @@ export function LurnyEventsHero() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.85, delay: 0.18, ease: easeOut }}
               className={cn(
-                "rounded-[1em] border border-white/10 bg-[#1a1730]",
+                "relative rounded-[1em] border border-white/10 bg-[#1a1730]",
                 "text-[length:var(--ui)]",
                 "shadow-[0_40px_100px_-40px_rgb(0_0_0/0.85)]",
               )}
-              style={{ ["--ui" as string]: "clamp(0.62rem, 1.32cqw, 0.85rem)" }}
+              style={{
+                ["--ui" as string]: "clamp(0.62rem, 1.32cqw, 0.85rem)",
+                ...(reduce
+                  ? null
+                  : {
+                      rotateX,
+                      rotateY,
+                      transformStyle: "preserve-3d" as const,
+                    }),
+              }}
             >
+              {/* The sheen. Sits over the console but under the record card,
+                  and is masked to the panel's own radius. */}
+              {reduce ? null : (
+                <motion.span
+                  className="pointer-events-none absolute inset-0 z-20 rounded-[1em]"
+                  style={{ background: sheen }}
+                />
+              )}
               {/* ---------------------- Console bar ---------------- */}
               <div className="flex items-center gap-[1.5em] border-b border-white/8 px-[1.5em] py-[1.1em]">
                 <span className="flex items-center gap-[0.7em]">
@@ -465,7 +544,20 @@ export function LurnyEventsHero() {
                 "shadow-[0_26px_60px_-24px_rgb(0_0_0/0.7)]",
                 "@xl:absolute @xl:right-[-3%] @xl:bottom-[-6%] @xl:mt-0 @xl:w-[40%]",
               )}
-              style={{ ["--ui" as string]: "clamp(0.62rem, 1.32cqw, 0.85rem)" }}
+              style={{
+                ["--ui" as string]: "clamp(0.62rem, 1.32cqw, 0.85rem)",
+                ...(reduce
+                  ? null
+                  : {
+                      rotateX,
+                      rotateY,
+                      /* Pushed toward the viewer so the card lifts off the
+                         console as the assembly turns, instead of sliding
+                         across it on the same plane. */
+                      translateZ: 60,
+                      transformStyle: "preserve-3d" as const,
+                    }),
+              }}
             >
               <span className="flex items-center gap-[0.8em]">
                 <span className="grid size-[2.4em] shrink-0 place-items-center rounded-[0.5em] bg-[#f5c518] text-[#1a1035]">

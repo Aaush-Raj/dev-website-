@@ -211,9 +211,9 @@ export const resourcesMenu: {
           icon: "guides",
         },
         {
-          name: "Case Studies",
-          description: "How teams turned capability into performance",
-          href: "/resources/case-studies",
+          name: "Customer Stories",
+          description: "How organisations put learning to work",
+          href: "/customers",
           icon: "cases",
         },
       ],

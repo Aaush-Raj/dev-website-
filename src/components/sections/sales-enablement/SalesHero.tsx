@@ -45,14 +45,38 @@ const easeOut = [0.16, 1, 0.3, 1] as const;
 const { hero } = salesEnablement;
 
 /**
- * Where each card sits relative to the photo box, as percentages of it.
- * Measured from the design.
+ * Where each card sits relative to the photo box, as percentages of it, and
+ * how it arrives.
+ *
+ * `from` is the card's offset before it settles, in pixels. Each drifts in from
+ * the direction of its own corner — the top pair downward, the bottom pair up,
+ * and each away from the nearer edge — so the four read as settling ONTO the
+ * photograph rather than sliding in from one shared direction.
+ *
+ * `delay` staggers them clockwise from the top left, so the eye is led round
+ * the composition instead of being shown all four at once.
  */
 const CARD_SLOTS = {
-  magic: "left-[-4%] top-[-4%] w-[29%]",
-  chat: "right-[-6%] top-[-5%] w-[31%]",
-  pitch: "left-[1%] bottom-[-4%] w-[30%]",
-  biz: "right-[-6%] bottom-[-5%] w-[30%]",
+  magic: {
+    slot: "left-[-4%] top-[-4%] w-[29%]",
+    from: { x: -26, y: -18 },
+    delay: 0.55,
+  },
+  chat: {
+    slot: "right-[-6%] top-[-5%] w-[31%]",
+    from: { x: 26, y: -18 },
+    delay: 0.75,
+  },
+  biz: {
+    slot: "right-[-6%] bottom-[-5%] w-[30%]",
+    from: { x: 26, y: 18 },
+    delay: 0.95,
+  },
+  pitch: {
+    slot: "left-[1%] bottom-[-4%] w-[30%]",
+    from: { x: -26, y: 18 },
+    delay: 1.15,
+  },
 } as const;
 
 /** Accent per engine, sampled from the design. */
@@ -66,16 +90,25 @@ const ENGINE_TONES = {
 export function SalesHero() {
   const reduce = useReducedMotion();
 
+  /**
+   * The statement's lines, each a little after the last.
+   *
+   * Longer and softer than the site's usual rise: this is the first thing on
+   * the page, so it reads as the page settling rather than snapping into
+   * place. Blur is part of it — a few pixels resolving as the line arrives is
+   * what makes the entrance feel smooth rather than merely delayed.
+   */
   const rise = (delay: number) => ({
     initial: reduce ? "shown" : "hidden",
     whileInView: "shown",
     viewport: { once: true, amount: "some" } as const,
     variants: {
-      hidden: { opacity: 0, y: 18 },
+      hidden: { opacity: 0, y: 22, filter: "blur(6px)" },
       shown: {
         opacity: 1,
         y: 0,
-        transition: { duration: 0.6, delay, ease: easeOut },
+        filter: "blur(0px)",
+        transition: { duration: 0.85, delay, ease: easeOut },
       },
     },
   });
@@ -113,7 +146,7 @@ export function SalesHero() {
           {/* =========================== Statement ==================== */}
           <div>
             <motion.p
-              {...rise(0)}
+              {...rise(0.05)}
               className={cn(
                 "text-[0.6875rem] font-bold uppercase",
                 "tracking-[0.14em] text-[#8a02ff] sm:text-xs",
@@ -123,7 +156,7 @@ export function SalesHero() {
             </motion.p>
 
             <motion.h1
-              {...rise(0.08)}
+              {...rise(0.16)}
               className={cn(
                 "mt-6 font-display font-bold tracking-[-0.035em]",
                 "leading-[1.06] text-[#13101e]",
@@ -145,7 +178,7 @@ export function SalesHero() {
             </motion.h1>
 
             <motion.p
-              {...rise(0.16)}
+              {...rise(0.3)}
               className={cn(
                 "mt-7 max-w-[30rem] leading-relaxed text-pretty",
                 "text-[1rem] text-[#655f81] sm:text-[1.0625rem]",
@@ -156,7 +189,7 @@ export function SalesHero() {
 
             {/* --------------------------- Actions -------------------- */}
             <motion.div
-              {...rise(0.24)}
+              {...rise(0.42)}
               className="mt-9 flex flex-wrap items-center gap-4"
             >
               <Link
@@ -201,7 +234,7 @@ export function SalesHero() {
             </motion.div>
 
             <motion.p
-              {...rise(0.32)}
+              {...rise(0.54)}
               className="mt-7 text-[0.8125rem] text-[#726d8c] sm:text-sm"
             >
               {hero.poweredBy}
@@ -209,11 +242,17 @@ export function SalesHero() {
           </div>
 
           {/* ========================= Composition ==================== */}
+          {/* The photograph settles first and the cards arrive onto it — see
+              CARD_SLOTS for the order and the directions. */}
           <motion.div
-            initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={
+              reduce
+                ? { opacity: 1, y: 0, scale: 1 }
+                : { opacity: 0, y: 30, scale: 0.985 }
+            }
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: "some" }}
-            transition={{ duration: 0.85, delay: 0.2, ease: easeOut }}
+            transition={{ duration: 1, delay: 0.15, ease: easeOut }}
             className="@container relative"
           >
             {/* The photo. The cards hang off its corners, so it is the
@@ -245,20 +284,36 @@ export function SalesHero() {
                 // designed proportion at every width.
                 style={{ fontSize: "max(9px, 1.95cqw)" }}
               >
-                <CardShell slot={CARD_SLOTS.magic} engine={hero.cards.magic.engine}>
+                <CardShell
+                  placement={CARD_SLOTS.magic}
+                  engine={hero.cards.magic.engine}
+                  reduce={reduce ?? false}
+                >
                   <MagicCard />
                 </CardShell>
 
-                <CardShell slot={CARD_SLOTS.chat} engine={hero.cards.chat.engine}>
+                <CardShell
+                  placement={CARD_SLOTS.chat}
+                  engine={hero.cards.chat.engine}
+                  reduce={reduce ?? false}
+                >
                   <ChatCard />
                 </CardShell>
 
-                <CardShell slot={CARD_SLOTS.pitch} engine={hero.cards.pitch.engine}>
-                  <PitchCard />
+                <CardShell
+                  placement={CARD_SLOTS.biz}
+                  engine={hero.cards.biz.engine}
+                  reduce={reduce ?? false}
+                >
+                  <BizCard />
                 </CardShell>
 
-                <CardShell slot={CARD_SLOTS.biz} engine={hero.cards.biz.engine}>
-                  <BizCard />
+                <CardShell
+                  placement={CARD_SLOTS.pitch}
+                  engine={hero.cards.pitch.engine}
+                  reduce={reduce ?? false}
+                >
+                  <PitchCard />
                 </CardShell>
               </div>
             </div>
@@ -274,27 +329,58 @@ export function SalesHero() {
 /* ========================================================================== */
 
 /**
- * The white card, its engine header and its placement. Only the body differs
- * between the four, so only the body is passed in — see the note at the top.
+ * The white card, its engine header, its placement and its arrival. Only the
+ * body differs between the four, so only the body is passed in — see the note
+ * at the top.
+ *
+ * The card drifts in from the direction of its own corner, slightly small and
+ * blurred, and settles. `placement` carries where it sits, where it comes from
+ * and when — see CARD_SLOTS.
  */
 function CardShell({
-  slot,
+  placement,
   engine,
+  reduce,
   children,
 }: {
-  slot: string;
+  placement: (typeof CARD_SLOTS)[keyof typeof CARD_SLOTS];
   engine: keyof typeof ENGINE_TONES;
+  reduce: boolean;
   children: React.ReactNode;
 }) {
   const tone = ENGINE_TONES[engine];
 
   return (
-    <div
+    <motion.div
+      initial={
+        reduce
+          ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
+          : {
+              opacity: 0,
+              x: placement.from.x,
+              y: placement.from.y,
+              scale: 0.92,
+              filter: "blur(8px)",
+            }
+      }
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+      }}
+      viewport={{ once: true, amount: "some" }}
+      transition={{
+        duration: 0.9,
+        delay: placement.delay,
+        ease: easeOut,
+      }}
       className={cn(
         "absolute rounded-[1.1em] bg-white p-[1em]",
         "shadow-[0_18px_40px_-16px_rgb(30_15_60/0.28)]",
         "ring-1 ring-[#e8e4f2]",
-        slot,
+        placement.slot,
       )}
     >
       <p className="flex items-center gap-[0.6em]">
@@ -312,7 +398,7 @@ function CardShell({
       </p>
 
       {children}
-    </div>
+    </motion.div>
   );
 }
 

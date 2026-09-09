@@ -102,3 +102,19 @@ Add smooth animations and effects , make  cards not copyable.
 
 
 Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section4.png
+
+
+
+-----
+
+section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/section1.png
+bg img -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/Customer_Stories_Hero_Assets/01_Background.png
+side image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/Customer_Stories_Hero_Assets/02_Sculptural_Quotation_Charcoal.png
+
+
+section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/section2.png
+All card images - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/Customer_Stories_Hero_Images
+
+
+
+Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/section3.png
