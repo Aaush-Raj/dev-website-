@@ -106,15 +106,32 @@ Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebe
 
 
 -----
+Solutions > Capability Building : 
 
-section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/section1.png
-bg img -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/Customer_Stories_Hero_Assets/01_Background.png
-side image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/Customer_Stories_Hero_Assets/02_Sculptural_Quotation_Charcoal.png
-
-
-section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/section2.png
-All card images - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/Customer_Stories_Hero_Images
+Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section1.png
+Allimage assets - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/1 solutions capability building
 
 
+section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section2.png
+All image assets - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/2 solutions capability building
 
-Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Customer_stories/section3.png
+section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section3.png
+just the bg- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/3 capability-building-journey-assets/06-geometric-background.png
+I think rest of the cards and arrows we can code in this section rather than using images - make sure to make each card appearance with smooth animation, effects and hover effects and non copyable
+also make the arrow in the bottom animated and as accurate as possible
+
+
+Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section4.png
+Just the bg - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/4 capability-building-role-assets/03-slate-background-annotation.png
+Code and animate everything else and al other cards and texts
+
+
+Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section5.png
+Just the bg image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/5 capability-building-pulse-assets/03-woman-room-background.png
+I think rest of the cards  we can code in this section rather than using images - make sure to make each card appearance with smooth animation, effects and hover effects and non copyable
+
+
+
+
+
+
