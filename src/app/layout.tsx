@@ -3,7 +3,9 @@ import {
   Caveat,
   Inter_Tight,
   JetBrains_Mono,
+  Newsreader,
   Playfair_Display,
+  Plus_Jakarta_Sans,
 } from "next/font/google";
 import type { ReactNode } from "react";
 
@@ -72,6 +74,33 @@ const fontHand = Caveat({
   weight: ["500", "600", "700"],
 });
 
+/**
+ * Newsreader — the editorial serif the Insights articles are set in. Their
+ * designs use it for headings AND for body prose, which is why it needs the
+ * 400 weight at a reading size rather than only display sizes. Italic is
+ * loaded because the closing definition sets phrases in it.
+ */
+const fontReading = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-reading-src",
+  display: "swap",
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+});
+
+/**
+ * Plus Jakarta Sans — the UI face in the Insights article designs: the
+ * eyebrows, the rail, the player controls and every label around the prose.
+ * It sits beside Newsreader rather than replacing the site's Inter Tight,
+ * which still sets the rest of the site.
+ */
+const fontArticle = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-article-src",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
 /** Eyebrow labels — the design sets them in a wide-tracked monospace. */
 const fontMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -122,7 +151,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang={siteConfig.lang}
-      className={`${fontSans.variable} ${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable} ${fontHand.variable}`}
+      className={`${fontSans.variable} ${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable} ${fontHand.variable} ${fontReading.variable} ${fontArticle.variable}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-dvh flex-col">

@@ -130,8 +130,31 @@ Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solution
 Just the bg image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/5 capability-building-pulse-assets/03-woman-room-background.png
 I think rest of the cards  we can code in this section rather than using images - make sure to make each card appearance with smooth animation, effects and hover effects and non copyable
 
+-------
+Solutions > Onboarding -http://localhost:3000/solutions/onboarding
+section2 = /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Onboarding/section2.png 
+
+BG image - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Onboarding/1 Employee_Onboarding_Hero_Assets/03_Office_Background.png
 
 
 
+-------------------------
 
 
+
+-----------
+Lets work on http://localhost:3000/solutions/compliance
+
+section1- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/section1.png
+bg -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/1 Compliance_Readiness_Hero_Assets/04_Hero_Background.png
+Make sure you only use the above background image and other cards and text. Do make it with all the smooth coming-up animation. 
+
+
+section3 -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/section3.png
+BG image -  /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/3 Compliance_Magic_Assets/07_Gradient_Background.png
+Make sure all the arrows are pointed properly, and all lines and all cards come up with smooth, proper animation. 
+
+section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/section4.png 
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/4 Compliance_Pulse_Assets/02_Gradient_Background.png
+Make sure all the arrows are pointed properly, and all lines and all cards come up with smooth, proper animation. 

@@ -57,6 +57,7 @@ export const mainNav: NavLink[] = [
   { label: "Solutions", href: "/solutions" },
   { label: "Industries", href: "/industries" },
   { label: "Campus", href: "/campus" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Resources", href: "/resources", mega: "resources" },
   { label: "Company", href: "/company" },
 ];
@@ -286,6 +287,7 @@ export const footerNav: NavGroup[] = [
       { label: "About Lurny", href: "/company" },
       { label: "Customers", href: "/customers" },
       { label: "Resources", href: "/resources" },
+      { label: "Pricing", href: "/pricing" },
       { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
     ],

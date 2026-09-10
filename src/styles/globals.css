@@ -147,6 +147,8 @@
   --font-serif: var(--font-serif);
   --font-mono: var(--font-mono);
   --font-hand: var(--font-hand);
+  --font-reading: var(--font-reading);
+  --font-article: var(--font-article);
 
   --text-xs: var(--text-xs);
   --text-sm: var(--text-sm);
@@ -289,6 +291,66 @@
       translate: 0 var(--industry-float, -0.5rem);
     }
   }
+
+  /* ---------------------------------------------------------------------
+     INSIGHT ARTICLE — the two ambient animations in the article designs.
+
+     `raw-drift` turns the hero's readiness rings slowly about their own
+     centre; `raw-rise-in` is the one-shot entrance the hero column takes.
+     Both are transform-only, so neither costs layout or paint, and both are
+     neutralised by the reduced-motion block below.
+
+     `raw-wave` drives the audio player's waveform. It is paused rather than
+     removed when the audio is not playing, which is what lets a bar hold its
+     height instead of snapping back.
+     -------------------------------------------------------------------- */
+  @keyframes raw-drift {
+    0%,
+    100% {
+      rotate: 0deg;
+    }
+    50% {
+      rotate: 4deg;
+    }
+  }
+
+  @keyframes raw-rise-in {
+    from {
+      opacity: 0;
+      translate: 0 18px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @keyframes raw-wave {
+    0%,
+    100% {
+      scale: 1 0.62;
+    }
+    50% {
+      scale: 1 1;
+    }
+  }
+}
+
+/* ============================================================================
+   INSIGHT ARTICLE HELPERS
+   ----------------------------------------------------------------------------
+   Two utilities the article's markup applies directly. They live here rather
+   than as arbitrary Tailwind values because both bind to the keyframes above
+   and one needs a transform-origin the utility layer cannot express as
+   cleanly.
+   ========================================================================== */
+
+.raw-drift {
+  animation: raw-drift 9s ease-in-out infinite;
+}
+
+.raw-rise-in {
+  animation: raw-rise-in 520ms cubic-bezier(0.2, 0, 0, 1) both;
 }
 
 /* ============================================================================

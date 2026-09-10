@@ -27,6 +27,13 @@
      rather than as a margin note. */
   --font-hand:    var(--font-hand-src), "Segoe Script", "Bradley Hand",
                   "Comic Sans MS", cursive;
+  /* The Insights articles are set in their own pair: an editorial serif for
+     the prose, and a humanist sans for every label around it. Scoped to those
+     pages rather than replacing the site faces. */
+  --font-reading: var(--font-reading-src), Newsreader, ui-serif, Georgia,
+                  "Times New Roman", serif;
+  --font-article: var(--font-article-src), ui-sans-serif, system-ui,
+                  -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* ---------------------------------------------------------------------
      FLUID TYPE SCALE
