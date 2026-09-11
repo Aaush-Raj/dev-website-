@@ -430,4 +430,142 @@ export const saathi = {
       },
     },
   },
+
+  /**
+   * SECTION 7 — the demo booking, and the page's last section.
+   *
+   * The pitch on the left, the shared LeadForm on a card to the right. Copy
+   * is verbatim from "LURNYSAATHI webpage text.txt".
+   *
+   * The design asks for SIX fields, so this supplies the form's optional
+   * `organisation` and `selectC` alongside the two selects every caller gives
+   * it. Only "Primary employee need" is marked required beyond the three text
+   * fields, matching the asterisks in the design — workforce size and
+   * industry carry none.
+   *
+   * The option lists are the site's established ones (the same bands LurnyBiz
+   * and LurnyChat use), because the source text supplies each select's
+   * PLACEHOLDER but not its choices, and inventing a different set per page
+   * would give the same question different answers across the site.
+   */
+  demo: {
+    eyebrow: "See LurnySaathi in action",
+
+    /** Split so the lines break where the design breaks them on lg+. */
+    headline: ["Give every employee", "a clearer next step."],
+
+    description:
+      "Tell us about your workforce, roles and capability priorities. We\u2019ll show you how Saathi brings Pulse, KxP, Sim and Pitch into one continuous employee experience.",
+
+    /** The two lines under the rule, each with an icon. */
+    points: [
+      {
+        icon: "clock",
+        text: "30 minutes \u00b7 tailored to your workforce and roles",
+      },
+      {
+        icon: "compass",
+        text: "See how Saathi turns capability and performance evidence into next-best actions",
+      },
+    ],
+
+    form: {
+      name: {
+        name: "fullName",
+        label: "Full name",
+        placeholder: "Your name",
+        autoComplete: "name",
+      },
+      email: {
+        name: "workEmail",
+        label: "Work email",
+        placeholder: "name@company.com",
+        autoComplete: "email",
+      },
+      organisation: {
+        name: "organisation",
+        label: "Organisation",
+        placeholder: "Company name",
+        autoComplete: "organization",
+      },
+
+      selectA: {
+        name: "workforceSize",
+        label: "Your workforce size",
+        options: [
+          "Select workforce size",
+          "Under 500",
+          "500 \u2013 2,000",
+          "2,000 \u2013 10,000",
+          "10,000 \u2013 50,000",
+          "50,000+",
+        ],
+      },
+      selectB: {
+        name: "employeeNeed",
+        label: "Primary employee need",
+        options: [
+          "Select an employee need",
+          "See role gaps and expectations",
+          "Continue learning in the flow of work",
+          "Practise customer conversations",
+          "Improve on-the-job performance",
+          "Something else",
+        ],
+        /* The one select the design marks required. */
+        required: true,
+        error: "Please select an employee need.",
+      },
+      selectC: {
+        name: "industry",
+        label: "Industry",
+        options: [
+          "Select your industry",
+          "Banking & Financial Services",
+          "Telecom",
+          "Healthcare",
+          "Manufacturing",
+          "Professional Services",
+          "Retail",
+          "Something else",
+        ],
+      },
+
+      detail: {
+        name: "improve",
+        label: "What should Saathi help your employees do better? (optional)",
+        placeholder:
+          "e.g. See role gaps, continue learning, practise conversations or improve performance",
+        autoComplete: "off",
+      },
+
+      consent: {
+        name: "sendOverview",
+        label: "Send me the LurnySaathi overview.",
+      },
+
+      submit: "Book a LurnySaathi Demo",
+
+      success: {
+        title: "Request received.",
+        description:
+          "We will be in touch within one business day to arrange a time.",
+      },
+
+      errors: {
+        name: "Please enter your name.",
+        email: "Please enter your work email.",
+        emailFormat: "Please enter a valid email address.",
+        organisation: "Please enter your organisation.",
+      },
+
+      /** {0} is replaced by the link below. */
+      footnote: {
+        text: "Want to explore the wider Lurny platform? {0}",
+        links: [
+          { label: "Talk to a Capability Specialist.", href: "/platform" },
+        ],
+      },
+    },
+  },
 } as const;

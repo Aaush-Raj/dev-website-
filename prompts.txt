@@ -1,32 +1,7 @@
 
-LURNYCHAT - 
-
-
-
-SAATHI -
-
-Let's add section 6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnysaathi - page assets/section6.png
-for background and lady in bg you can use this one image - @/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnysaathi - page assets/LurnySaathi - Section 5 - bg 1.png
-
-
-
 --------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
 
 
-
-RESOURCE > GUIDES N PLAYBOOK - resources/guides
-
-section 3 image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resources_guides and playbooks/section3.png
- img assets - are all in this folder
-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resources_guides and playbooks/3
-
-section 2 image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resources_guides and playbooks/section2.png
- img assets
-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/resources_guides and playbooks/2/section2img.png
-
-
-
---------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
 SOLUTIONS > PERFORMANCE PAGE > http://localhost:3000/solutions/frontline: 
 
 section 1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/FrontlinePerformancePage/section1.png
@@ -60,101 +35,43 @@ section8 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Frontlin
 IGNORE THIS SECTION < ASSETS NOT PROVIDED
 
 
---------------------_---------------------_---------------------_---------------------_---------------------_---------------------_-
-Now lets work on sales enablement page inside solutions https://www.lurny.ai/solutions/sales-enablement
-solutions >>> sales enablement:
-
-
-section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section1.png
-bg image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/Sales_Enablement_Hero_Assets/02_Background/hero_background_reconstructed.png
-card human talking image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/Sales_Enablement_Hero_Assets/01_Photo
-
-
-section 2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section2.png
-bg img - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/2 Lurny_Sales_Enablement_Reality_Assets/01_clean_illustrated_background_reconstructed.png
-
-
-section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section3.png
-ASSETS NOT PROVIDED DONT WORK ON THIS STOP!!
-
-
-section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section4.png
-
-section 5- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/section5.png
-bg-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/Lurny_Sales_Enablement_Magic_Assets/backgrounds/bg1.png
-all cards in this - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions sales enablement/Lurny_Sales_Enablement_Magic_Assets/cards
-
-
--------------------------------------------------------
-
-Lets work on LurnyEvents in platform section -http://localhost:3000/platform/events
-Add smooth animations and effects , make right side cards not copyable- 
-section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section1.png
-
-
-
-
-section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section2.png
-
-
-Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section3.png
-Add smooth animations and effects , make  cards not copyable.
-
-
-Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyebents assets/section4.png
-
-
-
------
-Solutions > Capability Building : 
-
-Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section1.png
-Allimage assets - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/1 solutions capability building
-
-
-section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section2.png
-All image assets - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/2 solutions capability building
-
-section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section3.png
-just the bg- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/3 capability-building-journey-assets/06-geometric-background.png
-I think rest of the cards and arrows we can code in this section rather than using images - make sure to make each card appearance with smooth animation, effects and hover effects and non copyable
-also make the arrow in the bottom animated and as accurate as possible
-
-
-Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section4.png
-Just the bg - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/4 capability-building-role-assets/03-slate-background-annotation.png
-Code and animate everything else and al other cards and texts
-
-
-Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/section5.png
-Just the bg image- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/solutions capability building/5 capability-building-pulse-assets/03-woman-room-background.png
-I think rest of the cards  we can code in this section rather than using images - make sure to make each card appearance with smooth animation, effects and hover effects and non copyable
-
--------
-Solutions > Onboarding -http://localhost:3000/solutions/onboarding
-section2 = /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Onboarding/section2.png 
-
-BG image - 
-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Onboarding/1 Employee_Onboarding_Hero_Assets/03_Office_Background.png
-
-
-
 -------------------------
-
+Solution > knowledge management - http://localhost:3000/solutions/knowledge-management
 
 
 -----------
 Lets work on http://localhost:3000/solutions/compliance
 
-section1- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/section1.png
-bg -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/1 Compliance_Readiness_Hero_Assets/04_Hero_Background.png
-Make sure you only use the above background image and other cards and text. Do make it with all the smooth coming-up animation. 
+section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/section2.png
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/bgsec2.png
+
+Rest create all the cards and other effects - 
 
 
-section3 -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/section3.png
-BG image -  /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/3 Compliance_Magic_Assets/07_Gradient_Background.png
-Make sure all the arrows are pointed properly, and all lines and all cards come up with smooth, proper animation. 
+
 
 section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/section4.png 
 BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Solutions Complaince/4 Compliance_Pulse_Assets/02_Gradient_Background.png
 Make sure all the arrows are pointed properly, and all lines and all cards come up with smooth, proper animation. 
+
+
+________________________
+
+ABOUT PAGE (company - http://localhost:3000/company) -
+Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/section1.png
+All the bgs are in this folder , add them accordingly
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/1 About_Lurny_Hero_Text/1 About Lurny
+
+
+
+section2  - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/section2.png
+bg - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/2 Our story/ChatGPT Image Sep 10, 2026, 10_01_48 AM.png
+
+
+
+
+Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/section3.png
+Bg -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/3 About_Contact_Section_Text/ChatGPT Image Sep 10, 2026, 09_56_23 AM (2).png
+purple stairs image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/3 About_Contact_Section_Text/ChatGPT Image Sep 10, 2026, 09_56_23 AM (1).png
+
+Make sure the stairs image appears at the right place and right time , wit proper animations

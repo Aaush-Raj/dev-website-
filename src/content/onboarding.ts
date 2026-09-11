@@ -180,4 +180,91 @@ export const onboarding = {
       },
     ],
   },
+
+  /**
+   * Section 2: the onboarding reality.
+   *
+   * A dark full-bleed band — the photograph fills it, three cards float over
+   * the scene joined by dashed connectors, and a rail of four consequences
+   * closes it off along the foot.
+   *
+   * ONLY THE PHOTOGRAPH SHIPS. The design pack also supplies the cards and
+   * connectors as one 363KB PNG and the foot rail as another 164KB; both are
+   * pure interface, so they are drawn — the text stays selectable and
+   * translatable, and the strokes stay crisp at any density.
+   */
+  reality: {
+    eyebrow: "The onboarding reality",
+    headline: ["The induction ends.", "The questions don\u2019t."],
+    description:
+      "A common induction can overlook different roles, experience and learning needs. New joiners complete the content, yet still struggle to find answers, apply what they have learned and feel ready for everyday work.",
+
+    /**
+     * The three failure modes.
+     *
+     * `tone` keys the card's stroke, icon and label colour; `position` is
+     * measured from the design as a share of the scene box. Reading order runs
+     * top-right, then bottom-left, then centre — which is how the connectors
+     * chain them, so the array order is the connector order rather than the
+     * visual top-to-bottom.
+     */
+    gaps: [
+      {
+        id: "readiness",
+        tone: "amber",
+        icon: "bars",
+        label: "Role readiness",
+        title: ["Completion leaves", "gaps unseen."],
+        note: "Finishing a course reveals little about readiness for everyday tasks.",
+        /** Measured: L70.0% T5.0%, width 29.5% of the frame. */
+        position: "right-[0.5%] top-[-2.5rem] w-[29.5%]",
+      },
+      {
+        id: "generic",
+        tone: "cyan",
+        icon: "document",
+        label: "One size fits all",
+        title: ["Same content.", "Different needs."],
+        note: "Role, experience and existing knowledge rarely shape the learning journey.",
+        /** Measured: L3.8% T49.0%, width 23.0% of the frame. */
+        position: "left-[3.8%] top-[48%] w-[23%]",
+      },
+      {
+        id: "questions",
+        tone: "red",
+        icon: "question",
+        label: "Knowledge support",
+        title: ["Questions start after", "induction."],
+        note: "New joiners hunt for answers or depend on busy colleagues.",
+        /** Measured: L32.4% T55.3%, width 23.7% of the frame. */
+        position: "left-[32.4%] top-[55%] w-[23.7%]",
+      },
+    ],
+
+    /**
+     * The consequences along the foot. Each reuses a stage icon and tone, so
+     * the rail reads as a summary of the cards above rather than four
+     * unrelated points — the second and fourth take the remaining tones, since
+     * they name consequences the three cards imply rather than state.
+     */
+    consequences: [
+      { icon: "document", tone: "cyan", label: "Generic content" },
+      { icon: "question", tone: "red", label: "Too much at once" },
+      { icon: "bars", tone: "violet", label: "Questions unanswered" },
+      { icon: "stack", tone: "amber", label: "Readiness unclear" },
+    ],
+
+    /**
+     * The photograph behind it all. It ships because it is a photograph; the
+     * cards and connectors over it are drawn, so the supplied overlay PNGs are
+     * not used.
+     *
+     * `alt` is empty: the image is atmosphere, and every word in the scene is
+     * already rendered as real text by the cards.
+     */
+    scene: {
+      src: "/assets/images/onboarding/reality-scene.webp",
+      alt: "",
+    },
+  },
 } as const;

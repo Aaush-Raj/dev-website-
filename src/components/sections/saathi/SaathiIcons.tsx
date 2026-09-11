@@ -804,3 +804,32 @@ export const contextIcons = {
 } as const;
 
 export type ContextIconName = keyof typeof contextIcons;
+
+/* ======================== Demo section points =========================== */
+
+/* The "30 minutes" point beside the demo form reuses ClockIcon above — the
+   same glyph at the same weight, so there is no second one to drift. */
+
+/**
+ * A compass needle — the "next-best actions" point. A direction-finder rather
+ * than a chart: the sentence beside it is about pointing somewhere next, not
+ * about measurement.
+ */
+export function CompassIcon({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="8.6" stroke="currentColor" strokeWidth="1.7" />
+      <path
+        d="M15.2 8.8 13.6 13.6 8.8 15.2l1.6-4.8 4.8-1.6Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

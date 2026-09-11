@@ -141,7 +141,7 @@ export interface LeadFormContent {
  * Button tone. The homepage uses violet; product pages use one of the two
  * ambers — see the note on `gold` below for why there are two.
  */
-export type LeadFormTone = "brand" | "accent" | "gold";
+export type LeadFormTone = "brand" | "accent" | "gold" | "coral";
 
 const toneStyles = {
   brand: cn(
@@ -166,6 +166,20 @@ const toneStyles = {
     "bg-accent-400 text-neutral-900 hover:bg-accent-500",
     "hover:shadow-[0_14px_30px_-12px_rgb(254_180_66/0.6)]",
     "focus-visible:ring-accent-400/50",
+  ),
+  /**
+   * The coral the LurnySaathi page runs on. It is that page's own colour
+   * rather than a site token: the hero, the loop rail and the section grounds
+   * are all built from #f76655 / #f2544f, and the demo CTA is the same button
+   * at the foot of the same page.
+   *
+   * White text, unlike the two ambers above, because coral is dark enough to
+   * carry it — the ambers are not.
+   */
+  coral: cn(
+    "bg-[#f2544f] text-white hover:bg-[#e04843]",
+    "hover:shadow-[0_14px_30px_-12px_rgb(242_84_79/0.55)]",
+    "focus-visible:ring-[#f2544f]/50",
   ),
 } as const;
 

@@ -27,7 +27,50 @@ const SRC = path.join(
 );
 const OUT = path.join(ROOT, "public/images/solutions/compliance");
 
-const FILES = [[SRC, "04_Hero_Background.png", "hero-scene.webp"]];
+/**
+ * The LurnyMagic section's gradient.
+ *
+ * Same split as the hero, and more so: the supplied plate is a clean gradient
+ * with NO document, workspace, cards, arrows or handwriting on it. All of that
+ * is built in markup — sharp, translatable, animatable and readable by a
+ * screen reader. The pack also ships each piece as its own crop with copy
+ * baked in as pixels; those files are deliberately unused.
+ */
+const MAGIC_SRC = path.join(
+  ROOT,
+  "designs/Solutions Complaince/3 Compliance_Magic_Assets",
+);
+
+/**
+ * The compliance-reality section's photograph.
+ *
+ * Supplied loose as "bgsec2.png" rather than inside the section's own folder.
+ * That folder's other two files — the cards with their dotted arrows, and the
+ * foot ribbon — are pure interface with their copy baked in as pixels, so they
+ * are drawn in markup and deliberately unused. See ComplianceReality.
+ */
+const REALITY_SRC = path.join(ROOT, "designs/Solutions Complaince");
+
+/**
+ * The LurnyPulse section's gradient.
+ *
+ * Same split again: the supplied plate is a clean blue gradient with NO panel,
+ * radar, cards or arrows on it. The pack's "01_Three_Boxes_And_Arrows.png"
+ * (542KB) flattens all of that into one raster with its copy baked in as
+ * pixels, and its three icon crops are 24-32px marks — all deliberately
+ * unused, since the radar in particular has to stay crisp and animatable.
+ */
+const PULSE_SRC = path.join(
+  ROOT,
+  "designs/Solutions Complaince/4 Compliance_Pulse_Assets",
+);
+
+const FILES = [
+  [SRC, "04_Hero_Background.png", "hero-scene.webp"],
+  [MAGIC_SRC, "07_Gradient_Background.png", "magic-backdrop.webp"],
+  [REALITY_SRC, "bgsec2.png", "reality-scene.webp"],
+  [PULSE_SRC, "02_Gradient_Background.png", "pulse-backdrop.webp"],
+];
 
 async function main() {
   for (const [base, from, to] of FILES) {

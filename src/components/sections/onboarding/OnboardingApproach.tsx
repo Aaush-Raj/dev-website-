@@ -186,7 +186,7 @@ export function OnboardingApproach() {
           <div>
             <div
               className={cn(
-                "relative @container",
+                "@container relative",
                 // The cards are positioned as percentages, so the field must
                 // hold the design's proportions or they would overlap as it
                 // narrows. Below lg they stack instead — see the note above.
@@ -254,7 +254,12 @@ export function OnboardingApproach() {
                     initial={
                       reduce
                         ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
-                        : { opacity: 0, y: 22, scale: 0.95, filter: "blur(7px)" }
+                        : {
+                            opacity: 0,
+                            y: 22,
+                            scale: 0.95,
+                            filter: "blur(7px)",
+                          }
                     }
                     whileInView={{
                       opacity: 1,
@@ -307,7 +312,6 @@ export function OnboardingApproach() {
                 </span>
               </motion.p>
             </div>
-
           </div>
         </div>
       </Container>
@@ -381,10 +385,27 @@ function Step({
 /** Shared essentials — a group. */
 function PeopleIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 44 44" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 44 44"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <circle cx="22" cy="11" r="5.4" stroke="currentColor" strokeWidth="2.2" />
-      <circle cx="8.6" cy="15.4" r="4.2" stroke="currentColor" strokeWidth="2.2" />
-      <circle cx="35.4" cy="15.4" r="4.2" stroke="currentColor" strokeWidth="2.2" />
+      <circle
+        cx="8.6"
+        cy="15.4"
+        r="4.2"
+        stroke="currentColor"
+        strokeWidth="2.2"
+      />
+      <circle
+        cx="35.4"
+        cy="15.4"
+        r="4.2"
+        stroke="currentColor"
+        strokeWidth="2.2"
+      />
       <path
         d="M13 29.4c0-4.6 4-7.2 9-7.2s9 2.6 9 7.2"
         stroke="currentColor"
@@ -410,9 +431,26 @@ function PeopleIcon({ className }: { className?: string }) {
 /** 01 — define the role. */
 function TargetIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className} aria-hidden="true">
-      <circle cx="14.6" cy="17.4" r="10.4" stroke="currentColor" strokeWidth="2" />
-      <circle cx="14.6" cy="17.4" r="5.8" stroke="currentColor" strokeWidth="2" />
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle
+        cx="14.6"
+        cy="17.4"
+        r="10.4"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <circle
+        cx="14.6"
+        cy="17.4"
+        r="5.8"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
       <circle cx="14.6" cy="17.4" r="1.8" fill="currentColor" />
       <path
         d="m14.6 17.4 11-11"
@@ -428,15 +466,34 @@ function TargetIcon({ className }: { className?: string }) {
 /** 02 — understand the starting point. */
 function SlidersIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <path
         d="M4 10h24M4 22h24"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
       />
-      <circle cx="21" cy="10" r="3.4" fill="#f7f7fb" stroke="currentColor" strokeWidth="2" />
-      <circle cx="11" cy="22" r="3.4" fill="#f7f7fb" stroke="currentColor" strokeWidth="2" />
+      <circle
+        cx="21"
+        cy="10"
+        r="3.4"
+        fill="#f7f7fb"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <circle
+        cx="11"
+        cy="22"
+        r="3.4"
+        fill="#f7f7fb"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
     </svg>
   );
 }
@@ -444,7 +501,12 @@ function SlidersIcon({ className }: { className?: string }) {
 /** 03 — build the relevant journey. */
 function BookIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <path
         d="M3.6 6.4h8.2c2.3 0 4.2 1.9 4.2 4.2v15c0-1.9-1.9-3.4-4.2-3.4H3.6V6.4ZM28.4 6.4h-8.2c-2.3 0-4.2 1.9-4.2 4.2v15c0-1.9 1.9-3.4 4.2-3.4h8.2V6.4Z"
         stroke="currentColor"
@@ -458,7 +520,12 @@ function BookIcon({ className }: { className?: string }) {
 /** 04 — support everyday work. */
 function ChatIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <path
         d="M13.4 4.6c5.2 0 9.4 3.2 9.4 7.2s-4.2 7.2-9.4 7.2c-1 0-2-.1-2.9-.3l-5 2.3 1.4-4C4.9 15.7 4 14 4 11.8c0-4 4.2-7.2 9.4-7.2Z"
         stroke="currentColor"
@@ -478,7 +545,12 @@ function ChatIcon({ className }: { className?: string }) {
 /** 05 — review readiness. */
 function CheckIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <circle cx="16" cy="16" r="12.4" stroke="currentColor" strokeWidth="2" />
       <path
         d="m10 16.4 4.2 4.2L22.4 12"
@@ -506,7 +578,12 @@ function CheckIcon({ className }: { className?: string }) {
  */
 function NoteCurl({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 64 34" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 64 34"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <path
         d="M62 24C48 32 26 33 13 23 9.6 20.4 7.4 16 6.4 10"
         stroke="currentColor"

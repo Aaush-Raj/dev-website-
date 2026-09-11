@@ -34,6 +34,11 @@ const routes: Route[] = [
   { path: "/solutions/frontline", priority: 0.8, changeFrequency: "monthly" },
   { path: "/solutions/onboarding", priority: 0.8, changeFrequency: "monthly" },
   {
+    path: "/solutions/knowledge-management",
+    priority: 0.8,
+    changeFrequency: "monthly",
+  },
+  {
     path: "/solutions/capability-building",
     priority: 0.8,
     changeFrequency: "monthly",
@@ -46,6 +51,7 @@ const routes: Route[] = [
   { path: "/solutions/compliance", priority: 0.8, changeFrequency: "monthly" },
   // Pricing sits high: it is a primary nav destination and a conversion page.
   { path: "/pricing", priority: 0.9, changeFrequency: "monthly" },
+  { path: "/company", priority: 0.7, changeFrequency: "monthly" },
   { path: "/resources", priority: 0.7, changeFrequency: "weekly" },
   { path: "/resources/insights", priority: 0.7, changeFrequency: "weekly" },
   // Individual insight articles. Each is written once and rarely revised, so

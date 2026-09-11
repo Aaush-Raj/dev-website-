@@ -115,33 +115,38 @@ export function OnboardingHero() {
           cards were not — until the headline ran under the first card at wide
           sizes. Sharing the container keeps the gap between them constant. */}
       <div className="pointer-events-none absolute inset-0 hidden lg:block">
-        <Container width="hero" className="relative h-full @container">
+        <Container width="hero" className="@container relative h-full">
           <div
             className="relative h-full"
             // Scales the cards with the container, so they hold their designed
             // proportion at every width.
             style={{ fontSize: "max(10px, 1.28cqw)" }}
           >
-        {hero.cards.map((card, index) => (
-          <motion.div
-            key={card.title}
-            initial={
-              reduce
-                ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
-                : { opacity: 0, y: 26, scale: 0.94, filter: "blur(8px)" }
-            }
-            whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: "some" }}
-            transition={{
-              duration: 0.9,
-              delay: CARD_SLOTS[index].delay,
-              ease: easeOut,
-            }}
-            className={cn("absolute", CARD_SLOTS[index].slot)}
-          >
-            <StartingPoint card={card} />
-          </motion.div>
-        ))}
+            {hero.cards.map((card, index) => (
+              <motion.div
+                key={card.title}
+                initial={
+                  reduce
+                    ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
+                    : { opacity: 0, y: 26, scale: 0.94, filter: "blur(8px)" }
+                }
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  filter: "blur(0px)",
+                }}
+                viewport={{ once: true, amount: "some" }}
+                transition={{
+                  duration: 0.9,
+                  delay: CARD_SLOTS[index].delay,
+                  ease: easeOut,
+                }}
+                className={cn("absolute", CARD_SLOTS[index].slot)}
+              >
+                <StartingPoint card={card} />
+              </motion.div>
+            ))}
           </div>
         </Container>
       </div>
@@ -352,8 +357,19 @@ function StartingPoint({ card }: { card: (typeof hero.cards)[number] }) {
 /** New to the role — one person. */
 function PersonIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
-      <circle cx="12" cy="7.6" r="3.6" stroke="currentColor" strokeWidth="1.8" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle
+        cx="12"
+        cy="7.6"
+        r="3.6"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
       <path
         d="M4.8 20c0-3.8 3.3-6 7.2-6s7.2 2.2 7.2 6"
         stroke="currentColor"
@@ -367,7 +383,12 @@ function PersonIcon({ className }: { className?: string }) {
 /** Bringing prior experience — a person joining others. */
 function PeopleIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <circle cx="9.4" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.8" />
       <path
         d="M3.4 19.6c0-3.4 2.8-5.4 6-5.4s6 2 6 5.4"
@@ -388,7 +409,12 @@ function PeopleIcon({ className }: { className?: string }) {
 /** The tick beside each item. */
 function CheckIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <circle cx="12" cy="12" r="12" fill="currentColor" />
       <path
         d="m7 12.3 3.3 3.3L17 8.8"
@@ -404,7 +430,12 @@ function CheckIcon({ className }: { className?: string }) {
 /** The arrow on both actions. */
 function ArrowIcon({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 16 16" fill="none" className={className} aria-hidden="true">
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
       <path
         d="M3 8h9m0 0-3.4-3.4M12 8l-3.4 3.4"
         stroke="currentColor"

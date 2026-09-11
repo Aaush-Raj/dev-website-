@@ -1,4 +1,5 @@
 import { OnboardingApproach } from "@/components/sections/onboarding/OnboardingApproach";
+import { OnboardingReality } from "@/components/sections/onboarding/OnboardingReality";
 import { OnboardingHero } from "@/components/sections/onboarding/OnboardingHero";
 import { onboarding } from "@/content/onboarding";
 import { buildMetadata } from "@/lib/seo";
@@ -20,6 +21,8 @@ export default function OnboardingPage() {
   return (
     <>
       <OnboardingHero />
+
+      <OnboardingReality />
 
       <OnboardingApproach />
     </>

@@ -1,4 +1,7 @@
 import { ComplianceHero } from "@/components/sections/compliance/ComplianceHero";
+import { ComplianceMagic } from "@/components/sections/compliance/ComplianceMagic";
+import { CompliancePulse } from "@/components/sections/compliance/CompliancePulse";
+import { ComplianceReality } from "@/components/sections/compliance/ComplianceReality";
 import { compliance } from "@/content/compliance";
 import { buildMetadata } from "@/lib/seo";
 
@@ -19,6 +22,12 @@ export default function CompliancePage() {
   return (
     <>
       <ComplianceHero />
+
+      <ComplianceReality />
+
+      <ComplianceMagic />
+
+      <CompliancePulse />
     </>
   );
 }
