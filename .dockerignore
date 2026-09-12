@@ -10,4 +10,3 @@ designs
 prompts.txt
 .env*
 !.env.example
-*.mjs
