@@ -138,18 +138,21 @@ Adding a page:
 
 ## Deployment
 
-Hosted on **Azure Static Web Apps** (`lurny-ai-website`, resource group
-`Lurny`) at **https://www.lurny.ai**; the apex `lurny.ai` is forwarded to www
-at the registrar.
+Hosted on **AKS** (cluster `lurny`, namespace `prod`, deployment/service
+`elurny-website`) at **https://elurny.com** (+ `www.elurny.com`). Routing and
+TLS are handled by the in-cluster `prod/lurny-talk` ingress (cert-manager,
+Let's Encrypt). `lurny.ai` / `www.lurny.ai` simply redirect here.
 
 - `next.config.ts` uses `output: "export"` — `npm run build` writes plain
   HTML/CSS/JS to `out/`. No server, no API routes, no server actions.
-- `.github/workflows/azure-static-web-apps.yml` builds on every push to `main`
-  and uploads `out/`. Pull requests get a preview URL as a PR comment.
-- `public/staticwebapp.config.json` (copied into `out/` by the build) carries the security headers, cache headers and
-  the 404 page (Next's `headers()` is a no-op in export mode).
-- `NEXT_PUBLIC_SITE_URL` is set in the workflow; `AZURE_STATIC_WEB_APPS_API_TOKEN`
-  is a repo secret (the SWA deployment token).
+- `Dockerfile` builds the export and serves `out/` with nginx; `nginx.conf`
+  carries the security headers, cache headers, trailing-slash redirect and the
+  404 page (Next's `headers()` is a no-op in export mode).
+- `.github/workflows/deploy-aks.yml` builds and pushes the image to ACR
+  (`lunryai.azurecr.io/elurny-website`) and updates the deployment on every
+  push to `main`. `AZURE_CREDENTIALS` is a repo secret.
+- `NEXT_PUBLIC_SITE_URL` defaults to `https://elurny.com` in the Dockerfile
+  (`ARG`), which also matches the fallback in `src/lib/site.ts`.
 
 ## Before launch
 

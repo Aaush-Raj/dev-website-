@@ -1,0 +1,13 @@
+.git
+.github
+node_modules
+.next
+out
+coverage
+designs
+*.png
+*.md
+prompts.txt
+.env*
+!.env.example
+*.mjs
