@@ -16,9 +16,11 @@ import { cn } from "@/lib/utils";
  * divided by vertical rules, then a footer band. One component serves every
  * such menu — pass the key naming which one to render.
  *
- * The two panels differ only in their icons. Platform ships painted PNGs with
- * the lavender disc baked in; Resources draws stroked glyphs inside a disc of
- * its own. See the note in ResourcesMenuIcons for why.
+ * The panels differ only in their icons, and the data says which treatment to
+ * use: a menu with an `iconPath` ships painted PNGs with the lavender disc
+ * baked into the asset (Platform and Solutions), while one without draws
+ * stroked glyphs inside a disc of its own (Resources). See the note in
+ * ResourcesMenuIcons for why the second set is drawn.
  *
  * This component renders the PANEL only. Open/close state, hover intent and
  * keyboard handling live in Header, because they involve the trigger too.
@@ -36,7 +38,7 @@ const easeOut = [0.16, 1, 0.3, 1] as const;
 
 export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
   const reduce = useReducedMotion();
-  const { columns, footer } = megaMenus[menu];
+  const { columns, footer, iconPath } = megaMenus[menu];
 
   return (
     <motion.div
@@ -52,9 +54,9 @@ export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
       )}
     >
       {/* =========================== Columns ======================== */}
-      {/* The column count follows the data: Platform has three, Resources two.
-          Hard-coding three would leave the narrower panel with an empty
-          trailing column. */}
+      {/* The column count follows the data: Platform has three, Solutions and
+          Resources two. Hard-coding three would leave the narrower panels with
+          an empty trailing column. */}
       <div
         className={cn(
           "grid gap-x-8 gap-y-10 p-8 lg:gap-x-12 lg:p-10",
@@ -78,7 +80,16 @@ export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
               {column.title}
             </p>
 
-            <ul className="mt-6 flex flex-col gap-6">
+            {/* Paired columns lay their items two per row — see `paired` in
+                the navigation data for why the Solutions panel needs it. */}
+            <ul
+              className={cn(
+                "mt-6",
+                column.paired
+                  ? "grid gap-x-6 gap-y-6 sm:grid-cols-2"
+                  : "flex flex-col gap-6",
+              )}
+            >
               {column.items.map((item) => (
                 <li key={item.name}>
                   <Link
@@ -90,12 +101,13 @@ export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
                       "focus-visible:bg-neutral-50 focus-visible:outline-none",
                     )}
                   >
-                    {/* Platform's icons are painted PNGs with the lavender
-                        disc already in the asset, so nothing is drawn around
-                        them. Resources draws its own — see ResourceIcon. */}
-                    {menu === "platform" ? (
+                    {/* A menu with an `iconPath` ships painted PNGs whose
+                        lavender disc is already in the asset, so nothing is
+                        drawn around them. One without draws its own — see
+                        ResourceIcon. */}
+                    {iconPath ? (
                       <Image
-                        src={`/assets/icons/engines/${item.icon}.png`}
+                        src={`${iconPath}/${item.icon}.png`}
                         alt=""
                         width={128}
                         height={128}
@@ -126,8 +138,12 @@ export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
                           the design, rather than running as one long line. */}
                       <span
                         className={cn(
-                          "mt-1 block max-w-60 text-[0.8125rem]",
+                          "mt-1 block text-[0.8125rem]",
                           "leading-snug text-pretty text-neutral-500",
+                          // The cap keeps single-file descriptions to two
+                          // lines; a paired column is already half-width, so
+                          // capping it again would wrap to three.
+                          !column.paired && "max-w-60",
                         )}
                       >
                         {item.description}
@@ -137,6 +153,27 @@ export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
                 </li>
               ))}
             </ul>
+
+            {/* The link closing a column, where the data supplies one. */}
+            {column.action && (
+              <Link
+                href={column.action.href}
+                className={cn(
+                  "group mt-6 inline-flex items-center gap-2 rounded-md",
+                  "text-[0.9375rem] font-semibold text-brand-700",
+                  "duration-fast transition-colors hover:text-brand-600",
+                  "focus-visible:outline-none focus-visible:underline",
+                )}
+              >
+                {column.action.label}
+                <ArrowRightIcon
+                  className={cn(
+                    "duration-normal size-4 transition-transform ease-out",
+                    "group-hover:translate-x-1",
+                  )}
+                />
+              </Link>
+            )}
           </div>
         ))}
       </div>

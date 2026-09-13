@@ -57,21 +57,81 @@ Make sure all the arrows are pointed properly, and all lines and all cards come 
 
 ________________________
 
-ABOUT PAGE (company - http://localhost:3000/company) -
-Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/section1.png
-All the bgs are in this folder , add them accordingly
-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/1 About_Lurny_Hero_Text/1 About Lurny
+Now we need to work on platform's LURNYFLIX page - 
+
+Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/section1.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/1 LurnyFlix-Hero-Assets/01-background-player.png
+PPTPDF image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/1 LurnyFlix-Hero-Assets/03-source-formats-card-with-arrow.png
+
+other assets - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/1 LurnyFlix-Hero-Assets 
+Try to build as much cards by yourself , if not use the iamges 
+
+section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/section2.png
 
 
 
-section2  - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/section2.png
-bg - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/2 Our story/ChatGPT Image Sep 10, 2026, 10_01_48 AM.png
+section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/section3.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/3 LurnyFlix-Medical-Use-Case-Assets/01-gradient-background.png
+Arrow - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/3 LurnyFlix-Medical-Use-Case-Assets/02-ppt-to-video-arrow.png
+Try to build other cards yourself you can use any other dummy image from past. 
+Make sure sections and images are in the right place. The arrow images are pointing to the right card, and it's all responsive. 
+
+
+section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/section4.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/4 LurnyFlix-Banking-Use-Case-Assets (1)/01-lavender-background-with-plant.png
+Card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/4 LurnyFlix-Banking-Use-Case-Assets (1)/02-video-panel.png
+Other card -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/4 LurnyFlix-Banking-Use-Case-Assets (1)/03-scenario-script-card-with-arrow.png
+Make sure sections and images are in the right place. The arrow images are pointing to the right card, and it's all responsive. 
+
+
+section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/section5.png
+BG- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/5 LurnyFlix-Interactive-Video-Assets/01-gradient-background.png
+card- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/5 LurnyFlix-Interactive-Video-Assets/02-video-panel.png
+
+
+section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/section6.png
+Bg - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/6 LurnyFlix-Video-Editor-Assets/01-gradient-background.png
+ CARD - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/6 LurnyFlix-Video-Editor-Assets/02-video-editing-interface.png
+ Mobiel view card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/6 LurnyFlix-Video-Editor-Assets/03-mobile-view-card.png
+ Voice section card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/6 LurnyFlix-Video-Editor-Assets/04-voice-and-music-card.png
+
+
+section7 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/section7.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/7 LurnyFlix-Guided-Creation-Assets/01-blue-gradient-background.png
+CARD - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/7 LurnyFlix-Guided-Creation-Assets/05-create-video-form-with-three-arrows.png
+OTHER RIGHT SIDE CARD - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/7 LurnyFlix-Guided-Creation-Assets/06-visual-style-card.png
+COLOR PALLET CARD - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/7 LurnyFlix-Guided-Creation-Assets/07-colour-palette-card.png
+AUDIO AND SUBTITLES CARD - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/7 LurnyFlix-Guided-Creation-Assets/08-audio-and-subtitles-card.png
+
+
+section8 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny platform lurnyflix all assets/section8.png
 
 
 
 
-Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/section3.png
-Bg -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/3 About_Contact_Section_Text/ChatGPT Image Sep 10, 2026, 09_56_23 AM (2).png
-purple stairs image - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/About section/3 About_Contact_Section_Text/ChatGPT Image Sep 10, 2026, 09_56_23 AM (1).png
+-------------------------------------------------
 
-Make sure the stairs image appears at the right place and right time , wit proper animations
+Now lets work on FABRIC lurny fabric - 
+So you need to add lurnyFabric in Platform's submenu first , and a link for it. 
+
+Then create a page and work on below section - 
+Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/section1.png
+
+Background -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/1 lurnyfabric_hero_extractions/01_gradient_background.png
+
+other assets - we have here - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/1 lurnyfabric_hero_extractions
+
+BUT I really want you to give it a try yourself. Work hard on adding all the animation that you see exactly.
+ Let's not use other assets or images. I want it to be realistic, matching all the boxes with arrows and the spiral, sort of cosmic Gemini effect in the background. I want you to give it a try. I think you can code it and make it really live. 
+
+
+
+
+SECTION 2 - - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/section2.png
+BG /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/2 lurnyfabric_three_layers/decorative_background.png
+
+
+Section 3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/section3.png
+
+BG /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/3 lurnyfabric_section3_extractions/01_lavender_background.png

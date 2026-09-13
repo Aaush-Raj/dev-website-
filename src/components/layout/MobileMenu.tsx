@@ -187,7 +187,7 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
             }
 
             const panelId = `mobile-menu-${link.href.replace(/\W+/g, "-")}`;
-            const { columns, footer } = megaMenus[link.mega];
+            const { columns, footer, iconPath } = megaMenus[link.mega];
 
             return (
               <li key={link.href}>
@@ -251,9 +251,16 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
                         {column.title}
                       </p>
 
+                      {/*
+                        Items are keyed on `name`, not `href`. The Solutions
+                        panel's six industry entries all point at the same
+                        anchor (`/industries#industries`), so keying on href
+                        gave React six duplicate keys and a warning on every
+                        page that renders this menu. Names are unique.
+                      */}
                       <ul className="mt-1.5 flex flex-col">
                         {column.items.map((item) => (
-                          <li key={item.href}>
+                          <li key={item.name}>
                             <Link
                               href={item.href}
                               onClick={() => setMenuOpen(false)}
@@ -263,12 +270,12 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
                                 "hover:bg-neutral-100",
                               )}
                             >
-                              {/* Platform's icons bake the lavender disc into
-                                  the asset; Resources draws its own. Same
-                                  split as the desktop panel. */}
-                              {link.mega === "platform" ? (
+                              {/* A menu with an `iconPath` bakes the lavender
+                                  disc into the asset; one without draws its
+                                  own. Same split as the desktop panel. */}
+                              {iconPath ? (
                                 <Image
-                                  src={`/assets/icons/engines/${item.icon}.png`}
+                                  src={`${iconPath}/${item.icon}.png`}
                                   alt=""
                                   aria-hidden="true"
                                   width={128}
@@ -294,6 +301,22 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
                           </li>
                         ))}
                       </ul>
+
+                      {/* The link closing a column, where the data supplies
+                          one — the desktop panel renders the same field. */}
+                      {column.action && (
+                        <Link
+                          href={column.action.href}
+                          onClick={() => setMenuOpen(false)}
+                          className={cn(
+                            "mt-2 inline-block px-4 py-2",
+                            "text-[0.875rem] font-semibold text-brand-700",
+                            "duration-fast transition-colors hover:text-brand-600",
+                          )}
+                        >
+                          {column.action.label}
+                        </Link>
+                      )}
                     </div>
                   ))}
 

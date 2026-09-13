@@ -23,9 +23,13 @@ interface Route {
 
 const routes: Route[] = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
+  /* Fabric is the connective layer the engines run on rather than one of
+     them, so it leads the platform routes as it leads the nav menu. */
+  { path: "/platform/fabric", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/pitch", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/pulse", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/magic", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/platform/flix", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/chat", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/saathi", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/kxp", priority: 0.8, changeFrequency: "monthly" },

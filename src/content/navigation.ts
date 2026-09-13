@@ -21,7 +21,7 @@ export interface NavLink {
 }
 
 /** The mega-menus the header can open, keyed by nav item. */
-export type MegaMenuKey = "platform" | "resources";
+export type MegaMenuKey = "platform" | "solutions" | "resources";
 
 export interface NavGroup {
   title: string;
@@ -34,10 +34,11 @@ export interface MegaMenuItem {
   description: string;
   href: string;
   /**
-   * For the Platform menu, a file in public/assets/icons/engines. For the
-   * Resources menu, a key into the drawn icon set in ResourcesMenuIcons —
-   * those are line glyphs rather than the engines' painted discs, so they are
-   * SVG in the bundle rather than another nine PNG downloads.
+   * Either a filename in the menu's `iconPath` directory, or — when the menu
+   * has no `iconPath` — a key into the drawn set in ResourcesMenuIcons.
+   *
+   * Which of the two applies is a property of the MENU, not of this item: see
+   * `iconPath` on MegaMenuPanel.
    */
   icon: string;
 }
@@ -45,6 +46,41 @@ export interface MegaMenuItem {
 export interface MegaMenuColumn {
   title: string;
   items: MegaMenuItem[];
+  /**
+   * Lay this column's items two per row rather than in a single list.
+   *
+   * The Solutions panel needs it: eleven entries in two single-file columns
+   * would run far taller than the viewport, so the design pairs them. Platform
+   * and Resources have few enough to read as lists, and omit it.
+   */
+  paired?: boolean;
+  /**
+   * OPTIONAL link closing the column, as the Solutions panel has under its
+   * business-need list.
+   *
+   * A separate field rather than one more `items` entry: it carries no icon
+   * and no description, so squeezing it into that shape would mean an item
+   * with two empty fields and a special case in the panel to hide them.
+   */
+  action?: NavLink;
+}
+
+export interface MegaMenuPanel {
+  columns: MegaMenuColumn[];
+  footer: { title: string[]; action: NavLink };
+  /**
+   * Public directory holding this menu's icon PNGs, WITHOUT a trailing slash.
+   *
+   * Its presence is what tells the panel which icon treatment to use. Menus
+   * that set it ship painted marks with the lavender disc baked into the
+   * asset, so nothing is drawn around them; menus that omit it use the stroked
+   * glyphs in ResourcesMenuIcons, which draw their own disc.
+   *
+   * Declared here rather than inferred from the menu's key, because the split
+   * is about how the ART was supplied — two menus now share the painted
+   * treatment, and a third could arrive either way.
+   */
+  iconPath?: string;
 }
 
 /**
@@ -54,8 +90,11 @@ export interface MegaMenuColumn {
 export const mainNav: NavLink[] = [
   /** `mega` names the panel this item opens; see megaMenus below. */
   { label: "Platform", href: "/platform", mega: "platform" },
-  { label: "Solutions", href: "/solutions" },
-  { label: "Industries", href: "/industries" },
+  /* Solutions carries BOTH the business-need pages and the industry ones —
+     the two used to be separate nav items, and the mega-menu now presents
+     them side by side. `/industries` is still a real page, reachable from
+     this panel's industry column and from the footer. */
+  { label: "Solutions", href: "/solutions", mega: "solutions" },
   { label: "Campus", href: "/campus" },
   { label: "Pricing", href: "/pricing" },
   { label: "Resources", href: "/resources", mega: "resources" },
@@ -74,16 +113,38 @@ export const mainNav: NavLink[] = [
  * lavender disc behind the glyph, so nothing draws a circle around them.
  *
  * TODO(routes): these hrefs follow the /platform/* pattern already used by the
- * footer. Only /platform/pitch exists today; the rest 404 until built.
+ * footer. Any that have no page yet 404 until built.
  */
-export const platformMenu: {
-  columns: MegaMenuColumn[];
-  footer: { title: string[]; action: NavLink };
-} = {
+export const platformMenu: MegaMenuPanel = {
+  /** Painted marks with the disc baked in — see `iconPath` on MegaMenuPanel. */
+  iconPath: "/assets/icons/engines",
   columns: [
     {
       title: "Build capability",
       items: [
+        /**
+         * LurnyFabric leads this column but is NOT a twelfth engine — it is the
+         * connective layer the others run on, which is why its description says
+         * so and why the footer's engine count below does not include it.
+         *
+         * It sat in a fourth column of its own at first. The shared panel lays
+         * out two or three columns, so a fourth wrapped to a second row and
+         * orphaned "Work in the flow" beneath it. Leading the first column
+         * keeps it prominent without touching the shared component for one
+         * entry.
+         */
+        {
+          name: "LurnyFabric",
+          description: "Connect, orchestrate and govern every engine",
+          href: "/platform/fabric",
+          /**
+           * TODO(assets): `fabric.png` is a drawn PLACEHOLDER — a woven lattice
+           * on the set's lavender disc — until the painted mark is supplied.
+           * Replace the file at public/assets/icons/engines/fabric.png;
+           * nothing here needs to change when it lands.
+           */
+          icon: "fabric",
+        },
         {
           name: "LurnyPulse",
           description: "Role readiness and capability intelligence",
@@ -95,6 +156,12 @@ export const platformMenu: {
           description: "AI content creation and transformation",
           href: "/platform/magic",
           icon: "magic",
+        },
+        {
+          name: "LurnyFlix",
+          description: "AI video creation for L&D",
+          href: "/platform/flix",
+          icon: "flix",
         },
         {
           name: "Lurny KxP",
@@ -167,10 +234,128 @@ export const platformMenu: {
   footer: {
     /**
      * Two lines, as the design sets them. The count tracks the engines listed
-     * above — it read "Nine" until LurnyNotes was added.
+     * above — it read "Nine" until LurnyNotes was added, and "Ten" until
+     * LurnyFlix.
      */
-    title: ["One capability model.", "Ten connected engines."],
+    title: ["One capability model.", "Eleven connected engines."],
     action: { label: "Explore the full platform", href: "/platform" },
+  },
+};
+
+/**
+ * SOLUTIONS MEGA-MENU
+ * ---------------------------------------------------------------------------
+ * Two columns side by side: the business-need pages on the left, the industry
+ * pages on the right, plus a footer band. Opens from the "Solutions" item in
+ * mainNav.
+ *
+ * WHY IT IS ONE MENU AND NOT TWO NAV ITEMS
+ * Solutions and Industries used to sit beside each other in the header. They
+ * answer the same question from two directions — what you are trying to do,
+ * and the sector you are doing it in — so the design folds them into a single
+ * panel and frees a header slot.
+ *
+ * Icons live in public/assets/icons/solutions; each bakes in the lavender disc
+ * exactly as the engine icons do, which is why this menu sets `iconPath`.
+ *
+ * TODO(routes): every business-need href exists except Compliance Readiness,
+ * which points at /solutions/compliance. The six industry entries all point at
+ * the industries page's sector grid — there are no per-sector routes yet, and
+ * linking to pages that do not exist would 404 from the header.
+ */
+export const solutionsMenu: MegaMenuPanel = {
+  /** Painted marks with the disc baked in — see `iconPath` on MegaMenuPanel. */
+  iconPath: "/assets/icons/solutions",
+  columns: [
+    {
+      title: "By business need",
+      paired: true,
+      items: [
+        {
+          name: "Capability Building",
+          description: "Build skills for every role",
+          href: "/solutions/capability-building",
+          icon: "capability-building",
+        },
+        {
+          name: "Frontline Performance",
+          description: "Turn learning into better outcomes",
+          href: "/solutions/frontline",
+          icon: "frontline-performance",
+        },
+        {
+          name: "Employee Onboarding",
+          description: "Help new joiners get ready",
+          href: "/solutions/onboarding",
+          icon: "employee-onboarding",
+        },
+        {
+          name: "Compliance Readiness",
+          description: "Build confidence. Show evidence.",
+          href: "/solutions/compliance",
+          icon: "compliance-readiness",
+        },
+        {
+          name: "Knowledge Management",
+          description: "Make trusted answers accessible",
+          href: "/solutions/knowledge-management",
+          icon: "knowledge-management",
+        },
+      ],
+      action: { label: "Explore all solutions", href: "/solutions" },
+    },
+    {
+      title: "By industry",
+      paired: true,
+      items: [
+        {
+          name: "BFSI",
+          description: "Banking, finance & insurance",
+          href: "/industries#industries",
+          icon: "bfsi",
+        },
+        {
+          name: "Telecom",
+          description: "Connected teams & service",
+          href: "/industries#industries",
+          icon: "telecom",
+        },
+        {
+          name: "Healthcare",
+          description: "Care quality & workforce readiness",
+          href: "/industries#industries",
+          icon: "healthcare",
+        },
+        {
+          name: "Manufacturing",
+          description: "Skills, safety & operations",
+          href: "/industries#industries",
+          icon: "manufacturing",
+        },
+        {
+          name: "Professional Services",
+          description: "Expertise & client delivery",
+          href: "/industries#industries",
+          icon: "professional-services",
+        },
+        {
+          name: "Retail",
+          description: "Store teams & customer experience",
+          href: "/industries#industries",
+          icon: "retail",
+        },
+      ],
+    },
+  ],
+
+  footer: {
+    /** Two lines, matching the other menus' footer treatment. */
+    title: ["Your business goals.", "Your industry context."],
+    /* The homepage demo form, not /contact: the design's label points at a
+       conversation, and /contact does not exist yet — several content files
+       already link to it, see the routes TODO. `/#demo` is the form that
+       actually answers this CTA today. */
+    action: { label: "Let’s talk about your challenge", href: "/#demo" },
   },
 };
 
@@ -191,10 +376,9 @@ export const platformMenu: {
  * TODO(routes): these hrefs follow the /resources/* pattern. Only /resources
  * exists today; the rest 404 until built.
  */
-export const resourcesMenu: {
-  columns: MegaMenuColumn[];
-  footer: { title: string[]; action: NavLink };
-} = {
+/* No `iconPath`: this menu's marks are stroked glyphs drawn in
+   ResourcesMenuIcons, which supply their own disc. */
+export const resourcesMenu: MegaMenuPanel = {
   columns: [
     {
       title: "Read",
@@ -246,10 +430,11 @@ export const resourcesMenu: {
 };
 
 /** Every mega-menu the header can open, addressed by a nav item's `mega`. */
-export const megaMenus = {
+export const megaMenus: Record<MegaMenuKey, MegaMenuPanel> = {
   platform: platformMenu,
+  solutions: solutionsMenu,
   resources: resourcesMenu,
-} as const;
+};
 
 /** Header call-to-action buttons. */
 export const headerActions = {
@@ -264,6 +449,7 @@ export const footerNav: NavGroup[] = [
     links: [
       { label: "Lurny KxP", href: "/platform/kxp" },
       { label: "LurnyMagic", href: "/platform/magic" },
+      { label: "LurnyFlix", href: "/platform/flix" },
       { label: "LurnyPulse", href: "/platform/pulse" },
       { label: "LurnyPitch", href: "/platform/pitch" },
       { label: "LurnyChat", href: "/platform/chat" },
