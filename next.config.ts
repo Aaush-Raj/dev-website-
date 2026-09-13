@@ -10,9 +10,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /**
    * Static export. The site has no API routes or server actions, so `next
-   * build` emits plain HTML/CSS/JS into `out/`, which is deployed to Azure
-   * Static Web Apps (www.lurny.ai). Security headers below are ignored in this
-   * mode — the equivalents live in `staticwebapp.config.json`.
+   * build` emits plain HTML/CSS/JS into `out/`, which is served by nginx on
+   * AKS (elurny.com, see Dockerfile). Security headers are ignored in this
+   * mode — the equivalents live in `nginx.conf`.
    */
   output: "export",
 
@@ -79,8 +79,7 @@ const nextConfig: NextConfig = {
 
   /**
    * Security headers are NOT set here. Under `output: "export"` Next ignores
-   * `headers()`; the equivalents are configured in `public/staticwebapp.config.json`
-   * (Azure Static Web Apps, www.lurny.ai).
+   * `headers()`; the equivalents are configured in `nginx.conf` (elurny.com).
    */
 };
 

@@ -1,0 +1,33 @@
+name: Deploy elurny.com (AKS)
+
+# Builds the Docker image (Next.js static export served by nginx, see
+# Dockerfile), pushes it to ACR and rolls the `elurny-website` deployment in
+# the `prod` namespace of the `lurny` AKS cluster. Traffic for elurny.com and
+# www.elurny.com reaches it via the in-cluster `prod/lurny-talk` ingress.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to AKS
+        uses: devops-guru01/templates/kubernetes/aks@main
+        with:
+          deploy_branch: main
+          container_registry: lunryai.azurecr.io
+          container_repository: elurny-website
+          service_name: elurny-website
+          aks_cluster_name: lurny
+          resource_group: AKS-Lunry
+          dockerfile_path: Dockerfile
+          app_port: "80"
+          k8s_namespace: prod
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
