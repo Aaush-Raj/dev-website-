@@ -110,28 +110,26 @@ section8 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny pl
 
 
 -------------------------------------------------
+Homepage changes - 
 
-Now lets work on FABRIC lurny fabric - 
-So you need to add lurnyFabric in Platform's submenu first , and a link for it. 
+Comment out the - "Trusted by enterprises across India & the GCC" Section.
 
-Then create a page and work on below section - 
-Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/section1.png
+Section1 - the card on the right side, can u make the right side border edges also curved , right now only the left side of borders look good
 
-Background -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/1 lurnyfabric_hero_extractions/01_gradient_background.png
-
-other assets - we have here - 
-/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/1 lurnyfabric_hero_extractions
-
-BUT I really want you to give it a try yourself. Work hard on adding all the animation that you see exactly.
- Let's not use other assets or images. I want it to be realistic, matching all the boxes with arrows and the spiral, sort of cosmic Gemini effect in the background. I want you to give it a try. I think you can code it and make it really live. 
+Section3 - Lets improve the right side section- the define improve build enable graphic , make it more real better , and also make the arrows fall at right place and more better, Right now it looks immature and falling apart.
 
 
+Making the section 1 as a carousel , auto changing page section.
+So now , we will have the current section as a carousel of 3.
+Current one remains the first by default. 
+
+Next carousel 2 for section 1 is - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Lurny_Hero_Slide_2_Assets/original_reference.png
+BG- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Lurny_Hero_Slide_2_Assets/backgrounds/clean_photo_background_reconstructed.png
+All the other cards , and arrows animation you can build yourself. Make it smooth and professional feel.
 
 
-SECTION 2 - - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/section2.png
-BG /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/2 lurnyfabric_three_layers/decorative_background.png
 
+Carousel 3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Lurny_Hero_Slide_3_Assets (1)/reference/slide-3-full-screen.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Lurny_Hero_Slide_3_Assets (1)/background/clean-office-background-reconstructed.png
+All the other cards , and arrows animation you can build yourself. Make it smooth and professional feel.
 
-Section 3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/section3.png
-
-BG /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnyfabric - all assets/3 lurnyfabric_section3_extractions/01_lavender_background.png

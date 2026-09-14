@@ -92,7 +92,12 @@ export function DashboardMockup({ className }: { className?: string }) {
       <div className="[perspective:2200px]">
         <motion.div
           className={cn(
-            "relative overflow-hidden rounded-l-2xl bg-white",
+            // All four corners, not just the left pair. The panel was
+            // `rounded-l-2xl` on the assumption that its right edge bled off
+            // the viewport, but it only does so below ~1400px — at 1512px and
+            // above the right edge sits well inside the frame, where two
+            // square corners are plainly visible against the rounded left.
+            "relative overflow-hidden rounded-2xl bg-white",
             "shadow-[0_28px_70px_-24px_rgb(17_19_35/0.28)]",
             "origin-left [transform-style:preserve-3d]",
           )}

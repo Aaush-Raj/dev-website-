@@ -1,7 +1,7 @@
 import { Demo } from "@/components/sections/demo/Demo";
 import { Engines } from "@/components/sections/engines/Engines";
 import { Hero } from "@/components/sections/hero/Hero";
-import { ClientStrip } from "@/components/sections/problem/ClientStrip";
+// import { ClientStrip } from "@/components/sections/problem/ClientStrip";
 import { Problem } from "@/components/sections/problem/Problem";
 import { Industries } from "@/components/sections/industries/Industries";
 import { Model } from "@/components/sections/model/Model";
@@ -33,10 +33,12 @@ export default function HomePage() {
     <>
       <Hero />
 
-      {/* Social proof and the problem statement share a background, so they
-          sit in one band rather than two abutting sections. */}
+      {/* The social-proof strip ("Trusted by enterprises across India & the
+          GCC", with the client logos) is commented out for now. It shared this
+          background band with the problem statement, so the wrapper stays —
+          uncomment the import above and the line below to restore it. */}
       <div className="bg-surface-subtle">
-        <ClientStrip />
+        {/* <ClientStrip /> */}
         <Problem />
       </div>
 
