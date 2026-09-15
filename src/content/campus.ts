@@ -643,4 +643,46 @@ export const campus = {
       meta: "14 min \u00b7 Applied practice",
     },
   },
+
+  /**
+   * The closing beta-signup band.
+   *
+   * A statement on the left and a single email capture on the right, on the
+   * soft mint ground the design supplies as a plate.
+   *
+   * THE LAUNCH DATE IS CONTENT, not a computed value. It is a stated
+   * commitment that someone will revise deliberately — deriving it from the
+   * clock would let it drift silently past, which is worse than a date that is
+   * merely out of date.
+   */
+  beta: {
+    badge: "Launching by October 2026",
+    headline: "Get an early look.",
+    description:
+      "Join the beta list for a sneak preview of LurnyCampus before launch.",
+
+    form: {
+      label: "Your email address",
+      placeholder: "you@example.com",
+      submit: "Join the Beta",
+      /** Sits beneath the field, explaining what submitting does. */
+      note: "Register your interest for an early preview.",
+
+      /** Shown in place of the form once an address is accepted. */
+      success: {
+        title: "You are on the list.",
+        body: "We will be in touch before launch with your early preview.",
+      },
+
+      /**
+       * Validation copy. Kept here rather than in the component so the wording
+       * can change without touching logic — matching the Insights subscribe
+       * form, which this one follows.
+       */
+      errors: {
+        empty: "Enter your email address.",
+        format: "Enter a valid email address.",
+      },
+    },
+  },
 } as const;

@@ -25,6 +25,7 @@ const routes: Route[] = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
   /* Fabric is the connective layer the engines run on rather than one of
      them, so it leads the platform routes as it leads the nav menu. */
+  { path: "/platform", priority: 0.9, changeFrequency: "monthly" },
   { path: "/platform/fabric", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/pitch", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/pulse", priority: 0.8, changeFrequency: "monthly" },
@@ -34,6 +35,9 @@ const routes: Route[] = [
   { path: "/platform/saathi", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/kxp", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/notes", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/platform/biz", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/platform/events", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/platform/sense", priority: 0.8, changeFrequency: "monthly" },
   { path: "/solutions", priority: 0.8, changeFrequency: "monthly" },
   { path: "/solutions/frontline", priority: 0.8, changeFrequency: "monthly" },
   { path: "/solutions/onboarding", priority: 0.8, changeFrequency: "monthly" },
@@ -56,7 +60,19 @@ const routes: Route[] = [
   // Pricing sits high: it is a primary nav destination and a conversion page.
   { path: "/pricing", priority: 0.9, changeFrequency: "monthly" },
   { path: "/company", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/industries", priority: 0.7, changeFrequency: "monthly" },
+  /* The two products announced as coming soon. Both are real pages reachable
+     from the header, so they belong here even though neither has launched. */
+  { path: "/lurny-ai", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/campus", priority: 0.8, changeFrequency: "monthly" },
   { path: "/resources", priority: 0.7, changeFrequency: "weekly" },
+  // Customer stories: the index, and the BFSI study it links to.
+  { path: "/customers", priority: 0.8, changeFrequency: "monthly" },
+  {
+    path: "/resources/case-studies",
+    priority: 0.7,
+    changeFrequency: "monthly",
+  },
   { path: "/resources/insights", priority: 0.7, changeFrequency: "weekly" },
   // Individual insight articles. Each is written once and rarely revised, so
   // they sit a step below the index that lists them.

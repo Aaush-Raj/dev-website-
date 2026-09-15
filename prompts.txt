@@ -110,26 +110,37 @@ section8 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny pl
 
 
 -------------------------------------------------
-Homepage changes - 
-
-Comment out the - "Trusted by enterprises across India & the GCC" Section.
-
-Section1 - the card on the right side, can u make the right side border edges also curved , right now only the left side of borders look good
-
-Section3 - Lets improve the right side section- the define improve build enable graphic , make it more real better , and also make the arrows fall at right place and more better, Right now it looks immature and falling apart.
+Lets work on Lurny-ai page - 
 
 
-Making the section 1 as a carousel , auto changing page section.
-So now , we will have the current section as a carousel of 3.
-Current one remains the first by default. 
-
-Next carousel 2 for section 1 is - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Lurny_Hero_Slide_2_Assets/original_reference.png
-BG- /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Lurny_Hero_Slide_2_Assets/backgrounds/clean_photo_background_reconstructed.png
-All the other cards , and arrows animation you can build yourself. Make it smooth and professional feel.
+Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section1.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurnyai-hero-assets-complete/01-background-human.png
+Rest of the cards and text you can code with subtle appearance animations
 
 
+Section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section2.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurnyai-section-02-assets/06-background-gradients.png
+Rest of the cards and text you can code with subtle appearance animations with cool arrow and good pointer.
 
-Carousel 3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Lurny_Hero_Slide_3_Assets (1)/reference/slide-3-full-screen.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/Lurny_Hero_Slide_3_Assets (1)/background/clean-office-background-reconstructed.png
-All the other cards , and arrows animation you can build yourself. Make it smooth and professional feel.
+Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section3.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-03-create-for-companies/04-dark-background-geometric.png
+Top card section - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-03-create-for-companies/01-company-learning-brief.png
+Bottom card section - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-03-create-for-companies/02-learning-collection.png
+Make aarrow and other animations perfect.
 
+
+Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section4.png
+Certifcat - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-04-expert-credentials/01-expert-credential-card.png
+BG -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-04-expert-credentials/03-light-background-gradients.png 
+Other card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-04-expert-credentials/02-requirements-met-card.png
+
+
+Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section5.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-03-create-for-companies/04-dark-background-geometric.png
+Card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-05-learner-community/01-community-video-player-card.png
+Other card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-05-learner-community/02-paid-learning-experiences-card.png
+
+
+Section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section6.png
+
+-------

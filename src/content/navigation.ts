@@ -21,7 +21,20 @@ export interface NavLink {
 }
 
 /** The mega-menus the header can open, keyed by nav item. */
-export type MegaMenuKey = "platform" | "solutions" | "resources";
+/**
+ * The panels the header can open.
+ *
+ * "coming-soon" is one of these so it shares the header's open/close machinery
+ * — the hover timers, Escape-to-close with focus return, and the route-change
+ * guard — rather than duplicating that state. It renders through its OWN
+ * component, though: `MegaMenu` lays out columns of links, and this panel is
+ * two large cards.
+ */
+export type MegaMenuKey =
+  "platform" | "solutions" | "resources" | "coming-soon";
+
+/** The subset of panels that `MegaMenu` renders as columns of links. */
+export type ColumnMenuKey = Exclude<MegaMenuKey, "coming-soon">;
 
 export interface NavGroup {
   title: string;
@@ -95,10 +108,20 @@ export const mainNav: NavLink[] = [
      them side by side. `/industries` is still a real page, reachable from
      this panel's industry column and from the footer. */
   { label: "Solutions", href: "/solutions", mega: "solutions" },
-  { label: "Campus", href: "/campus" },
   { label: "Pricing", href: "/pricing" },
   { label: "Resources", href: "/resources", mega: "resources" },
-  { label: "Company", href: "/company" },
+  /*
+     CAMPUS AND COMPANY ARE DELIBERATELY ABSENT.
+
+     Company moved to the footer, where its column already led with "About
+     Lurny" pointing at the same route — so nothing was added there, the
+     header entry was simply redundant.
+
+     Campus is UNLINKED ON PURPOSE. The header was /campus's only entry point
+     anywhere on the site, so the page is now reachable by direct URL alone.
+     That is intended; re-adding a link is a content decision, not an
+     oversight to be tidied up.
+  */
 ];
 
 /**
@@ -429,18 +452,87 @@ export const resourcesMenu: MegaMenuPanel = {
   },
 };
 
-/** Every mega-menu the header can open, addressed by a nav item's `mega`. */
-export const megaMenus: Record<MegaMenuKey, MegaMenuPanel> = {
+/**
+ * The COLUMN menus, addressed by a nav item's `mega`.
+ *
+ * Deliberately not `Record<MegaMenuKey, ...>`: "coming-soon" is a valid panel
+ * key but is not column-shaped, so it has no entry here and renders through
+ * its own component instead. Typing this as a full Record would demand a
+ * columns/footer shape that panel does not have.
+ */
+export const megaMenus: Record<ColumnMenuKey, MegaMenuPanel> = {
   platform: platformMenu,
   solutions: solutionsMenu,
   resources: resourcesMenu,
 };
 
-/** Header call-to-action buttons. */
+/**
+ * Header call-to-action buttons.
+ *
+ * There is no `secondary` any more: the "Sign in" button was removed, and its
+ * /signin route never existed. Both header and mobile menu read `primary`
+ * only, so adding a second action back means changing those two components as
+ * well as this object.
+ */
 export const headerActions = {
-  secondary: { label: "Sign in", href: "/signin" } satisfies NavLink,
   primary: { label: "Book a Demo", href: "/demo" } satisfies NavLink,
 };
+
+/**
+ * THE COMING SOON PANEL
+ * ---------------------------------------------------------------------------
+ * Opens from the header's "Coming Soon" button, in the slot the Sign in button
+ * used to occupy.
+ *
+ * These are INDEPENDENT PLATFORMS, not engines — they do not belong in the
+ * Platform mega-menu, which is why they get a panel of their own. The heading
+ * says so in as many words.
+ *
+ * LurnyCampus is a real page today; Lurny.ai is not built yet. Its href is
+ * marked below rather than being quietly pointed somewhere plausible.
+ */
+export const comingSoonMenu = {
+  /** The label above the two cards. */
+  title: "Independent platforms from Lurny",
+
+  items: [
+    {
+      id: "lurny-ai",
+      name: "Lurny.ai",
+      description:
+        "Create learning, build your community and earn from your expertise.",
+      /** TODO(routes): /lurny-ai does not exist yet. */
+      href: "/lurny-ai",
+      cta: "Explore Lurny.ai",
+      /** `tone` keys the badge and link colour — coral for ai, green for campus. */
+      tone: "coral",
+      badge: "Launching by October 2026",
+      image: {
+        src: "/assets/images/coming-soon/lurny-ai.webp",
+        /*
+          `alt` is empty: the card's own name, description and link carry the
+          meaning, and the photograph is atmosphere. The UI cards baked into it
+          are illustrative rather than real interface.
+        */
+        alt: "",
+      },
+    },
+    {
+      id: "campus",
+      name: "LurnyCampus",
+      description:
+        "Build capability, demonstrate your skills and prepare for the world of work.",
+      href: "/campus",
+      cta: "Explore LurnyCampus",
+      tone: "green",
+      badge: "Coming soon",
+      image: {
+        src: "/assets/images/coming-soon/campus.webp",
+        alt: "",
+      },
+    },
+  ],
+} as const;
 
 /** Footer link columns. */
 export const footerNav: NavGroup[] = [

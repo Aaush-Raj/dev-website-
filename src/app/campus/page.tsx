@@ -1,3 +1,4 @@
+import { CampusBeta } from "@/components/sections/campus/CampusBeta";
 import { CampusDoing } from "@/components/sections/campus/CampusDoing";
 import { CampusGap } from "@/components/sections/campus/CampusGap";
 import { CampusGuidance } from "@/components/sections/campus/CampusGuidance";
@@ -34,6 +35,8 @@ export default function CampusPage() {
       <CampusGuidance />
 
       <CampusPassport />
+
+      <CampusBeta />
     </>
   );
 }

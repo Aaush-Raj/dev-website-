@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { ArrowRightIcon } from "@/components/sections/hero/DashboardIcons";
 import { ResourceIcon } from "@/components/layout/ResourcesMenuIcons";
-import { megaMenus, type MegaMenuKey } from "@/content/navigation";
+import { megaMenus, type ColumnMenuKey } from "@/content/navigation";
 import { cn } from "@/lib/utils";
 
 /**
@@ -36,7 +36,13 @@ import { cn } from "@/lib/utils";
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
 
-export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
+/*
+  `ColumnMenuKey`, not `MegaMenuKey`: this component lays out columns of links,
+  and the "coming-soon" panel is two large cards rendered by ComingSoonMenu.
+  Accepting the wider type would compile but hand this component a shape it
+  cannot render.
+*/
+export function MegaMenu({ id, menu }: { id: string; menu: ColumnMenuKey }) {
   const reduce = useReducedMotion();
   const { columns, footer, iconPath } = megaMenus[menu];
 
@@ -162,7 +168,7 @@ export function MegaMenu({ id, menu }: { id: string; menu: MegaMenuKey }) {
                   "group mt-6 inline-flex items-center gap-2 rounded-md",
                   "text-[0.9375rem] font-semibold text-brand-700",
                   "duration-fast transition-colors hover:text-brand-600",
-                  "focus-visible:outline-none focus-visible:underline",
+                  "focus-visible:underline focus-visible:outline-none",
                 )}
               >
                 {column.action.label}

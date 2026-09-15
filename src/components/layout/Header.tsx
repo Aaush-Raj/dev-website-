@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Logo } from "@/components/layout/Logo";
 import { MobileMenu } from "@/components/layout/MobileMenu";
+import { ComingSoonMenu } from "@/components/layout/ComingSoonMenu";
 import { MegaMenu } from "@/components/layout/MegaMenu";
 import { ChevronDownIcon } from "@/components/sections/hero/DashboardIcons";
 import { Container } from "@/components/ui/Container";
@@ -81,6 +82,23 @@ export function Header() {
   const triggerRefs = useRef<Partial<Record<MegaMenuKey, HTMLAnchorElement>>>(
     {},
   );
+  /*
+    The Coming Soon trigger is a <button>, not an <a>, so it cannot live in
+    `triggerRefs` above — which is typed for the nav's anchors. Escape returns
+    focus here instead; see the keydown effect below.
+  */
+  const comingSoonTrigger = useRef<HTMLButtonElement | null>(null);
+  /*
+    Set when Escape closes the Coming Soon panel; cleared when the pointer
+    leaves the trigger or the trigger is clicked.
+
+    Without it Escape appeared to do nothing: closing the panel returns focus
+    to this trigger, and the trigger's own `onFocus` reopened it on the very
+    same tick. The column menus never hit this because their triggers are
+    links, and MegaMenu opens on focus only when focus ARRIVES from tabbing
+    rather than from being restored.
+  */
+  const suppressComingSoonReopen = useRef(false);
 
   /**
    * Route changes close the panel, without a setState-in-effect cascade.
@@ -140,7 +158,10 @@ export function Header() {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       closeMega({ immediate: true });
-      triggerRefs.current[activeMenu]?.focus();
+      if (activeMenu === "coming-soon") {
+        suppressComingSoonReopen.current = true;
+        comingSoonTrigger.current?.focus();
+      } else triggerRefs.current[activeMenu]?.focus();
     };
 
     document.addEventListener("keydown", onKeyDown);
@@ -299,17 +320,78 @@ export function Header() {
             })}
           </ul>
 
-          {/* Desktop actions */}
+          {/* Desktop actions — see the note on `headerActions`. */}
           <div className="hidden items-center gap-2 lg:flex">
-            <Link
-              href={headerActions.secondary.href}
+            {/*
+              The Coming Soon trigger. A BUTTON, not a link: it opens a panel
+              and goes nowhere itself, so it must not be announced as a
+              navigation target. It sits in the slot the Sign in link used to
+              occupy.
+            */}
+            <button
+              type="button"
+              ref={(node) => {
+                if (node) comingSoonTrigger.current = node;
+              }}
+              aria-expanded={activeMenu === "coming-soon"}
+              aria-controls={
+                activeMenu === "coming-soon"
+                  ? MEGA_MENU_ID("coming-soon")
+                  : undefined
+              }
+              onMouseEnter={() => {
+                if (suppressComingSoonReopen.current) return;
+                openMega("coming-soon");
+              }}
+              onMouseLeave={() => {
+                // The pointer has left, so a later hover is a fresh intent.
+                suppressComingSoonReopen.current = false;
+                closeMega();
+              }}
+              onFocus={() => {
+                // Escape focuses this trigger on its way out; without the
+                // guard that focus reopened the panel immediately and Escape
+                // appeared to do nothing at all.
+                if (suppressComingSoonReopen.current) return;
+                openMega("coming-soon");
+              }}
+              onClick={() => {
+                // An explicit click always wins over the Escape guard.
+                suppressComingSoonReopen.current = false;
+                if (activeMenu === "coming-soon")
+                  closeMega({ immediate: true });
+                else openMega("coming-soon");
+              }}
               className={cn(
-                "rounded-full px-4 py-2 text-[0.9375rem] font-semibold whitespace-nowrap text-neutral-900",
-                "duration-fast transition-colors hover:bg-neutral-100",
+                "flex items-center gap-2.5 rounded-full px-5 py-3",
+                "text-[0.9375rem] font-semibold whitespace-nowrap text-[#8a5a1f]",
+                "bg-[#fbe8cd]",
+                "duration-normal transition-[background-color] ease-out",
+                "hover:bg-[#f7ddb8]",
+                "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-brand-600",
               )}
             >
-              {headerActions.secondary.label}
-            </Link>
+              <MegaphoneIcon className="size-4.5 shrink-0 text-[#e8452a]" />
+              Coming Soon
+              <svg
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+                className={cn(
+                  "size-3.5 shrink-0",
+                  "duration-normal transition-[rotate] ease-out",
+                  activeMenu === "coming-soon" && "rotate-180",
+                )}
+              >
+                <path
+                  d="m4 6 4 4 4-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
 
             <Link
               href={headerActions.primary.href}
@@ -360,12 +442,50 @@ export function Header() {
                 onMouseEnter={() => openMega(activeMenu)}
                 onMouseLeave={() => closeMega()}
               >
-                <MegaMenu id={MEGA_MENU_ID(activeMenu)} menu={activeMenu} />
+                {/*
+                  Two renderers, one state machine: the column menus go through
+                  MegaMenu, the Coming Soon panel through its own component.
+                  See the note on `MegaMenuKey` in content/navigation.
+                */}
+                {activeMenu === "coming-soon" ? (
+                  <ComingSoonMenu id={MEGA_MENU_ID(activeMenu)} />
+                ) : (
+                  <MegaMenu id={MEGA_MENU_ID(activeMenu)} menu={activeMenu} />
+                )}
               </div>
             )}
           </AnimatePresence>
         </div>
       </Container>
     </header>
+  );
+}
+
+/**
+ * The megaphone on the Coming Soon trigger.
+ *
+ * Drawn inline rather than shipped: it renders at 18px, where a raster buys
+ * nothing a path does not, and inline inherits currentColor.
+ */
+function MegaphoneIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+      {/* The horn, filled — it reads as a solid shape at this size. */}
+      <path d="M19.6 4.3v15.4L9.2 16.4V7.6l10.4-3.3Z" fill="currentColor" />
+      {/* The body the horn sounds from. */}
+      <path
+        d="M9.2 7.6H6.1A2.1 2.1 0 0 0 4 9.7v4.6a2.1 2.1 0 0 0 2.1 2.1h3.1"
+        fill="currentColor"
+      />
+      {/* The handle. */}
+      <path
+        d="M7.6 16.4v2.4a1.7 1.7 0 0 0 3.4 0v-1.6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.7}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

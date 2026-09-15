@@ -6,7 +6,12 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import { ResourceIcon } from "@/components/layout/ResourcesMenuIcons";
-import { headerActions, mainNav, megaMenus } from "@/content/navigation";
+import {
+  comingSoonMenu,
+  headerActions,
+  mainNav,
+  megaMenus,
+} from "@/content/navigation";
 import { cn } from "@/lib/utils";
 
 /**
@@ -187,6 +192,17 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
             }
 
             const panelId = `mobile-menu-${link.href.replace(/\W+/g, "-")}`;
+
+            /*
+              Only the COLUMN menus are reachable from `mainNav`; the
+              "coming-soon" panel is opened by a button in the actions row, not
+              by a nav item, so no item carries that key. The guard makes that
+              explicit to the type system rather than asserting it away — if a
+              nav item ever did carry it, this skips it instead of rendering a
+              panel shape that does not exist.
+            */
+            if (link.mega === "coming-soon") return null;
+
             const { columns, footer, iconPath } = megaMenus[link.mega];
 
             return (
@@ -337,19 +353,59 @@ export function MobileMenu({ onOpenChange }: MobileMenuProps = {}) {
           })}
         </ul>
 
-        <div className="mt-3 flex flex-col gap-2 border-t border-neutral-200 pt-4">
-          <Link
-            href={headerActions.secondary.href}
-            onClick={() => setMenuOpen(false)}
-            className={cn(
-              "rounded-full border border-neutral-300 px-6 py-3 text-center",
-              "text-[0.9375rem] font-semibold text-neutral-900",
-              "duration-fast transition-colors hover:bg-neutral-100",
-            )}
-          >
-            {headerActions.secondary.label}
-          </Link>
+        {/*
+          The Coming Soon platforms.
 
+          The desktop header shows these in a panel of photographic cards; that
+          panel is far too tall for a phone, so here they are two plain rows —
+          the same destinations, in a shape the drawer can hold. Without this
+          they would be unreachable on mobile entirely.
+        */}
+        <div className="mt-3 border-t border-neutral-200 pt-4">
+          <p className="px-4 text-[0.8125rem] text-neutral-500">
+            {comingSoonMenu.title}
+          </p>
+          <ul className="mt-1.5 flex flex-col">
+            {comingSoonMenu.items.map((item) => (
+              <li key={item.id}>
+                <Link
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={cn(
+                    "duration-fast flex items-center justify-between gap-3 rounded-xl",
+                    "px-4 py-3 transition-colors hover:bg-neutral-50",
+                  )}
+                >
+                  <span className="min-w-0">
+                    <span className="block text-[0.9375rem] font-semibold text-neutral-900">
+                      {item.name}
+                    </span>
+                    <span className="mt-0.5 block text-[0.8125rem] text-neutral-500">
+                      {item.badge}
+                    </span>
+                  </span>
+                  <svg
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                    className="size-4 shrink-0 text-neutral-400"
+                  >
+                    <path
+                      d="M2 8h12M9.5 3.5 14 8l-4.5 4.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* One action; see the note on `headerActions` in content/navigation. */}
+        <div className="mt-3 flex flex-col border-t border-neutral-200 pt-4">
           <Link
             href={headerActions.primary.href}
             onClick={() => setMenuOpen(false)}
