@@ -129,8 +129,12 @@ export const mainNav: NavLink[] = [
  * ---------------------------------------------------------------------------
  * Three columns of engines, grouped by what they are for, plus a footer band.
  * Opens from the "Platform" item in mainNav. The columns are not all the same
- * length — "Work in the flow" carries four — so the panel's grid sizes each
- * column to its own content rather than assuming a fixed count.
+ * length, so the panel's grid sizes each column to its own content rather than
+ * assuming a fixed count.
+ *
+ * The twelve engines match the platform page's grid, which is the source of
+ * truth for that list. LurnyFabric leads the first column but is NOT one of
+ * them — see the note on its entry.
  *
  * Icons live in public/assets/icons/engines. Each already includes the
  * lavender disc behind the glyph, so nothing draws a circle around them.
@@ -198,6 +202,21 @@ export const platformMenu: MegaMenuPanel = {
       title: "Enable performance",
       items: [
         {
+          name: "LurnySim",
+          description: "Realistic role-play and practice",
+          /* No route yet — /platform/sim is not built, so this 404s until it
+             is. Listed anyway: it is one of the twelve engines, and the
+             platform page already shows its card. */
+          href: "/platform/sim",
+          /**
+           * TODO(assets): `sim.png` is a drawn PLACEHOLDER — two figures in
+           * conversation on the set's lavender disc — until the painted mark is
+           * supplied. Replace the file at
+           * public/assets/icons/engines/sim.png; nothing here needs to change.
+           */
+          icon: "sim",
+        },
+        {
           name: "LurnyChat",
           description: "Trusted knowledge in the flow of work",
           href: "/platform/chat",
@@ -260,7 +279,7 @@ export const platformMenu: MegaMenuPanel = {
      * above — it read "Nine" until LurnyNotes was added, and "Ten" until
      * LurnyFlix.
      */
-    title: ["One capability model.", "Eleven connected engines."],
+    title: ["One capability model.", "Twelve connected engines."],
     action: { label: "Explore the full platform", href: "/platform" },
   },
 };

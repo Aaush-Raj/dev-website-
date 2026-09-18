@@ -1,7 +1,7 @@
 /**
  * ENGINE ICONS
  * ---------------------------------------------------------------------------
- * The nine product icons, drawn on a 44x44 viewBox.
+ * The twelve product icons, drawn on a 44x44 viewBox.
  *
  * Two-tone by design: violet line work with an amber accent. Colours are
  * hard-referenced to the palette tokens rather than currentColor, because
@@ -231,6 +231,45 @@ export function InsightIcon({ className }: IconProps) {
 }
 
 /** Keys match the `icon` field in content/engines.ts. */
+/** LurnyFlix — AI video creation. A play control in a frame. */
+export function FlixIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <rect x="6" y="9.5" width="32" height="25" rx="4" {...stroke} />
+      <path d="M18.5 17.5 27 22l-8.5 4.5v-9Z" fill={V} />
+      {/* The sprocket marks along the foot, as on a film strip. */}
+      <path d="M12 34.5v3M22 34.5v3M32 34.5v3" {...stroke} />
+      <circle cx="33.5" cy="14" r="2.4" fill={A} />
+    </svg>
+  );
+}
+
+/** LurnySim — role-play practice. Two figures in conversation. */
+export function SimIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <circle cx="15.5" cy="15" r="5" {...stroke} />
+      <path d="M7 31.5c0-4.7 3.8-7.5 8.5-7.5s8.5 2.8 8.5 7.5" {...stroke} />
+      {/* The second speaker, turned toward the first. */}
+      <path d="M28.5 12.5a5 5 0 0 1 0 9.4" {...stroke} />
+      <path d="M31 24.5c3.4.9 5.5 3.4 5.5 7" {...stroke} />
+      <circle cx="33" cy="32" r="2.6" fill={A} />
+    </svg>
+  );
+}
+
+/** LurnyNotes — meeting capture. A page with a folded corner. */
+export function NotesIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <path d="M10 6.5h15L34 15.5v22H10V6.5Z" {...stroke} />
+      <path d="M24.5 6.8v9h9" {...stroke} />
+      <path d="M16 21.5h12M16 27h8" {...stroke} />
+      <circle cx="30" cy="30.5" r="2.6" fill={A} />
+    </svg>
+  );
+}
+
 export const engineIcons = {
   radar: RadarIcon,
   document: DocumentIcon,
@@ -241,4 +280,7 @@ export const engineIcons = {
   mobile: MobileIcon,
   path: PathIcon,
   insight: InsightIcon,
+  flix: FlixIcon,
+  sim: SimIcon,
+  notes: NotesIcon,
 } as const;

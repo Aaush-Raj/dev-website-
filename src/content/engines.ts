@@ -1,5 +1,5 @@
 /**
- * SECTION 4 CONTENT — the nine engines
+ * SECTION 4 CONTENT — the twelve engines
  * ---------------------------------------------------------------------------
  * Product cards. `icon` selects a component from
  * components/sections/engines/EngineIcons.tsx.
@@ -12,7 +12,7 @@ export const engines = {
    * Split across two lines to match the design, which breaks after "one".
    * Rendered with a <br> on lg+ and allowed to wrap naturally below that.
    */
-  headline: ["Nine engines on one", "platform"] as const,
+  headline: ["Twelve engines on one", "platform"] as const,
 
   description:
     "Each engine is useful alone. Deployed together they share one capability model, one content pipeline and one analytics layer.",
@@ -38,6 +38,20 @@ export const engines = {
       description:
         "Journeys, playlists, gamification, nudges, certifications, analytics and mobile learning.",
       icon: "graph",
+    },
+    {
+      name: "LurnyFlix",
+      category: "AI video creation",
+      description:
+        "Create AI videos and interactive learning experiences, without a studio or a production team.",
+      icon: "flix",
+    },
+    {
+      name: "LurnySim",
+      category: "Role-play & practice",
+      description:
+        "Build confidence through realistic role-play: practise the conversation before it happens.",
+      icon: "sim",
     },
     {
       name: "LurnyChat",
@@ -80,6 +94,13 @@ export const engines = {
       description:
         "Ask questions of your workforce data. Surface trends, capability gaps, engagement signals and actions to take next.",
       icon: "insight",
+    },
+    {
+      name: "LurnyNotes",
+      category: "Meeting intelligence",
+      description:
+        "Turn meetings into learning, shared knowledge and grounded email drafts.",
+      icon: "notes",
     },
   ] as const,
 } as const;
