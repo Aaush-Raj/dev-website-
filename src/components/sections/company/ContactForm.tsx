@@ -52,6 +52,10 @@ export function ContactForm() {
   type ErrorKey = "name" | "email" | "message";
   const [errors, setErrors] = useState<Partial<Record<ErrorKey, string>>>({});
   const [sent, setSent] = useState(false);
+  /** True while the POST is in flight, so the button cannot be double-fired. */
+  const [sending, setSending] = useState(false);
+  /** Set when the request itself fails, as opposed to a field being invalid. */
+  const [sendError, setSendError] = useState<string | null>(null);
 
   const set = (key: keyof typeof values) => (value: string) => {
     setValues((current) => ({ ...current, [key]: value }));
@@ -62,8 +66,9 @@ export function ContactForm() {
     );
   };
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setSendError(null);
 
     const next: Partial<Record<ErrorKey, string>> = {};
     if (!values.name.trim()) next.name = form.errors.name;
@@ -85,8 +90,43 @@ export function ContactForm() {
       return;
     }
 
-    /* DEVELOPER INTEGRATION POINT — see the note at the top of this file. */
-    setSent(true);
+    setSending(true);
+
+    /*
+     * Success is shown ONLY on a 2xx — see the same reasoning in LeadForm.
+     * While the site builds as a static export the endpoint is inert, so this
+     * lands in `catch` and shows the error rather than a false success.
+     */
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind: "contact",
+          source: window.location.pathname,
+          name: values.name,
+          email: values.email,
+          organisation: values.organisation || undefined,
+          selections: {
+            ...(values.phone && { Phone: values.phone }),
+            [form.interest.label]: values.interest,
+          },
+          message: values.message,
+          // Honeypot — see the note in the API route.
+          company_website: "",
+        }),
+      });
+
+      if (!response.ok) throw new Error(`Request failed (${response.status})`);
+
+      setSent(true);
+    } catch {
+      setSendError(
+        "Something went wrong sending your message. Please try again, or email us directly.",
+      );
+    } finally {
+      setSending(false);
+    }
   }
 
   const fieldClass = cn(
@@ -286,8 +326,13 @@ export function ContactForm() {
 
         <button
           type="submit"
+          // Guards against a second submit while the first is in flight, which
+          // would create a duplicate enquiry.
+          disabled={sending}
+          aria-busy={sending}
           className={cn(
             "group mt-6 flex w-full cursor-pointer items-center justify-center",
+            "disabled:cursor-not-allowed disabled:opacity-70",
             "gap-2.5 rounded-lg bg-[#59248b] px-6 py-3.5",
             "text-[0.9375rem] font-semibold text-white",
             "transition-colors hover:bg-[#42196a]",
@@ -295,7 +340,7 @@ export function ContactForm() {
             "focus-visible:outline-[#59248b]",
           )}
         >
-          {form.submit}
+          {sending ? "Sending…" : form.submit}
           <svg
             aria-hidden="true"
             viewBox="0 0 24 24"
@@ -309,6 +354,20 @@ export function ContactForm() {
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
         </button>
+
+        {/* A transport failure, as opposed to an invalid field. `role="alert"`
+            so it is announced: the person is waiting on this answer. */}
+        {sendError && (
+          <p
+            role="alert"
+            className={cn(
+              "mt-3 rounded-lg bg-red-50 px-4 py-3",
+              "text-[0.875rem] leading-relaxed text-red-700",
+            )}
+          >
+            {sendError}
+          </p>
+        )}
       </form>
     </div>
   );

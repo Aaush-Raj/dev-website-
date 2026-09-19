@@ -385,6 +385,10 @@ export function LeadForm({
   /** Only true once submit has been attempted; gates live re-validation. */
   const [submitted, setSubmitted] = useState(false);
   const [succeeded, setSucceeded] = useState(false);
+  /** True while the POST is in flight, so the button cannot be double-fired. */
+  const [sending, setSending] = useState(false);
+  /** Set when the request itself fails, as opposed to a field being invalid. */
+  const [sendError, setSendError] = useState<string | null>(null);
 
   /**
    * Deliberately permissive: something, an @, something, a dot, something.
@@ -420,9 +424,10 @@ export function LeadForm({
     if (submitted) setErrors(validate(next));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitted(true);
+    setSendError(null);
 
     const found = validate(values);
     setErrors(found);
@@ -434,15 +439,65 @@ export function LeadForm({
       return;
     }
 
+    setSending(true);
+
     /*
-     * TODO(forms): send `values` somewhere.
+     * Success is shown ONLY on a 2xx. Showing it on validation alone would
+     * thank someone whose details went nowhere, which is worse than an error.
      *
-     * NOTHING IS SENT TODAY — the success state below is shown on validation
-     * alone. Before launch this must POST to a real destination and only show
-     * success on a 2xx, with an error path for failures. Until then no form on
-     * the site collects leads.
+     * The endpoint is inert while the site builds as a static export (see
+     * next.config.ts), so until that changes this path lands in `catch` and
+     * the form shows its error state rather than a false success.
      */
-    setSucceeded(true);
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind: "demo",
+          source: window.location.pathname,
+          name: values.fullName,
+          email: values.workEmail,
+          organisation: values.organisation || undefined,
+          selections: {
+            [content.selectA.label]: values.selectA,
+            [content.selectB.label]: values.selectB,
+            ...(content.selectC && { [content.selectC.label]: values.selectC }),
+            ...(content.textC && { [content.textC.label]: values.textC }),
+          },
+          message: values.detail || undefined,
+          consent: values.consent,
+          // Honeypot: a real person never sees this field, so anything in it
+          // came from a bot. Always empty here; the server checks it.
+          company_website: "",
+        }),
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => ({}))) as {
+          errors?: Errors;
+          error?: string;
+        };
+
+        // The server re-validates independently, so surface its field errors
+        // rather than a generic failure when it sends them.
+        if (payload.errors) {
+          setErrors(payload.errors);
+          setSending(false);
+          return;
+        }
+
+        throw new Error(payload.error ?? `Request failed (${response.status})`);
+      }
+
+      setSucceeded(true);
+    } catch {
+      setSendError(
+        "Something went wrong sending your request. Please try again, or email us directly.",
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   /* ---------------------------------------------------------------- done -- */
@@ -713,9 +768,14 @@ export function LeadForm({
       {/* ----------------------------- Submit ----------------------- */}
       <button
         type="submit"
+        // Guards against a second submit while the first is in flight, which
+        // would create a duplicate lead.
+        disabled={sending}
+        aria-busy={sending}
         className={cn(
           "group mt-5 flex h-12 w-full cursor-pointer items-center justify-center gap-2",
           "rounded-md text-[0.9375rem] font-semibold",
+          "disabled:cursor-not-allowed disabled:opacity-70",
           // `translate`, not `transform`: Tailwind v4 compiles the translate
           // utilities to the standalone property.
           "duration-normal transition-[background-color,box-shadow,translate] ease-out",
@@ -726,14 +786,30 @@ export function LeadForm({
           toneStyles[tone],
         )}
       >
-        {content.submit}
-        <ArrowRightIcon
-          className={cn(
-            "duration-normal size-4 transition-transform ease-out",
-            "group-hover:translate-x-1",
-          )}
-        />
+        {sending ? "Sending…" : content.submit}
+        {!sending && (
+          <ArrowRightIcon
+            className={cn(
+              "duration-normal size-4 transition-transform ease-out",
+              "group-hover:translate-x-1",
+            )}
+          />
+        )}
       </button>
+
+      {/* A transport failure, as opposed to an invalid field. `role="alert"`
+          so it is announced: the person is waiting on this answer. */}
+      {sendError && (
+        <p
+          role="alert"
+          className={cn(
+            "mt-3 rounded-md bg-red-50 px-4 py-3",
+            "text-[0.875rem] leading-relaxed text-red-700",
+          )}
+        >
+          {sendError}
+        </p>
+      )}
 
       <Footnote content={content.footnote} />
     </form>
