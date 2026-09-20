@@ -3,6 +3,11 @@
  * ---------------------------------------------------------------------------
  * Product cards. `icon` selects a component from
  * components/sections/engines/EngineIcons.tsx.
+ *
+ * `href` is OPTIONAL. Eleven of the twelve have a page; LurnySim does not
+ * exist as a route yet, so its card carries no link rather than a dead one —
+ * the same treatment the platform page's grid already gives it. Add the href
+ * here when /platform/sim is built and the card becomes clickable.
  */
 
 export const engines = {
@@ -24,6 +29,7 @@ export const engines = {
       description:
         "Role frameworks, conversational assessments, proficiency baselines and GrowthPath.",
       icon: "radar",
+      href: "/platform/pulse",
     },
     {
       name: "LurnyMagic",
@@ -31,6 +37,7 @@ export const engines = {
       description:
         "Microlessons, assessments, video, podcasts, simulations, SCORM and multilingual transformation.",
       icon: "document",
+      href: "/platform/magic",
     },
     {
       name: "Lurny KxP",
@@ -38,6 +45,7 @@ export const engines = {
       description:
         "Journeys, playlists, gamification, nudges, certifications, analytics and mobile learning.",
       icon: "graph",
+      href: "/platform/kxp",
     },
     {
       name: "LurnyFlix",
@@ -45,6 +53,7 @@ export const engines = {
       description:
         "Create AI videos and interactive learning experiences, without a studio or a production team.",
       icon: "flix",
+      href: "/platform/flix",
     },
     {
       name: "LurnySim",
@@ -52,6 +61,8 @@ export const engines = {
       description:
         "Build confidence through realistic role-play: practise the conversation before it happens.",
       icon: "sim",
+      /* No href: /platform/sim does not exist yet, so the card renders
+         unlinked rather than pointing at a 404. */
     },
     {
       name: "LurnyChat",
@@ -59,6 +70,7 @@ export const engines = {
       description:
         "Desk, Talk, Coach, Minds and Guru — voice, text and image assistance on enterprise knowledge.",
       icon: "chat",
+      href: "/platform/chat",
     },
     {
       name: "LurnyPitch",
@@ -66,6 +78,7 @@ export const engines = {
       description:
         "Capture, transcribe and score customer conversations. Missed opportunities and AI coaching.",
       icon: "waveform",
+      href: "/platform/pitch",
     },
     {
       name: "LurnyEvents",
@@ -73,6 +86,7 @@ export const engines = {
       description:
         "Classroom, virtual and blended programmes: nominations, attendance, feedback, CPD credits.",
       icon: "calendar",
+      href: "/platform/events",
     },
     {
       name: "LurnySaathi",
@@ -80,6 +94,7 @@ export const engines = {
       description:
         "Voice-first, multilingual assistant for frontline and field teams: learn, ask, practise, perform.",
       icon: "mobile",
+      href: "/platform/saathi",
     },
     {
       name: "LurnyBiz",
@@ -87,6 +102,7 @@ export const engines = {
       description:
         "CRM and business data, single customer view, next-best actions and manager dashboards.",
       icon: "path",
+      href: "/platform/biz",
     },
     {
       name: "LurnySense",
@@ -94,6 +110,7 @@ export const engines = {
       description:
         "Ask questions of your workforce data. Surface trends, capability gaps, engagement signals and actions to take next.",
       icon: "insight",
+      href: "/platform/sense",
     },
     {
       name: "LurnyNotes",
@@ -101,6 +118,7 @@ export const engines = {
       description:
         "Turn meetings into learning, shared knowledge and grounded email drafts.",
       icon: "notes",
+      href: "/platform/notes",
     },
   ] as const,
 } as const;

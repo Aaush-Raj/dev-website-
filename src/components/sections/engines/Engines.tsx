@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 
 import { engineIcons } from "@/components/sections/engines/EngineIcons";
@@ -107,48 +108,94 @@ export function Engines() {
                   ease: easeOut,
                 }}
               >
-                <article
-                  className={cn(
-                    "flex h-full flex-col rounded-2xl border border-neutral-200/70",
-                    "bg-white p-6",
-                    "duration-normal transition-[border-color,box-shadow,transform] ease-out",
-                    "hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md",
-                  )}
-                >
-                  {/* Icon well and category share a row, pushed apart. */}
-                  <div className="flex items-start justify-between gap-4">
-                    <span
-                      className={cn(
-                        "grid size-14 shrink-0 place-items-center rounded-full",
-                        "bg-brand-50",
-                      )}
-                    >
-                      <Icon className="size-8" />
-                    </span>
-
-                    <span
-                      className={cn(
-                        "pt-1.5 text-right font-mono text-[0.5625rem] font-medium uppercase",
-                        "tracking-[0.1em] text-brand-600",
-                      )}
-                    >
-                      {engine.category}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-6 text-xl font-bold tracking-[-0.015em] text-neutral-900">
-                    {engine.name}
-                  </h3>
-
-                  <p className="mt-2.5 text-sm leading-relaxed text-pretty text-neutral-600">
-                    {engine.description}
-                  </p>
-                </article>
+                <EngineCard engine={engine} Icon={Icon} />
               </motion.li>
             );
           })}
         </ul>
       </Container>
     </section>
+  );
+}
+
+
+/**
+ * One engine card.
+ *
+ * Rendered as a LINK when the engine has a page, and as a plain <article>
+ * when it does not. LurnySim has no /platform/sim route yet, so its card is
+ * the second case: an unlinked card is better than one that 404s, and better
+ * than silently dropping the engine from the grid.
+ *
+ * The whole card is the target rather than a "learn more" link inside it —
+ * the card is what people aim at, and a 300px target beats a 90px one.
+ */
+function EngineCard({
+  engine,
+  Icon,
+}: {
+  engine: (typeof engines.items)[number];
+  Icon: (typeof engineIcons)[keyof typeof engineIcons];
+}) {
+  const href = "href" in engine ? engine.href : undefined;
+
+  const body = (
+    <>
+      {/* Icon well and category share a row, pushed apart. */}
+      <div className="flex items-start justify-between gap-4">
+        <span
+          className={cn(
+            "grid size-14 shrink-0 place-items-center rounded-full",
+            "bg-brand-50",
+          )}
+        >
+          <Icon className="size-8" />
+        </span>
+
+        <span
+          className={cn(
+            "pt-1.5 text-right font-mono text-[0.5625rem] font-medium uppercase",
+            "tracking-[0.1em] text-brand-600",
+          )}
+        >
+          {engine.category}
+        </span>
+      </div>
+
+      <h3 className="mt-6 text-xl font-bold tracking-[-0.015em] text-neutral-900">
+        {engine.name}
+      </h3>
+
+      <p className="mt-2.5 text-sm leading-relaxed text-pretty text-neutral-600">
+        {engine.description}
+      </p>
+    </>
+  );
+
+  const shell = cn(
+    "flex h-full flex-col rounded-2xl border border-neutral-200/70",
+    "bg-white p-6",
+    "duration-normal transition-[border-color,box-shadow,translate] ease-out",
+  );
+
+  // No page yet — render the card without a link rather than a dead one.
+  if (!href) {
+    return <article className={shell}>{body}</article>;
+  }
+
+  return (
+    <Link
+      href={href}
+      className={cn(
+        shell,
+        "hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md",
+        "focus-visible:ring-2 focus-visible:ring-brand-500/50",
+        "focus-visible:ring-offset-2 focus-visible:outline-none",
+        // The lift is decorative; hold it still for anyone who asked.
+        "motion-reduce:transition-none motion-reduce:hover:translate-y-0",
+      )}
+    >
+      {body}
+    </Link>
   );
 }
