@@ -320,16 +320,24 @@ export const solutionsMenu: MegaMenuPanel = {
           icon: "capability-building",
         },
         {
+          name: "Sales Enablement",
+          description: "Turn knowledge into better conversations",
+          href: "/solutions/sales-enablement",
+          /**
+           * TODO(assets): `sales-enablement.png` is a drawn PLACEHOLDER — a
+           * speech bubble with a rising trend, on the set's pale disc — until
+           * the painted mark is supplied. The design pack shipped ten icons
+           * and no sales-enablement one. Replace the file at
+           * public/assets/icons/solutions/sales-enablement.png; nothing here
+           * needs to change when it lands.
+           */
+          icon: "sales-enablement",
+        },
+        {
           name: "Frontline Performance",
           description: "Turn learning into better outcomes",
           href: "/solutions/frontline",
           icon: "frontline-performance",
-        },
-        {
-          name: "Employee Onboarding",
-          description: "Help new joiners get ready",
-          href: "/solutions/onboarding",
-          icon: "employee-onboarding",
         },
         {
           name: "Compliance Readiness",
@@ -342,6 +350,12 @@ export const solutionsMenu: MegaMenuPanel = {
           description: "Make trusted answers accessible",
           href: "/solutions/knowledge-management",
           icon: "knowledge-management",
+        },
+        {
+          name: "Employee Onboarding",
+          description: "Help new joiners get ready",
+          href: "/solutions/onboarding",
+          icon: "employee-onboarding",
         },
       ],
       action: { label: "Explore all solutions", href: "/solutions" },
