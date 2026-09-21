@@ -2,8 +2,8 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-import { ClockGlyph, PlayGlyph } from "@/components/sections/tour/TourIcons";
-import { TourPoster } from "@/components/sections/tour/TourPoster";
+import { ClockGlyph } from "@/components/sections/tour/TourIcons";
+import { TourVideo } from "@/components/sections/tour/TourVideo";
 import { Container } from "@/components/ui/Container";
 import { tour } from "@/content/tour";
 import { cn } from "@/lib/utils";
@@ -13,20 +13,19 @@ import { cn } from "@/lib/utils";
  * ---------------------------------------------------------------------------
  * The product-tour section: heading, a video player, and a numbered step rail.
  *
- * VIDEO STATE
- * The tour video does not exist yet. Rather than render a play button that
- * does nothing when clicked, the control renders as a non-interactive marker
- * while `tour.player.videoUrl` is null — a <div>, not a <button>, so keyboard
- * users do not tab to a dead control and screen readers do not announce a
- * button that cannot be pressed. Setting `videoUrl` in content/tour.ts turns
- * it into a real button with no other change.
+ * THE VIDEO
+ * The player is TourVideo, a click-to-load facade around the YouTube embed —
+ * see that file for why the iframe is not mounted until someone asks for it.
+ *
+ * It replaced an illustrated capability-loop poster (TourPoster) and its own
+ * play control, which stood in while no video existed. That markup is in git
+ * history if it is ever wanted back; TourPoster itself is still in the tree.
  */
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
 
 export function Tour() {
   const reduce = useReducedMotion();
-  const hasVideo = tour.player.videoUrl !== null;
 
   const rise = (delay: number) => ({
     initial: { opacity: reduce ? 1 : 0, y: reduce ? 0 : 18 },
@@ -120,101 +119,12 @@ export function Tour() {
             )}
           />
 
-          <TourPoster className="relative lg:min-h-[22rem]" />
-
-          {/* ------------------------ Play control ------------------- */}
-          <div className="relative mt-6 flex flex-col items-center gap-4 lg:-mt-6">
-            <div className="relative grid place-items-center">
-              {/*
-                Concentric pulse rings behind the button. Two rings offset in
-                time read as a repeating outward pulse — the visual language
-                of "this plays". Suppressed under reduced motion, where a
-                looping animation with no user control is exactly what the
-                preference asks you not to run.
-              */}
-              {!reduce &&
-                [0, 1].map((ring) => (
-                  <motion.span
-                    key={ring}
-                    aria-hidden="true"
-                    className="absolute size-[4.5rem] rounded-full border border-brand-400/45"
-                    initial={{ scale: 1, opacity: 0 }}
-                    animate={{ scale: [1, 1.75], opacity: [0.55, 0] }}
-                    transition={{
-                      duration: 2.6,
-                      repeat: Infinity,
-                      ease: "easeOut",
-                      delay: ring * 1.3,
-                    }}
-                  />
-                ))}
-
-              {/* Soft violet bloom directly behind the button. */}
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "absolute size-[7rem] rounded-full opacity-60 blur-2xl",
-                  "bg-[radial-gradient(circle,var(--brand-500)_0%,transparent_70%)]",
-                )}
-              />
-
-              {hasVideo ? (
-                <button
-                  type="button"
-                  className={cn(
-                    "group relative grid size-[4.5rem] place-items-center rounded-full",
-                    "bg-gradient-to-br from-brand-400 to-brand-700 text-white",
-                    "ring-2 ring-white/85",
-                    "shadow-[0_12px_34px_-8px_rgb(91_50_183/0.85)]",
-                    "transition-[scale,box-shadow] duration-[380ms] ease-out",
-                    "hover:duration-[520ms]",
-                    "hover:scale-[1.07] hover:shadow-[0_16px_44px_-8px_rgb(91_50_183/0.95)]",
-                    "active:scale-100",
-                  )}
-                >
-                  <PlayGlyph className="size-7 translate-x-0.5 drop-shadow-sm" />
-                  <span className="sr-only">{tour.player.label}</span>
-                </button>
-              ) : (
-                /*
-                  No video yet. Rendered as a plain element rather than a
-                  button so it is not focusable and is not announced as a
-                  control that cannot be operated. It keeps the full visual
-                  treatment, minus the hover response a real control would
-                  have.
-                */
-                <div
-                  aria-hidden="true"
-                  className={cn(
-                    "relative grid size-[4.5rem] place-items-center rounded-full",
-                    "bg-gradient-to-br from-brand-400 to-brand-700 text-white",
-                    "ring-2 ring-white/70",
-                    "shadow-[0_12px_34px_-8px_rgb(91_50_183/0.7)]",
-                  )}
-                >
-                  <PlayGlyph className="size-7 translate-x-0.5 drop-shadow-sm" />
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-col items-center gap-1.5">
-              <p className="text-center text-base font-semibold text-white">
-                {tour.player.label}
-              </p>
-
-              {!hasVideo && (
-                <span
-                  className={cn(
-                    "rounded-full border border-white/15 bg-white/5 px-2.5 py-1",
-                    "font-mono text-[0.625rem] tracking-[0.1em] text-neutral-400 uppercase",
-                  )}
-                >
-                  {/* TODO(assets): remove once the tour video is published. */}
-                  Coming soon
-                </span>
-              )}
-            </div>
-          </div>
+          {/* ========================= The video ======================== */}
+          {/*
+            Replaced the illustrated poster that stood in before the video
+            existed — see the note at the top of this file.
+          */}
+          <TourVideo className="relative" />
 
           {/* ------------------------ Caption bar -------------------- */}
           <div className="relative mt-6 flex flex-wrap items-center gap-3 lg:mt-4">

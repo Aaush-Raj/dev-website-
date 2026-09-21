@@ -24,11 +24,14 @@ export const tour = {
 
   player: {
     /**
-     * TODO(assets): set this to the tour video URL. While it is null the
-     * play control renders disabled with an explanatory label, rather than
-     * pretending to be a working button.
+     * The YouTube video ID, not a full URL — the embed builds its own src, and
+     * a pasted watch/share link (youtu.be/..., ?si=...) would not work in an
+     * iframe.
+     *
+     * Set to null to fall back to the illustrated poster and the "coming soon"
+     * state, which is what shipped before the video existed.
      */
-    videoUrl: null as string | null,
+    youTubeId: "rP9OVoCRsMo" as string | null,
     label: "Watch the product tour",
     duration: "04:00",
     caption: "A guided walk-through of the Lurny platform",
