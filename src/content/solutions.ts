@@ -1,8 +1,11 @@
 /**
  * SECTION 6 CONTENT — solutions by business need
  * ---------------------------------------------------------------------------
- * Six solution cards, each with a photo, a short description and the product
- * tags that power it.
+ * Solution cards, each with a photo, a short description and the product tags
+ * that power it.
+ *
+ * Six are written; the SECOND ROW OF THREE IS COMMENTED OUT, so the homepage
+ * shows one row. See the note on that block below.
  */
 
 /**
@@ -53,32 +56,40 @@ export const solutions = {
       image: PLACEHOLDER_IMAGE,
       imageAlt: PLACEHOLDER_ALT,
     },
-    {
-      title: "Knowledge Management",
-      description:
-        "Make SOPs, policies and product knowledge conversational at the moment of need.",
-      tags: ["Chat", "Magic"],
-      accent: "brand",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
-    },
-    {
-      title: "Compliance Readiness",
-      description:
-        "Policy distribution, declarations, assessments, evidence and audit-ready reporting.",
-      tags: ["KxP", "Pulse"],
-      accent: "brand",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
-    },
-    {
-      title: "Employee Onboarding",
-      description:
-        "Role-specific journeys, knowledge support, practice, assessment and readiness measurement.",
-      tags: ["KxP", "Chat", "Events"],
-      accent: "brand",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
-    },
+    /*
+     * THE SECOND ROW IS COMMENTED OUT — the section shows one row of three.
+     *
+     * The grid is three across on lg, so these were cards 4-6. They are kept
+     * rather than deleted: restoring the full set is uncommenting this block,
+     * and the copy is still the reviewed wording. "Explore all solutions"
+     * below the grid still reaches every one of them on /solutions.
+     */
+    // {
+    //   title: "Knowledge Management",
+    //   description:
+    //     "Make SOPs, policies and product knowledge conversational at the moment of need.",
+    //   tags: ["Chat", "Magic"],
+    //   accent: "brand",
+    //   image: PLACEHOLDER_IMAGE,
+    //   imageAlt: PLACEHOLDER_ALT,
+    // },
+    // {
+    //   title: "Compliance Readiness",
+    //   description:
+    //     "Policy distribution, declarations, assessments, evidence and audit-ready reporting.",
+    //   tags: ["KxP", "Pulse"],
+    //   accent: "brand",
+    //   image: PLACEHOLDER_IMAGE,
+    //   imageAlt: PLACEHOLDER_ALT,
+    // },
+    // {
+    //   title: "Employee Onboarding",
+    //   description:
+    //     "Role-specific journeys, knowledge support, practice, assessment and readiness measurement.",
+    //   tags: ["KxP", "Chat", "Events"],
+    //   accent: "brand",
+    //   image: PLACEHOLDER_IMAGE,
+    //   imageAlt: PLACEHOLDER_ALT,
+    // },
   ],
 } as const;
