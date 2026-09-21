@@ -38,6 +38,8 @@ const routes: Route[] = [
   { path: "/platform/biz", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/events", priority: 0.8, changeFrequency: "monthly" },
   { path: "/platform/sense", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/platform/sop", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/platform/sim", priority: 0.8, changeFrequency: "monthly" },
   { path: "/solutions", priority: 0.8, changeFrequency: "monthly" },
   { path: "/solutions/frontline", priority: 0.8, changeFrequency: "monthly" },
   { path: "/solutions/onboarding", priority: 0.8, changeFrequency: "monthly" },
