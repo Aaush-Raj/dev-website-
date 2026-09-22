@@ -72,8 +72,14 @@ export function HeroSlide({
           {/* Headline — each line animates in turn. */}
           <h1
             className={cn(
-              "mt-6 font-display text-hero leading-hero font-extrabold tracking-[-0.035em]",
+              "mt-6 font-display leading-hero font-extrabold tracking-[-0.035em]",
               "text-neutral-900",
+              /* See `longHeadline` in the content file for why this exists.
+                 The clamp mirrors `--text-hero` a step down, so it scales the
+                 same way rather than stepping at one breakpoint. */
+              slide.longHeadline
+                ? "text-[clamp(2rem,1.1rem+4.6vw,3.5rem)]"
+                : "text-hero",
             )}
           >
             {slide.headline.map((line, index) => (

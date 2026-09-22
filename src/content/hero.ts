@@ -34,6 +34,20 @@ export interface HeroSlide {
   };
   /** OPTIONAL line under the actions. Slide 2's design has one; slide 1 does not. */
   footnote?: string;
+  /**
+   * Sets the headline a step smaller than the shared `text-hero`.
+   *
+   * Opt-in, for a headline materially longer than the three-or-four short
+   * lines the size assumes. Slide 1 names a long product category in full, and
+   * at the shared size it ran to six lines on a wide screen and NINE at
+   * 1024px, where the copy column narrows but the font does not — which pushed
+   * the buttons off the fold and, because every slide is mounted at once and
+   * the carousel holds the tallest, stretched the other two slides with it.
+   *
+   * A flag rather than a change to the token: the token is shared with slides
+   * 2 and 3, whose headlines are the length it was chosen for.
+   */
+  longHeadline?: boolean;
   /** Which composition to render on the right. */
   visual: "dashboard" | "moments" | "engines";
   /**
@@ -58,8 +72,35 @@ export const heroSlides: readonly HeroSlide[] = [
   {
     id: "capability",
     eyebrow: "AI-native capability-to-performance platform",
-    headline: ["Capability that", "shows up in", "performance."],
-    underlinedLineIndex: 2,
+    /*
+     * TWO ENTRIES, ONE PER SENTENCE — not one per rendered line.
+     *
+     * The other slides break their headline into short lines by hand, because
+     * each is a phrase whose breaks the design chose. This one names a long
+     * product category in full, and hand-breaking it fought the layout: the
+     * forced breaks held at 1440 but stranded orphans once the column
+     * narrowed. Letting the second sentence wrap naturally means it reflows
+     * with the column and keeps the sentence break, which is the only break
+     * that carries meaning here.
+     */
+    headline: [
+      "We are Lurny.",
+      /*
+       * ONE NON-BREAKING HYPHEN (U+2011), in "AI-Native" only. With an
+       * ordinary hyphen the browser treats it as a wrap opportunity and sets
+       * "AI-" / "Native" across two lines, which reads as two words rather
+       * than one compound. It renders identically and simply does not break.
+       *
+       * "Capability-to-Performance" KEEPS ITS ORDINARY HYPHENS. Making that
+       * one unbreakable too was worse: at 56px the term is wider than the
+       * copy column, so it overflowed and ran under the dashboard instead of
+       * wrapping. It is long enough that breaking it is the right behaviour.
+       */
+      "The world's first AI\u2011Native Capability-to-Performance Platform.",
+    ],
+    /* The amber rule lands under the closing sentence. */
+    underlinedLineIndex: 1,
+    longHeadline: true,
     description:
       "Lurny connects role expectations, learning, practice, real-work evidence and action intelligence—so leaders can see where capability stands and what to improve next.",
     actions: {
