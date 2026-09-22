@@ -84,13 +84,19 @@ export const heroSlides: readonly HeroSlide[] = [
      * "Native" across two lines, which reads as two words rather than one
      * compound. It renders identically and simply does not break.
      *
-     * "Capability-to-Performance" KEEPS ITS ORDINARY HYPHENS. Making that one
-     * unbreakable too was worse: the term is wider than the copy column, so
-     * it overflowed and ran under the dashboard instead of wrapping. It is
-     * long enough that breaking it is the right behaviour.
+     * "Capability-to-Performance" IS ALSO UNBREAKABLE, for the same reason.
+     * Sizing the type so the term fits (see the clamp in HeroSlide) is not
+     * enough on its own: it fits the column, but it does not START at a line
+     * beginning, so the browser still broke it mid-term after "first
+     * AI-Native". Non-breaking hyphens keep it whole, and the clamp
+     * guarantees the whole thing has room.
+     *
+     * This was the wrong call while the type was 56px — the term was wider
+     * than the column and overflowed under the dashboard. It is only safe
+     * because the clamp now sizes to fit.
      */
     headline: [
-      "The world's first AI\u2011Native Capability-to-Performance Platform.",
+      "The world's first AI\u2011Native Capability\u2011to\u2011Performance Platform.",
     ],
     /* The amber rule lands under the headline, as it does on every slide. */
     underlinedLineIndex: 0,

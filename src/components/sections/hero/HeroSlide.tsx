@@ -74,11 +74,24 @@ export function HeroSlide({
             className={cn(
               "mt-6 font-display leading-hero font-extrabold tracking-[-0.035em]",
               "text-neutral-900",
-              /* See `longHeadline` in the content file for why this exists.
-                 The clamp mirrors `--text-hero` a step down, so it scales the
-                 same way rather than stepping at one breakpoint. */
+              /*
+                See `longHeadline` in the content file for why this exists.
+
+                THE CLAMP IS SOLVED, NOT CHOSEN. Slide 1's headline contains
+                "Capability-to-Performance", which has to sit on one line at
+                every width. Measuring the term against the copy column at
+                each viewport gives the largest font that still fits; the two
+                binding points are 320px (21px) and 1024px (33px, where the
+                column is narrowest relative to the viewport because the
+                dashboard takes its share). A line through those is
+                15.55px + 1.705vw.
+
+                The 43px ceiling matters: past ~1600px the container stops
+                growing but `vw` does not, so an uncapped clamp would outrun
+                the column again at 1920.
+              */
               slide.longHeadline
-                ? "text-[clamp(2rem,1.1rem+4.6vw,3.5rem)]"
+                ? "text-[clamp(21px,15.55px+1.705vw,43px)]"
                 : "text-hero",
             )}
           >
