@@ -110,9 +110,9 @@ const routes: Route[] = [
   },
   { path: "/resources/events", priority: 0.7, changeFrequency: "weekly" },
   { path: "/resources/guides", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   // TODO(routes): add pages as they are created, e.g.
   // { path: "/about",   priority: 0.7, changeFrequency: "monthly" },
-  // { path: "/privacy", priority: 0.3, changeFrequency: "yearly"  },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
