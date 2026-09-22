@@ -141,7 +141,7 @@ export interface LeadFormContent {
  * Button tone. The homepage uses violet; product pages use one of the two
  * ambers — see the note on `gold` below for why there are two.
  */
-export type LeadFormTone = "brand" | "accent" | "gold" | "coral";
+export type LeadFormTone = "brand" | "accent" | "gold" | "coral" | "sop";
 
 const toneStyles = {
   brand: cn(
@@ -180,6 +180,23 @@ const toneStyles = {
     "bg-[#f2544f] text-white hover:bg-[#e04843]",
     "hover:shadow-[0_14px_30px_-12px_rgb(242_84_79/0.55)]",
     "focus-visible:ring-[#f2544f]/50",
+  ),
+  /**
+   * The deeper amber the LurnySOP form runs on, sampled from its design at
+   * #f7a40a.
+   *
+   * A tone of its own rather than a reuse of `gold`: that one is the
+   * `accent-400` token (#feb442), a lighter and less saturated amber, and
+   * LurnySense already ships it. Bending the token to match this comp would
+   * have changed that page's button too.
+   *
+   * Near-black text, as the design sets it — this amber is far too light to
+   * carry white.
+   */
+  sop: cn(
+    "bg-[#f7a40a] text-[#120c30] hover:bg-[#e89305]",
+    "hover:shadow-[0_14px_30px_-12px_rgb(247_164_10/0.6)]",
+    "focus-visible:ring-[#f7a40a]/50",
   ),
 } as const;
 

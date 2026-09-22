@@ -1,4 +1,9 @@
+import { SopContext } from "@/components/sections/sop/SopContext";
+import { SopDemo } from "@/components/sections/sop/SopDemo";
+import { SopFlow } from "@/components/sections/sop/SopFlow";
 import { SopHero } from "@/components/sections/sop/SopHero";
+import { SopProblem } from "@/components/sections/sop/SopProblem";
+import { SopShared } from "@/components/sections/sop/SopShared";
 import { sop } from "@/content/sop";
 import { buildMetadata } from "@/lib/seo";
 
@@ -7,6 +12,10 @@ import { buildMetadata } from "@/lib/seo";
  * ---------------------------------------------------------------------------
  * Product page for LurnySOP. Header and footer come from the root layout, so
  * this file is only ever a composition of sections.
+ *
+ * All six sections of the design pack are built. Their sources are noted in
+ * src/content/sop.ts — including the two places where the pack supplies no
+ * text file and the copy is transcribed from the comp.
  */
 
 export const metadata = buildMetadata({
@@ -20,9 +29,15 @@ export default function SopPage() {
     <>
       <SopHero />
 
-      {/* TODO(sections): sections 2-6 go here as they are built. The design
-          pack already carries their assets and text under
-          designs/lurnySOP assets/. */}
+      <SopProblem />
+
+      <SopContext />
+
+      <SopFlow />
+
+      <SopShared />
+
+      <SopDemo />
     </>
   );
 }
