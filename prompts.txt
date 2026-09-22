@@ -110,37 +110,55 @@ section8 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny pl
 
 
 -------------------------------------------------
-Lets work on Lurny-ai page - 
+Lets work on Lurny SOP page ( you need to add the LURNY SOP option in the "platform" title as well ) - 
+
+section1 - 
+/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/section1.png
+
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/1 LurnySOP_Framework_Readiness_Hero_Assets/01_Colourful_Gradient_Background.png
+Other cards and all u can code with proper NON COPYABLE , and good animations and effects
 
 
-Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section1.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurnyai-hero-assets-complete/01-background-human.png
-Rest of the cards and text you can code with subtle appearance animations
+Section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/section2.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/2 LurnySOP_Problem_Section_Assets/05_Colour_Gradient_Background.png
+
+Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/section3.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/3 LurnySOP_Organisation_Context_Assets/01_Slate_Teal_Gradient_Background.png
 
 
-Section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section2.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurnyai-section-02-assets/06-background-gradients.png
-Rest of the cards and text you can code with subtle appearance animations with cool arrow and good pointer.
+Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/section4.png
+BG -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/4 LurnySOP_Flow_Of_Work_Assets/10_Overall_Gradient_Background.png
+Lady img - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/4 LurnySOP_Flow_Of_Work_Assets/01_Human_Office_Image.png 
+You need not to show the entire image of the lady ,u need to overlap it with a curved bg effect as u can see in section 4 image.
 
-Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section3.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-03-create-for-companies/04-dark-background-geometric.png
-Top card section - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-03-create-for-companies/01-company-learning-brief.png
-Bottom card section - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-03-create-for-companies/02-learning-collection.png
-Make aarrow and other animations perfect.
+Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/section5.png
+bg - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/LurnySOP_Inquiry_Form_Assets/01_Gradient_Background.png
 
 
-Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section4.png
-Certifcat - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-04-expert-credentials/01-expert-credential-card.png
-BG -/Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-04-expert-credentials/03-light-background-gradients.png 
-Other card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-04-expert-credentials/02-requirements-met-card.png
+Section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP assets/section6.png
 
 
-Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section5.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-03-create-for-companies/04-dark-background-geometric.png
-Card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-05-learner-community/01-community-video-player-card.png
-Other card - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/lurny-section-05-learner-community/02-paid-learning-experiences-card.png
 
+----------------------------------------------------------------------------
 
-Section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny.ai landing page assets/section6.png
+Now we need to work on LURNY SIM page - https://elurny.com/platform/sim
 
--------
+Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section1.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/1 lurnysim-hero-assets/01-background/blue-purple-gradient.png
+Man in img - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/1 lurnysim-hero-assets/02-human-office/human-office-computer-plant.png
+Cards imgs - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/1 lurnysim-hero-assets/03-cards
+
+Section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section2.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/2 lurnysim-problem-solution-text/2 ChatGPT Image Sep 21, 2026, 11_32_29 AM.png
+
+Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section3.png
+Women office img - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/3 lurnysim-customer-service-extracted-assets/01-woman-office/woman-office.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/3 lurnysim-customer-service-extracted-assets/02-background/blue-geometric-gradient.png
+CARDS - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/3 lurnysim-customer-service-extracted-assets/03-cards
+
+Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section4.png
+BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/4 lurnysim-manager-coaching-assets (2)/01-background/lavender-geometric-gradient.png
+Card imgs - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/4 lurnysim-manager-coaching-assets (2)/02-cards
+
+Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section5.png
+BG - 
