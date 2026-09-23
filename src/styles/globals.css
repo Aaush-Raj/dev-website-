@@ -140,6 +140,9 @@
   --color-status-success: var(--color-status-success);
   --color-status-warning: var(--color-status-warning);
   --color-status-danger: var(--color-status-danger);
+  --color-status-success-subtle: var(--color-status-success-subtle);
+  --color-status-warning-subtle: var(--color-status-warning-subtle);
+  --color-status-danger-subtle: var(--color-status-danger-subtle);
 
   /* --- Typography ---------------------------------------------------- */
   --font-sans: var(--font-sans);

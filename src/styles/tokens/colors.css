@@ -91,10 +91,13 @@
   --ink-well:  #413473;
 
   /* Status */
+  --success-50:  #f0fdf4;
   --success-500: #16a34a;
   --success-600: #15803d;
+  --warning-50:  #fffbeb;
   --warning-500: #f59e0b;
   --warning-600: #d97706;
+  --danger-50:   #fef2f2;
   --danger-500:  #dc2626;
   --danger-600:  #b91c1c;
 
@@ -152,6 +155,13 @@
   --color-status-success: var(--success-600);
   --color-status-warning: var(--warning-600);
   --color-status-danger:  var(--danger-600);
+
+  /* Status surfaces — a tinted background to sit the status text on, for
+     inline messages (a failed sign-in, a confirmation). Paired with the
+     matching --color-status-* as the foreground. */
+  --color-status-success-subtle: var(--success-50);
+  --color-status-warning-subtle: var(--warning-50);
+  --color-status-danger-subtle:  var(--danger-50);
 }
 
 /* ---------------------------------------------------------------------------
@@ -208,4 +218,10 @@
   --color-status-success: var(--success-500);
   --color-status-warning: var(--warning-500);
   --color-status-danger:  var(--danger-500);
+
+  /* On dark, a 50-level tint would glare. A translucent wash of the status
+     colour itself tints whatever surface it lands on and keeps contrast. */
+  --color-status-success-subtle: rgb(22 163 74 / 0.16);
+  --color-status-warning-subtle: rgb(245 158 11 / 0.16);
+  --color-status-danger-subtle:  rgb(220 38 38 / 0.18);
 }
