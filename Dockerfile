@@ -1,7 +1,10 @@
 # ---------------------------------------------------------------------------
 # elurny.com — Next.js server (`next start`) on Node.
 #
-# Stage 1 installs everything and runs `next build` (.next/).
+# Stage 1 installs everything and runs `next build --webpack` (.next/).
+# Webpack, not Turbopack: on a cold cache Turbopack (Next 16.3.1) fails with
+# "Module not found: @vercel/turbopack-next/internal/font/google/font" for the
+# next/font/google fonts in layout.tsx. Turbopack is still used by `next dev`.
 # Stage 2 is a lean runtime: production node_modules + .next + public, running
 # as a non-root user on port 3000.
 #

@@ -143,8 +143,9 @@ Hosted on **AKS** (cluster `lurny`, namespace `prod`, deployment/service
 TLS are handled by the in-cluster `prod/lurny-talk` ingress (cert-manager,
 Let's Encrypt). `lurny.ai` / `www.lurny.ai` simply redirect here.
 
-- The site runs as a **Node server** (`next start`, port 3000). `next build`
-  emits `.next/`; API routes such as `/api/lead` are live. (Until 2026-09-23 it
+- The site runs as a **Node server** (`next start`, port 3000). `npm run build`
+  (`next build --webpack` — Turbopack fails on cold builds with a
+  `next/font/google` module-not-found error in Next 16.3.1) emits `.next/`; API routes such as `/api/lead` are live. (Until 2026-09-23 it
   was a static export served by nginx.)
 - `Dockerfile` builds the app and runs `npm run start` on port 3000 as a
   non-root user. Security and cache headers come from `headers()` in
