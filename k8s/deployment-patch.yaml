@@ -1,0 +1,46 @@
+# Strategic-merge patch applied ONCE to the existing `prod/elurny-website`
+# deployment (which was created by the CI template with `kubectl create
+# deployment`, so it has no env, ports or probes). CI only ever runs
+# `kubectl set image` afterwards, so everything here survives redeploys.
+#
+#   kubectl -n prod patch deployment elurny-website --patch-file k8s/deployment-patch.yaml
+#
+# - Container port 3000 (`next start`), named `http` for the probes only. The
+#   Service forwards 80 -> 3000 numerically (service-patch.yaml), so the
+#   ingress backend stays `elurny-website:80`.
+# - Runtime config from the `elurny-website-env` Secret (secret.example.yaml).
+# - Probes on /healthz (src/app/healthz/route.ts) so a rollout only retires the
+#   old pod once the new one actually answers.
+spec:
+  template:
+    spec:
+      containers:
+        - name: elurny-website
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: elurny-website-env
+                optional: true
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 192Mi
+            limits:
+              memory: 512Mi

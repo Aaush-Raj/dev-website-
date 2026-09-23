@@ -7,11 +7,18 @@
  * configured email already exists it is left completely alone, and if none
  * exists one is created. See src/lib/trust-centre/account.ts.
  *
- * THE NODE RUNTIME GUARD IS NOT OPTIONAL
- * Next calls `register` in every runtime, including Edge. The MongoDB driver
- * needs TCP sockets that Edge does not provide, so importing it there throws
- * at boot. The dynamic import inside the guard means the module is only
- * evaluated where it can work.
+ * THE GUARD EXCLUDES EDGE, IT DOES NOT REQUIRE "nodejs"
+ * Next calls `register` in every runtime, including Edge, where the MongoDB
+ * driver's TCP sockets do not exist and importing it throws at boot. So Edge
+ * must be skipped.
+ *
+ * It is written as `=== "edge"` rather than `!== "nodejs"` deliberately.
+ * NEXT_RUNTIME is not always set under `next start` — it is populated for the
+ * standalone server but can be undefined otherwise — and a `!== "nodejs"`
+ * test therefore skipped seeding entirely on a plain `next start`, leaving
+ * the portal with a stale password and no log line to say why. Excluding the
+ * one runtime that cannot work is correct; requiring a variable that may be
+ * absent is not.
  *
  * SEEDING MUST NEVER BLOCK STARTUP
  * `ensureTrustCentreAccount` handles its own failures and does not throw, but
@@ -20,7 +27,7 @@
  */
 
 export async function register() {
-  if (process.env.NEXT_RUNTIME !== "nodejs") return;
+  if (process.env.NEXT_RUNTIME === "edge") return;
 
   try {
     const { ensureTrustCentreAccount } =

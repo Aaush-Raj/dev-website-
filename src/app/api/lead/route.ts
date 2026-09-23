@@ -21,27 +21,20 @@ import { leads, type LeadDocument } from "@/lib/server/mongo";
  * can POST to this endpoint, so the server re-checks independently and never
  * trusts the client's word.
  *
- * NOTE: THIS ROUTE IS INERT UNDER `output: "export"`
- * The site currently builds to static HTML (see next.config.ts), where API
- * routes are not emitted — the build skips this file rather than failing. It
- * starts serving the moment that option is removed and the container runs
- * `next start`. Until then the forms fall back to their own error state.
+ * RUNTIME CONFIG
+ * MONGODB_URI / MONGODB_DB and the mail settings are read from the environment
+ * at request time. In production they come from the Kubernetes Secret
+ * `elurny-website-env` (see k8s/README.md). With MONGODB_URI unset the route
+ * answers 500 and the form shows its error state — the static pages are
+ * unaffected.
  */
 
 /** Node, not Edge: the Mongo driver uses TCP sockets Edge does not provide. */
 export const runtime = "nodejs";
 
 /*
- * `export const dynamic = "force-dynamic"` is deliberately NOT set here.
- *
- * It is what a POST route would normally carry, but Next refuses to BUILD when
- * it appears alongside `output: "export"` — the whole site build fails, not
- * just this route. Since the site is still a static export until the server
- * switch lands, that would block every deploy.
- *
- * Nothing is lost: a POST handler is never prerendered or cached regardless,
- * so the directive is redundant. Leaving it out keeps this file inert-but-
- * harmless today and correct the moment the export option is removed.
+ * `export const dynamic = "force-dynamic"` is not needed: a POST handler is
+ * never prerendered or cached, so the directive would be redundant.
  */
 
 /** Caps, so a malicious payload cannot fill the database. */
