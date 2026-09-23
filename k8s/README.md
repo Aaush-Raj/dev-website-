@@ -12,7 +12,7 @@ were set up once with the files here (2026-09-23, static-export → Node
 
 | File | Purpose | Apply |
 | --- | --- | --- |
-| `secret.example.yaml` | Template for the `elurny-website-env` Secret (Mongo + mail). Placeholders only — real values never leave the cluster. | see header of the file |
+| `secret.example.yaml` | Template for the `elurny-website-env` Secret (Mongo `website-lurny` on the shared prod Atlas cluster, mail, Trust Centre / Azure Storage). Placeholders only — real values never leave the cluster. | see header of the file |
 | `deployment-patch.yaml` | Container port `http`=3000, `envFrom` the secret, probes on `/healthz`, resources. | `kubectl -n prod patch deployment elurny-website --patch-file k8s/deployment-patch.yaml` |
 | `service-patch.yaml` | Service 80 → container port 3000 (numeric; a named targetPort breaks the app-routing ingress). | `kubectl -n prod patch service elurny-website --patch-file k8s/service-patch.yaml` |
 
@@ -21,7 +21,7 @@ were set up once with the files here (2026-09-23, static-export → Node
 ```sh
 kubectl -n prod create secret generic elurny-website-env \
   --from-literal=MONGODB_URI='...' \
-  --from-literal=MONGODB_DB='elurny' \
+  --from-literal=MONGODB_DB='website-lurny' \
   --from-literal=LEADS_NOTIFY_TO='...' \
   --from-literal=LEADS_NOTIFY_FROM='Lurny Website <website@elurny.com>' \
   --from-literal=RESEND_API_KEY='...' \
@@ -30,6 +30,9 @@ kubectl -n prod rollout restart deployment/elurny-website
 ```
 
 Env is read at process start, so a restart is required after changing it.
+
+Still unset as of 2026-09-23: `LEADS_NOTIFY_TO` and `RESEND_API_KEY` — leads are
+stored with `notified: false` until they are added.
 
 ## Checks
 
