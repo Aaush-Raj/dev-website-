@@ -1,12 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Caveat,
-  Inter_Tight,
-  JetBrains_Mono,
-  Newsreader,
-  Playfair_Display,
-  Plus_Jakarta_Sans,
-} from "next/font/google";
+import localFont from "next/font/local";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/layout/Footer";
@@ -36,17 +29,28 @@ import "@/styles/globals.css";
  * hero design: a grotesque with tight default tracking and near-circular
  * bowls. Used for both body and headings, which is what the design does.
  */
-const fontSans = Inter_Tight({
-  subsets: ["latin"],
+/*
+ * FONTS ARE SELF-HOSTED (src/app/fonts/*.woff2) via next/font/local.
+ * They are the exact latin-subset variable files Google Fonts serves, so the
+ * rendered result is identical to next/font/google — but the build no longer
+ * fetches fonts.googleapis.com, which failed intermittently in CI (Turbopack:
+ * "next/font/google queries have exactly one entry"; webpack: "Cannot read
+ * properties of null (reading '1')" in the google loader) on 2026-09-23.
+ * To update a face, fetch the CSS from fonts.googleapis.com/css2 with a
+ * woff2-capable User-Agent and download the `latin` src URL.
+ */
+const fontSans = localFont({
+  src: "./fonts/inter-tight-latin.woff2",
+  weight: "100 900",
   variable: "--font-sans-src",
   display: "swap",
 });
 
-const fontDisplay = Inter_Tight({
-  subsets: ["latin"],
+const fontDisplay = localFont({
+  src: "./fonts/inter-tight-latin.woff2",
+  weight: "100 900",
   variable: "--font-display-src",
   display: "swap",
-  weight: ["500", "600", "700", "800"],
 });
 
 /**
@@ -54,11 +58,12 @@ const fontDisplay = Inter_Tight({
  * dark-section headings. Sharp bracketed serifs and vertical stress, matching
  * the design's display face.
  */
-const fontSerif = Playfair_Display({
-  subsets: ["latin"],
+const fontSerif = localFont({
+  src: "./fonts/playfair-display-latin.woff2",
+  weight: "400 900",
   variable: "--font-serif-src",
   display: "swap",
-  weight: ["400", "500", "600"],
+  adjustFontFallback: "Times New Roman",
 });
 
 /**
@@ -67,11 +72,11 @@ const fontSerif = Playfair_Display({
  * designs draw these as marker-pen notes, and a slanted sans reads as emphasis
  * rather than as a hand-written aside.
  */
-const fontHand = Caveat({
-  subsets: ["latin"],
+const fontHand = localFont({
+  src: "./fonts/caveat-latin.woff2",
+  weight: "400 700",
   variable: "--font-hand-src",
   display: "swap",
-  weight: ["500", "600", "700"],
 });
 
 /**
@@ -80,12 +85,22 @@ const fontHand = Caveat({
  * 400 weight at a reading size rather than only display sizes. Italic is
  * loaded because the closing definition sets phrases in it.
  */
-const fontReading = Newsreader({
-  subsets: ["latin"],
+const fontReading = localFont({
+  src: [
+    {
+      path: "./fonts/newsreader-latin.woff2",
+      weight: "200 800",
+      style: "normal",
+    },
+    {
+      path: "./fonts/newsreader-italic-latin.woff2",
+      weight: "200 800",
+      style: "italic",
+    },
+  ],
   variable: "--font-reading-src",
   display: "swap",
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
+  adjustFontFallback: "Times New Roman",
 });
 
 /**
@@ -94,19 +109,19 @@ const fontReading = Newsreader({
  * It sits beside Newsreader rather than replacing the site's Inter Tight,
  * which still sets the rest of the site.
  */
-const fontArticle = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+const fontArticle = localFont({
+  src: "./fonts/plus-jakarta-sans-latin.woff2",
+  weight: "200 800",
   variable: "--font-article-src",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
 });
 
 /** Eyebrow labels — the design sets them in a wide-tracked monospace. */
-const fontMono = JetBrains_Mono({
-  subsets: ["latin"],
+const fontMono = localFont({
+  src: "./fonts/jetbrains-mono-latin.woff2",
+  weight: "100 800",
   variable: "--font-mono-src",
   display: "swap",
-  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
