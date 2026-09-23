@@ -101,31 +101,67 @@ export function HeroSlide({
                 {...rise(0.15 + index * 0.09)}
                 className="block"
               >
-                {index === slide.underlinedLineIndex ? (
-                  <span className="relative inline-block">
-                    {/* The amber rule sits behind the text baseline, so
-                        descenders cross it exactly as in the design. */}
-                    <motion.span
-                      aria-hidden="true"
-                      className={cn(
-                        "absolute bottom-[0.02em] left-0 -z-10 h-[0.21em] w-full",
-                        "origin-left rounded-[1px] bg-accent-400",
-                      )}
-                      initial={{ scaleX: still ? 1 : 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{
-                        duration: still ? 0 : 0.85,
-                        // Tracks the last headline line, so the rule still
-                        // lands after the words on a slide of any length.
-                        delay: still ? 0 : 0.35 + slide.headline.length * 0.09,
-                        ease: easeOut,
-                      }}
-                    />
-                    {line}
-                  </span>
-                ) : (
-                  line
-                )}
+                {index === slide.underlinedLineIndex
+                  ? /*
+                    The rule covers either the WHOLE LINE or just a phrase
+                    inside it, depending on whether the slide names one. Both
+                    wrap the underlined text in the same relatively-positioned
+                    span, so the rule is `w-full` of whatever it is given.
+
+                    `inline` rather than `inline-block` for the phrase case:
+                    an inline-block cannot be broken across lines, and while
+                    the clamp keeps this phrase on one line, hard-coding that
+                    assumption into the layout would make any future phrase
+                    overflow rather than wrap.
+                  */
+                    (() => {
+                      const rule = (
+                        <motion.span
+                          aria-hidden="true"
+                          className={cn(
+                            "absolute bottom-[0.02em] left-0 -z-10 h-[0.21em] w-full",
+                            "origin-left rounded-[1px] bg-accent-400",
+                          )}
+                          initial={{ scaleX: still ? 1 : 0 }}
+                          animate={{ scaleX: 1 }}
+                          transition={{
+                            duration: still ? 0 : 0.85,
+                            // Tracks the last headline line, so the rule still
+                            // lands after the words on a slide of any length.
+                            delay: still
+                              ? 0
+                              : 0.35 + slide.headline.length * 0.09,
+                            ease: easeOut,
+                          }}
+                        />
+                      );
+
+                      const phrase = slide.underlinedPhrase;
+                      const at = phrase ? line.indexOf(phrase) : -1;
+
+                      /* No phrase named, or it is not in this line: underline
+                       the line, which is what slides 2 and 3 do. */
+                      if (!phrase || at < 0) {
+                        return (
+                          <span className="relative inline-block">
+                            {rule}
+                            {line}
+                          </span>
+                        );
+                      }
+
+                      return (
+                        <>
+                          {line.slice(0, at)}
+                          <span className="relative inline">
+                            {rule}
+                            {phrase}
+                          </span>
+                          {line.slice(at + phrase.length)}
+                        </>
+                      );
+                    })()
+                  : line}
               </motion.span>
             ))}
           </h1>

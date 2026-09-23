@@ -27,6 +27,18 @@ export interface HeroSlide {
   headline: readonly string[];
   /** Index of the line carrying the amber underline. */
   underlinedLineIndex: number;
+  /**
+   * OPTIONAL: underline just this phrase, rather than the whole line.
+   *
+   * Slides 2 and 3 underline their closing line, which is a short phrase in
+   * its own right. Slide 1 is one long sentence whose emphasis belongs on the
+   * product category inside it, so the rule has to fit a substring.
+   *
+   * The phrase must appear verbatim in the line at `underlinedLineIndex`,
+   * including its non-breaking hyphens — the component splits on it, and a
+   * mismatch would silently fall back to underlining the whole line.
+   */
+  underlinedPhrase?: string;
   description: string;
   actions: {
     primary: { label: string; href: string };
@@ -98,8 +110,13 @@ export const heroSlides: readonly HeroSlide[] = [
     headline: [
       "The world's first AI\u2011Native Capability\u2011to\u2011Performance Platform.",
     ],
-    /* The amber rule lands under the headline, as it does on every slide. */
+    /*
+     * The rule goes under the product category rather than the whole
+     * sentence — that is the phrase the slide is there to land.
+     * Non-breaking hyphens, so it matches the headline exactly.
+     */
     underlinedLineIndex: 0,
+    underlinedPhrase: "Capability\u2011to\u2011Performance",
     /*
      * Still needed after the headline was shortened. Measured without it: at
      * 1024px, where the copy column narrows but `text-hero` stays at 72px,
