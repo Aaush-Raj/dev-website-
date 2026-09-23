@@ -7,27 +7,21 @@ import { Container } from "@/components/ui/Container";
 import { solutionsPage } from "@/content/solutions-page";
 import { cn } from "@/lib/utils";
 
-import {
-  ArrowRightIcon,
-  cornerGraphics,
-  needIcons,
-} from "./SolutionsNeedIcons";
+import { SolutionNeedCard } from "@/components/ui/SolutionNeedCard";
+
+import { ArrowRightIcon } from "./SolutionsNeedIcons";
 
 /**
  * SOLUTIONS — BY BUSINESS NEED
  * ---------------------------------------------------------------------------
  * Section 2 of the solutions page: nine business needs in a 3x3 grid.
  *
- * THE CARD
- * Each card is a single link, not a box with a link inside it: the whole
- * surface is the target, so the arrow in the corner is decoration rather than a
- * second control. The corner ornament is clipped by the card's own rounded
- * rectangle — it is absolutely positioned at the top-right and the card carries
- * `overflow-hidden`, which is what gives the design its flush corner fills.
+ * THE CARD ITSELF IS SolutionNeedCard, shared with the homepage's section 6 so
+ * the two are the same card by construction rather than by two copies kept in
+ * step by hand. This file owns the heading, the grid and the stagger.
  *
  * The grid is 3 columns on lg, 2 on sm and 1 below that; the cards stretch to
- * equal height per row, and each card's tag row is pushed to its foot so the
- * arrows line up across a row regardless of how long a title wraps.
+ * equal height per row.
  */
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
@@ -124,9 +118,6 @@ export function SolutionsNeeds() {
           )}
         >
           {needs.items.map((item, index) => {
-            const Icon = needIcons[item.icon];
-            const Corner = cornerGraphics[item.corner];
-
             return (
               <motion.li
                 key={item.number}
@@ -135,73 +126,7 @@ export function SolutionsNeeds() {
                 {...rise(0.2 + Math.min(index, 5) * 0.07)}
                 className="h-full"
               >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "group/card relative flex h-full flex-col overflow-hidden",
-                    "rounded-2xl border border-[#eae7f2] bg-white p-5 lg:p-6",
-                    "duration-normal transition-[border-color,box-shadow,translate] ease-out",
-                    "will-change-[translate] hover:-translate-y-1",
-                    "hover:border-[#c9b8f5]",
-                    "hover:shadow-[0_24px_48px_-24px_rgb(75_32_200/0.3)]",
-                    // The focus ring must clear the card's own rounding.
-                    "focus-visible:ring-2 focus-visible:ring-[#4B20C8]/60",
-                    "focus-visible:ring-offset-2 focus-visible:outline-none",
-                  )}
-                >
-                  {/* The corner ornament, clipped by the card's radius. */}
-                  <Corner
-                    className={cn(
-                      "pointer-events-none absolute -top-px -right-px",
-                      "size-28 lg:size-30",
-                    )}
-                  />
-
-                  {/* ------------------ Tile and number ---------------- */}
-                  <span className="relative flex items-center gap-4">
-                    <Icon className="size-14 shrink-0" />
-                    <span className="font-mono text-[1rem] font-medium text-[#4B20C8]">
-                      {item.number}
-                    </span>
-                  </span>
-
-                  {/* ---------------------- The copy ------------------- */}
-                  <span className="relative mt-6 block text-[1.25rem] leading-snug font-bold text-pretty text-[#0b0b16]">
-                    {item.title}
-                  </span>
-
-                  <span className="relative mt-2.5 block text-[0.9375rem] leading-relaxed text-pretty text-[#4b4d5b]">
-                    {item.description}
-                  </span>
-
-                  {/* ------------------ Tags and arrow ----------------- */}
-                  {/* `mt-auto` pins this row to the card's foot, so the arrows
-                      align across a row however the titles wrap. */}
-                  <span className="relative mt-auto flex items-end justify-between gap-4 pt-6">
-                    <span className="flex flex-wrap items-center gap-2">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className={cn(
-                            "rounded-md border border-[#dcd2f7] px-2.5 py-1.5",
-                            "font-mono text-[0.6875rem] font-medium tracking-[0.08em] uppercase",
-                            "text-[#4B20C8]",
-                          )}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </span>
-
-                    <ArrowRightIcon
-                      className={cn(
-                        "size-5 shrink-0 text-[#4B20C8]",
-                        "duration-normal transition-[translate] ease-out",
-                        "will-change-[translate] group-hover/card:translate-x-1",
-                      )}
-                    />
-                  </span>
-                </Link>
+                <SolutionNeedCard item={item} />
               </motion.li>
             );
           })}

@@ -1,23 +1,20 @@
 /**
  * SECTION 6 CONTENT — solutions by business need
  * ---------------------------------------------------------------------------
- * Solution cards, each with a photo, a short description and the product tags
- * that power it.
+ * The homepage's three lead solutions, rendered with the same
+ * SolutionNeedCard the solutions page uses for its own "by business need"
+ * grid.
  *
- * Six are written; the SECOND ROW OF THREE IS COMMENTED OUT, so the homepage
- * shows one row. See the note on that block below.
- */
-
-/**
- * PLACEHOLDER image, shared by every card.
+ * THE CARDS USED TO CARRY A PHOTO. They shared one placeholder image between
+ * them, so the row showed the same stock photo three times; the card now
+ * leads with a drawn icon tile and a corner ornament instead, which is the
+ * treatment the solutions page already shipped. `image`/`imageAlt` and the
+ * `accent` top-rule colour went with it.
  *
- * TODO(assets): replace with a distinct photo per solution. Each entry's
- * `image` and `imageAlt` are already per-card, so only the values change —
- * and `imageAlt` must describe the real photo before launch, since it is what
- * screen-reader and no-image users get.
+ * `icon`, `corner`, `number` and `href` below match this solution's entry in
+ * content/solutions-page.ts — the same three solutions lead both grids, and
+ * a reader arriving from either should meet the same card.
  */
-const PLACEHOLDER_IMAGE = "/assets/images/card-placeholder.jpg";
-const PLACEHOLDER_ALT = "";
 
 export const solutions = {
   eyebrow: "Solutions by business need",
@@ -33,28 +30,30 @@ export const solutions = {
       description:
         "Branch, sales, service and field teams — capability, knowledge and conversation quality in one view.",
       tags: ["Pulse", "Saathi", "Pitch"],
-      /** "amber" tints the card's top rule; everything else uses brand violet. */
-      accent: "brand",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
+      number: "01",
+      icon: "frontline",
+      corner: "softQuarter",
+      href: "/solutions/frontline",
     },
     {
       title: "Sales Enablement",
       description:
         "Product knowledge, simulation practice, customer-conversation analysis, coaching and cross-sell.",
       tags: ["Magic", "Pitch", "Biz"],
-      accent: "amber",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
+      number: "02",
+      icon: "sales",
+      corner: "roundedPanel",
+      href: "/solutions/sales-enablement",
     },
     {
       title: "Capability Building",
       description:
         "Define role expectations, assess proficiency, identify gaps and create individual GrowthPaths.",
       tags: ["Pulse", "KxP"],
-      accent: "brand",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
+      number: "03",
+      icon: "capability",
+      corner: "dotMatrixPanel",
+      href: "/solutions/capability-building",
     },
     /*
      * THE SECOND ROW IS COMMENTED OUT — the section shows one row of three.
@@ -63,33 +62,40 @@ export const solutions = {
      * rather than deleted: restoring the full set is uncommenting this block,
      * and the copy is still the reviewed wording. "Explore all solutions"
      * below the grid still reaches every one of them on /solutions.
+     *
+     * Their fields were updated alongside the live three when the cards moved
+     * to SolutionNeedCard, so this block still compiles if uncommented — it
+     * referenced the deleted PLACEHOLDER_IMAGE until then.
      */
     // {
     //   title: "Knowledge Management",
     //   description:
     //     "Make SOPs, policies and product knowledge conversational at the moment of need.",
     //   tags: ["Chat", "Magic"],
-    //   accent: "brand",
-    //   image: PLACEHOLDER_IMAGE,
-    //   imageAlt: PLACEHOLDER_ALT,
+    //   number: "04",
+    //   icon: "knowledge",
+    //   corner: "nestedArcs",
+    //   href: "/solutions/knowledge-management",
     // },
     // {
     //   title: "Compliance Readiness",
     //   description:
     //     "Policy distribution, declarations, assessments, evidence and audit-ready reporting.",
     //   tags: ["KxP", "Pulse"],
-    //   accent: "brand",
-    //   image: PLACEHOLDER_IMAGE,
-    //   imageAlt: PLACEHOLDER_ALT,
+    //   number: "05",
+    //   icon: "compliance",
+    //   corner: "hatching",
+    //   href: "/solutions/compliance",
     // },
     // {
     //   title: "Employee Onboarding",
     //   description:
     //     "Role-specific journeys, knowledge support, practice, assessment and readiness measurement.",
     //   tags: ["KxP", "Chat", "Events"],
-    //   accent: "brand",
-    //   image: PLACEHOLDER_IMAGE,
-    //   imageAlt: PLACEHOLDER_ALT,
+    //   number: "06",
+    //   icon: "onboarding",
+    //   corner: "partialQuarter",
+    //   href: "/solutions/onboarding",
     // },
   ],
 } as const;

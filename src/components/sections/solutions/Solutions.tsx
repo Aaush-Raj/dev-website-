@@ -1,32 +1,29 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 
 import { ArrowRightIcon } from "@/components/sections/hero/DashboardIcons";
 import { Container } from "@/components/ui/Container";
+import { SolutionNeedCard } from "@/components/ui/SolutionNeedCard";
 import { solutions } from "@/content/solutions";
 import { cn } from "@/lib/utils";
 
 /**
  * SOLUTIONS
  * ---------------------------------------------------------------------------
- * A 2x3 grid of solution cards: coloured top rule, photo, title, description
- * and the product tags that power each solution.
+ * The homepage's row of solution cards.
  *
- * Cards animate in with a diagonal stagger and lift on hover, with the photo
- * scaling slightly inside its frame — a common affordance that reads as
- * "this is a link" without needing a visible button.
+ * THE CARD IS SolutionNeedCard, shared with the solutions page's own "by
+ * business need" grid, so the two are the same card by construction. This
+ * file owns the heading, the grid and the diagonal stagger.
+ *
+ * It previously rendered a different card — a coloured top rule over a photo —
+ * whose photo was one placeholder repeated across every entry. See the note in
+ * content/solutions.ts.
  */
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
-
-/** Top-rule colour. Only "Sales Enablement" is amber in the design. */
-const accentRule = {
-  brand: "bg-brand-700",
-  amber: "bg-accent-500",
-} as const;
 
 export function Solutions() {
   const reduce = useReducedMotion();
@@ -99,7 +96,14 @@ export function Solutions() {
         </div>
 
         {/* =============================== Grid ======================== */}
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
+        {/* Gap and rhythm match the solutions page's grid, so a reader
+            meeting both sees one treatment. */}
+        <ul
+          className={cn(
+            "mt-12 grid grid-cols-1 gap-6",
+            "sm:grid-cols-2 lg:mt-14 lg:grid-cols-3",
+          )}
+        >
           {solutions.items.map((item, index) => {
             // Diagonal stagger: cards further from the top-left start later.
             const column = index % 3;
@@ -116,67 +120,9 @@ export function Solutions() {
                   delay: reduce ? 0 : 0.06 * (column + row),
                   ease: easeOut,
                 }}
+                className="h-full"
               >
-                <article
-                  className={cn(
-                    "group flex h-full flex-col overflow-hidden rounded-xl",
-                    "border border-neutral-200/70 bg-white",
-                    "duration-normal transition-[border-color,box-shadow,transform] ease-out",
-                    "hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-lg",
-                  )}
-                >
-                  {/* Coloured top rule */}
-                  <span
-                    aria-hidden="true"
-                    className={cn("h-[3px] w-full", accentRule[item.accent])}
-                  />
-
-                  {/* Photo. The design crops to roughly 2.23:1 — wider than
-                      16:9 — which keeps the image a band across the card top
-                      rather than letting it dominate. object-cover means a
-                      replacement photo of any aspect ratio still sits right. */}
-                  <div className="relative aspect-[20/9] overflow-hidden bg-neutral-200">
-                    <Image
-                      src={item.image}
-                      alt={item.imageAlt}
-                      fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className={cn(
-                        "object-cover",
-                        "duration-slow transition-transform ease-out",
-                        "group-hover:scale-[1.03]",
-                      )}
-                    />
-                  </div>
-
-                  <div className="flex flex-1 flex-col p-5 sm:p-6">
-                    <h3 className="text-lg font-semibold tracking-[-0.01em] text-neutral-900 sm:text-xl">
-                      {item.title}
-                    </h3>
-
-                    <p className="mt-2.5 text-sm leading-relaxed text-pretty text-neutral-600">
-                      {item.description}
-                    </p>
-
-                    {/* Product tags. mt-auto pins them to the card's foot so
-                        they align across a row of uneven descriptions. */}
-                    <ul className="mt-auto flex flex-wrap gap-2 pt-5">
-                      {item.tags.map((tag) => (
-                        <li key={tag}>
-                          <span
-                            className={cn(
-                              "inline-flex items-center rounded-md border border-brand-200",
-                              "px-2.5 py-1.5 font-mono text-[0.625rem] font-medium uppercase",
-                              "tracking-[0.08em] text-brand-700",
-                            )}
-                          >
-                            {tag}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </article>
+                <SolutionNeedCard item={item} />
               </motion.li>
             );
           })}
