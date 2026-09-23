@@ -1,9 +1,14 @@
 name: Deploy elurny.com (AKS)
 
-# Builds the Docker image (Next.js static export served by nginx, see
-# Dockerfile), pushes it to ACR and rolls the `elurny-website` deployment in
-# the `prod` namespace of the `lurny` AKS cluster. Traffic for elurny.com and
-# www.elurny.com reaches it via the in-cluster `prod/lurny-talk` ingress.
+# Builds the Docker image (Next.js server on Node, `next start` on port 3000,
+# see Dockerfile), pushes it to ACR and rolls the `elurny-website` deployment
+# in the `prod` namespace of the `lurny` AKS cluster. Traffic for elurny.com
+# and www.elurny.com reaches it via the in-cluster `prod/lurny-talk` ingress
+# (service `elurny-website:80` -> container port 3000).
+#
+# Runtime secrets (MONGODB_URI, mail credentials) are NOT handled here: the
+# deployment reads them from the Kubernetes secret `elurny-website-env`, which
+# is managed in-cluster. See k8s/README.md.
 
 on:
   push:
@@ -28,6 +33,6 @@ jobs:
           aks_cluster_name: lurny
           resource_group: AKS-Lunry
           dockerfile_path: Dockerfile
-          app_port: "80"
+          app_port: "3000"
           k8s_namespace: prod
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}

@@ -143,14 +143,20 @@ Hosted on **AKS** (cluster `lurny`, namespace `prod`, deployment/service
 TLS are handled by the in-cluster `prod/lurny-talk` ingress (cert-manager,
 Let's Encrypt). `lurny.ai` / `www.lurny.ai` simply redirect here.
 
-- `next.config.ts` uses `output: "export"` — `npm run build` writes plain
-  HTML/CSS/JS to `out/`. No server, no API routes, no server actions.
-- `Dockerfile` builds the export and serves `out/` with nginx; `nginx.conf`
-  carries the security headers, cache headers, trailing-slash redirect and the
-  404 page (Next's `headers()` is a no-op in export mode).
+- The site runs as a **Node server** (`next start`, port 3000). `next build`
+  emits `.next/`; API routes such as `/api/lead` are live. (Until 2026-09-23 it
+  was a static export served by nginx.)
+- `Dockerfile` builds the app and runs `npm run start` on port 3000 as a
+  non-root user. Security and cache headers come from `headers()` in
+  `next.config.ts`; `/healthz` (`src/app/healthz/route.ts`) serves the probes.
+- Runtime secrets (`MONGODB_URI`, `MONGODB_DB`, `LEADS_NOTIFY_TO`,
+  `LEADS_NOTIFY_FROM`, `RESEND_API_KEY`) come from the Kubernetes Secret
+  `elurny-website-env` in `prod` — see [`k8s/README.md`](k8s/README.md). They
+  are never baked into the image.
 - `.github/workflows/deploy-aks.yml` builds and pushes the image to ACR
   (`lunryai.azurecr.io/elurny-website`) and updates the deployment on every
-  push to `main`. `AZURE_CREDENTIALS` is a repo secret.
+  push to `main` (`app_port: 3000`; the Service keeps port 80 → container
+  port 3000). `AZURE_CREDENTIALS` is a repo secret.
 - `NEXT_PUBLIC_SITE_URL` defaults to `https://elurny.com` in the Dockerfile
   (`ARG`), which also matches the fallback in `src/lib/site.ts`.
 

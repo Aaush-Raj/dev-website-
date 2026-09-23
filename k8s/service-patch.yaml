@@ -1,0 +1,14 @@
+# Applied ONCE to the existing `prod/elurny-website` Service: keep listening on
+# 80 (the `prod/lurny-talk` ingress points at elurny-website:80) but forward to
+# container port 3000 (`next start`).
+#
+#   kubectl -n prod patch service elurny-website --patch-file k8s/service-patch.yaml
+#
+# NOTE: use a NUMERIC targetPort. A named targetPort ("http") makes the AKS
+# app-routing ingress controller log `Service "prod/elurny-website" does not
+# have any active Endpoint` and return 503 (observed 2026-09-23).
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000

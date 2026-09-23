@@ -3,19 +3,34 @@ import type { NextConfig } from "next";
 /**
  * NEXT.JS CONFIGURATION
  * ---------------------------------------------------------------------------
- * Tuned for a static marketing site: no backend, maximum crawlability,
- * strong default security headers.
+ * Tuned for a marketing site with a small backend (the /api/lead route):
+ * maximum crawlability, strong default security headers.
+ *
+ * The site runs as a Node server (`next start`, port 3000 — see Dockerfile).
+ * It used to be a static export (`output: "export"`) served by nginx; that
+ * was removed on 2026-09-23 so API routes are emitted and the lead forms can
+ * store submissions in MongoDB and send notifications.
  */
 
-const nextConfig: NextConfig = {
-  /**
-   * Static export. The site has no API routes or server actions, so `next
-   * build` emits plain HTML/CSS/JS into `out/`, which is served by nginx on
-   * AKS (elurny.com, see Dockerfile). Security headers are ignored in this
-   * mode — the equivalents live in `nginx.conf`.
-   */
-  output: "export",
+// Long-lived cache for immutable, content-hashed or hand-optimised assets.
+const ONE_YEAR = 31_536_000;
+const ONE_WEEK = 604_800;
 
+const securityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+  },
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+];
+
+const nextConfig: NextConfig = {
   // Pin the workspace root. Without this, Turbopack walks up the directory
   // tree and can latch onto an unrelated lockfile in a parent folder.
   turbopack: {
@@ -53,13 +68,15 @@ const nextConfig: NextConfig = {
     "10.0.0.0/8",
   ],
 
-  // Emit /about/ rather than /about — one canonical form, so a trailing-slash
-  // variant never competes with itself in the index.
+  // Emit /about rather than /about/ — one canonical form, so a trailing-slash
+  // variant never competes with itself in the index. `next start` 308s the
+  // other form to this one.
   trailingSlash: false,
 
   images: {
-    // Static export has no image optimisation server. Assets are already
-    // hand-optimised WebP under public/assets, so serve them as-is.
+    // Assets are already hand-optimised WebP under public/assets, so serve
+    // them as-is rather than running the optimisation server (which would
+    // also need `sharp` in the runtime image).
     unoptimized: true,
     // AVIF first (smallest), WebP fallback. Next negotiates per request.
     formats: ["image/avif", "image/webp"],
@@ -68,19 +85,35 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Long cache — filenames are content-hashed, so this is safe.
-    minimumCacheTTL: 31_536_000,
+    minimumCacheTTL: ONE_YEAR,
   },
 
   // Strip the framework fingerprint.
   poweredByHeader: false,
 
-  // Gzip/brotli at the edge in production; harmless locally.
+  // Gzip at the edge in production; harmless locally.
   compress: true,
 
   /**
-   * Security headers are NOT set here. Under `output: "export"` Next ignores
-   * `headers()`; the equivalents are configured in `nginx.conf` (elurny.com).
+   * Response headers. These replace what nginx.conf used to add when the site
+   * was a static export. /_next/static/* is already served immutable by Next.
    */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: securityHeaders,
+      },
+      {
+        // Hand-optimised images and fonts under public/. Not content-hashed,
+        // so a week rather than a year.
+        source: "/:path*.(avif|webp|png|jpg|jpeg|gif|svg|ico|woff|woff2)",
+        headers: [
+          { key: "Cache-Control", value: `public, max-age=${ONE_WEEK}` },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
