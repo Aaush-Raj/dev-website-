@@ -2,50 +2,53 @@
 
 import { useState } from "react";
 
+import { TourPoster } from "@/components/sections/tour/TourPoster";
 import { tour } from "@/content/tour";
 import { cn } from "@/lib/utils";
 
 /**
  * TOUR VIDEO
  * ---------------------------------------------------------------------------
- * The product-tour video, embedded from YouTube.
+ * The product-tour video, embedded from YouTube behind the illustrated
+ * capability-loop poster.
  *
  * FACADE, NOT A BARE IFRAME
- * The thumbnail and play button are ours; the iframe is only mounted once
+ * The poster and play button are ours; the iframe is only mounted once
  * someone clicks. That matters for three reasons:
  *
  *   - An embedded player loads several hundred KB of YouTube JavaScript on
  *     every homepage visit, for a video most visitors never play.
  *   - It sets cookies and contacts Google before anyone has asked for a
  *     video, which is a consent problem in the EU and the GCC.
- *   - The thumbnail is one image request, so the section paints immediately.
+ *   - Nothing is requested from Google at all until the click, so the
+ *     section paints immediately.
  *
  * `youtube-nocookie.com` is used for the same reason: no tracking cookie
  * until playback actually begins.
  *
- * The thumbnail comes from YouTube's own image host. `maxresdefault` exists
- * for most uploads but not all, so `hqdefault` is the fallback — it is always
- * present, which is what stops a broken image if the former is missing.
+ * THE POSTER IS THE ILLUSTRATION, NOT YOUTUBE'S THUMBNAIL. An earlier version
+ * showed `i.ytimg.com/vi/<id>/maxresdefault.jpg`. The drawn poster is the
+ * section's own artwork — it shows the capability loop the video describes,
+ * it needs no third-party request, and it cannot break the way a missing
+ * thumbnail size can.
  */
-
-/** Poster sizes YouTube serves, best first. */
-const THUMBNAIL = (id: string, quality: "maxres" | "hq") =>
-  `https://i.ytimg.com/vi/${id}/${quality}default.jpg`;
 
 export function TourVideo({ className }: { className?: string }) {
   const { youTubeId, label } = tour.player;
 
   /** Only true once the reader has asked for the video. */
   const [playing, setPlaying] = useState(false);
-  /** Falls back to hqdefault when maxres is missing for this upload. */
-  const [quality, setQuality] = useState<"maxres" | "hq">("maxres");
 
   if (!youTubeId) return null;
 
   return (
     <div
       className={cn(
-        "relative aspect-video w-full overflow-hidden rounded-2xl",
+        "relative w-full overflow-hidden rounded-2xl",
+        // 16:9 only while the iframe is mounted. The poster is a laid-out
+        // illustration with its own height, and forcing it into 16:9 would
+        // crop the card chain it exists to show.
+        playing && "aspect-video",
         "bg-[#04060f] ring-1 ring-white/10",
         className,
       )}
@@ -60,60 +63,54 @@ export function TourVideo({ className }: { className?: string }) {
           className="absolute inset-0 size-full border-0"
         />
       ) : (
-        <button
-          type="button"
-          onClick={() => setPlaying(true)}
-          className="group absolute inset-0 size-full cursor-pointer"
-        >
-          {/*
-            A plain <img>, not next/image: the src is a third-party host and
-            this build runs with `images.unoptimized`, so next/image would add
-            a wrapper for no benefit. `eager` because it is the section's
-            visual subject.
-          */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={THUMBNAIL(youTubeId, quality)}
-            alt=""
-            aria-hidden="true"
-            loading="eager"
-            onError={() => setQuality("hq")}
-            className={cn(
-              "size-full object-cover",
-              "transition-[scale,opacity] duration-500 ease-out",
-              "group-hover:scale-[1.02] group-hover:opacity-95",
-              "motion-reduce:transition-none motion-reduce:group-hover:scale-100",
-            )}
-          />
+        /*
+          THE POSTER SIZES THE BOX, so it sits in normal flow rather than
+          being absolutely positioned: it is a laid-out illustration with its
+          own height, and an absolute poster inside a container with no
+          intrinsic height collapsed the whole player to nothing.
 
-          {/* Darkens the thumbnail so the play control keeps its contrast
-              whatever the frame happens to be. */}
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-[#04060f]/25 transition-colors duration-500 group-hover:bg-[#04060f]/15"
-          />
+          The button is the overlay on top of it.
+        */
+        <div className="group relative">
+          <TourPoster className="relative" />
 
-          {/* The play control. */}
-          <span className="absolute inset-0 grid place-items-center">
+          <button
+            type="button"
+            onClick={() => setPlaying(true)}
+            className="absolute inset-0 size-full cursor-pointer"
+          >
+            {/* A light scrim so the play control keeps its contrast against
+                the poster's cards. */}
             <span
+              aria-hidden="true"
               className={cn(
-                "grid size-[4.5rem] place-items-center rounded-full",
-                "bg-gradient-to-br from-brand-400 to-brand-700 text-white",
-                "ring-2 ring-white/85",
-                "shadow-[0_12px_34px_-8px_rgb(91_50_183/0.85)]",
-                "transition-[scale,box-shadow] duration-[380ms] ease-out",
-                "group-hover:scale-[1.07]",
-                "group-hover:shadow-[0_16px_44px_-8px_rgb(91_50_183/0.95)]",
-                "group-active:scale-100",
-                "motion-reduce:transition-none motion-reduce:group-hover:scale-100",
+                "pointer-events-none absolute inset-0 bg-[#04060f]/45",
+                "transition-colors duration-500 group-hover:bg-[#04060f]/30",
               )}
-            >
-              <PlayGlyph className="size-7 translate-x-0.5 drop-shadow-sm" />
-            </span>
-          </span>
+            />
 
-          <span className="sr-only">{label}</span>
-        </button>
+            {/* The play control. */}
+            <span className="absolute inset-0 grid place-items-center">
+              <span
+                className={cn(
+                  "grid size-[4.5rem] place-items-center rounded-full",
+                  "bg-gradient-to-br from-brand-400 to-brand-700 text-white",
+                  "ring-2 ring-white/85",
+                  "shadow-[0_12px_34px_-8px_rgb(91_50_183/0.85)]",
+                  "transition-[scale,box-shadow] duration-[380ms] ease-out",
+                  "group-hover:scale-[1.07]",
+                  "group-hover:shadow-[0_16px_44px_-8px_rgb(91_50_183/0.95)]",
+                  "group-active:scale-100",
+                  "motion-reduce:transition-none motion-reduce:group-hover:scale-100",
+                )}
+              >
+                <PlayGlyph className="size-7 translate-x-0.5 drop-shadow-sm" />
+              </span>
+            </span>
+
+            <span className="sr-only">{label}</span>
+          </button>
+        </div>
       )}
     </div>
   );
