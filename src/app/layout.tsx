@@ -9,22 +9,20 @@ import {
 } from "next/font/google";
 import type { ReactNode } from "react";
 
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
-import { JsonLd } from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
-import {
-  organizationSchema,
-  softwareApplicationSchema,
-  webSiteSchema,
-} from "@/lib/structured-data";
 import "@/styles/globals.css";
 
 /**
  * ROOT LAYOUT
  * ---------------------------------------------------------------------------
- * The site shell: fonts, default metadata, site-wide JSON-LD, header, footer.
+ * ONLY the <html>/<body> shell, fonts and default metadata.
+ *
+ * The header, footer and site-wide JSON-LD deliberately live one level down,
+ * in the (site) route group, NOT here. The Trust Centre is a credentialed
+ * portal that must not render the marketing chrome, and a layout cannot be
+ * opted out of — so the chrome belongs to the group that wants it rather than
+ * to every route. See src/app/(site)/layout.tsx.
  *
  * TODO(design): replace Inter/Sora with the real brand typefaces once the
  * Figma designs land. next/font self-hosts them at build time — no runtime
@@ -154,29 +152,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${fontSans.variable} ${fontDisplay.variable} ${fontSerif.variable} ${fontMono.variable} ${fontHand.variable} ${fontReading.variable} ${fontArticle.variable}`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-dvh flex-col">
-        {/* Keyboard users can jump past the nav straight to the content. */}
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
-
-        <Header />
-
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-
-        <Footer />
-
-        {/* Site-wide structured data, present in the initial HTML. */}
-        <JsonLd
-          schema={[
-            organizationSchema(),
-            webSiteSchema(),
-            softwareApplicationSchema(),
-          ]}
-        />
-      </body>
+      <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );
 }
