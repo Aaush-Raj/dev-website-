@@ -3,18 +3,29 @@ import type { NextConfig } from "next";
 /**
  * NEXT.JS CONFIGURATION
  * ---------------------------------------------------------------------------
- * Tuned for a static marketing site: no backend, maximum crawlability,
- * strong default security headers.
+ * Server-rendered (standalone) so the Trust Centre can authenticate. Tuned
+ * for maximum crawlability on the marketing pages and strong security headers
+ * on every response.
  */
 
 const nextConfig: NextConfig = {
   /**
-   * Static export. The site has no API routes or server actions, so `next
-   * build` emits plain HTML/CSS/JS into `out/`, which is served by nginx on
-   * AKS (elurny.com, see Dockerfile). Security headers are ignored in this
-   * mode — the equivalents live in `nginx.conf`.
+   * SERVER-RENDERED, NOT A STATIC EXPORT.
+   *
+   * This site used `output: "export"` while it was purely marketing pages.
+   * The Trust Centre (/trust-centre) ended that: a real credential check needs
+   * httpOnly cookies, Proxy and Route Handlers, and Next's static export
+   * supports none of them — anything built under it would ship the credential
+   * and the documents to the browser, which for due-diligence material is
+   * worse than having no portal.
+   *
+   * `standalone` traces only the files the server actually needs into
+   * .next/standalone, so the runtime image stays small (see Dockerfile).
+   *
+   * Consequence worth knowing: security headers are live again via
+   * `headers()` below, and the previously inert /api/lead route now serves.
    */
-  output: "export",
+  output: "standalone",
 
   // Pin the workspace root. Without this, Turbopack walks up the directory
   // tree and can latch onto an unrelated lockfile in a parent folder.
@@ -58,8 +69,9 @@ const nextConfig: NextConfig = {
   trailingSlash: false,
 
   images: {
-    // Static export has no image optimisation server. Assets are already
-    // hand-optimised WebP under public/assets, so serve them as-is.
+    // Assets under public/assets are already hand-optimised WebP, and the
+    // optimiser would only re-encode them at runtime cost. Left on so this
+    // stays true regardless of the now-available optimisation server.
     unoptimized: true,
     // AVIF first (smallest), WebP fallback. Next negotiates per request.
     formats: ["image/avif", "image/webp"],
@@ -78,9 +90,53 @@ const nextConfig: NextConfig = {
   compress: true,
 
   /**
-   * Security headers are NOT set here. Under `output: "export"` Next ignores
-   * `headers()`; the equivalents are configured in `nginx.conf` (elurny.com).
+   * SECURITY HEADERS
+   *
+   * These were unreachable under `output: "export"` and lived only in
+   * nginx.conf. Now that Next serves the traffic they are declared here, at
+   * the application, so they hold wherever it runs — including `next start`
+   * locally, where there is no nginx at all. nginx keeps its own copy as
+   * defence in depth for the static files it serves directly.
    */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
+      {
+        /*
+         * The Trust Centre is credentialed and must never be cached by a
+         * proxy, a CDN or the browser's back/forward cache: a signed-out
+         * person pressing Back must not be shown the document library from
+         * cache. `no-store` is the only directive that guarantees that.
+         */
+        source: "/trust-centre/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store, no-cache, must-revalidate, max-age=0",
+          },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -1,9 +1,21 @@
 name: Deploy elurny.com (AKS)
 
-# Builds the Docker image (Next.js static export served by nginx, see
-# Dockerfile), pushes it to ACR and rolls the `elurny-website` deployment in
-# the `prod` namespace of the `lurny` AKS cluster. Traffic for elurny.com and
-# www.elurny.com reaches it via the in-cluster `prod/lurny-talk` ingress.
+# Builds the Docker image (Next.js standalone server, see Dockerfile), pushes
+# it to ACR and rolls the `elurny-website` deployment in the `prod` namespace
+# of the `lurny` AKS cluster. Traffic for elurny.com and www.elurny.com reaches
+# it via the in-cluster `prod/lurny-talk` ingress.
+#
+# PORT CHANGED FROM 80 TO 3000
+# The image used to be nginx serving a static export. It is now Node serving
+# the app, which listens on 3000 (Dockerfile: ENV PORT). The Service targetPort
+# must match, or the rollout comes up healthy and every request times out.
+#
+# REQUIRED SECRETS (Kubernetes secret, injected as env vars on the deployment)
+# The Trust Centre refuses all sign-ins unless these are present:
+#   TRUST_CENTRE_EMAIL, TRUST_CENTRE_PASSWORD_HASH, TRUST_CENTRE_SECRET
+#   AZURE_STORAGE_ACCOUNT, AZURE_STORAGE_KEY, TRUST_CENTRE_CONTAINER
+#   MONGODB_URI, MONGODB_DB
+# Generate the first three with `npm run trust-centre:hash`.
 
 on:
   push:
@@ -28,6 +40,6 @@ jobs:
           aks_cluster_name: lurny
           resource_group: AKS-Lunry
           dockerfile_path: Dockerfile
-          app_port: "80"
+          app_port: "3000"
           k8s_namespace: prod
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
