@@ -16,6 +16,9 @@ import { cn } from "@/lib/utils";
  * THE VIDEO
  * The player is TourVideo, a click-to-load facade around the YouTube embed —
  * see that file for why the iframe is not mounted until someone asks for it.
+ * It is also the section's bordered panel: the design draws one box with the
+ * illustration and the caption chip inside it, so the frame is not wrapped in
+ * anything.
  *
  * It replaced an illustrated capability-loop poster (TourPoster) and its own
  * play control, which stood in while no video existed. That markup is in git
@@ -101,45 +104,15 @@ export function Tour() {
         </div>
 
         {/* ============================== Player ======================== */}
-        <motion.div
-          {...rise(0.1)}
-          className={cn(
-            "relative mt-12 overflow-hidden rounded-3xl",
-            "border border-white/8 bg-[#060917]",
-            "px-4 pt-6 pb-6 sm:px-7 sm:pt-8 sm:pb-8 lg:px-10 lg:pb-10",
-          )}
-        >
-          {/* Soft violet bloom, bottom-right, matching the design. */}
-          <div
-            aria-hidden="true"
-            className={cn(
-              "pointer-events-none absolute -right-1/4 -bottom-1/3",
-              "size-[36rem] rounded-full opacity-30 blur-[110px]",
-              "bg-[radial-gradient(circle,var(--brand-700)_0%,transparent_70%)]",
-            )}
-          />
-
-          {/* ========================= The video ======================== */}
-          {/*
-            Replaced the illustrated poster that stood in before the video
-            existed — see the note at the top of this file.
-          */}
-          <TourVideo className="relative" />
-
-          {/* ------------------------ Caption bar -------------------- */}
-          <div className="relative mt-6 flex flex-wrap items-center gap-3 lg:mt-4">
-            <span
-              className={cn(
-                "rounded-lg bg-white/6 px-3 py-1.5",
-                "font-mono text-[0.8125rem] font-medium text-white",
-              )}
-            >
-              {tour.player.duration}
-            </span>
-            <p className="text-[0.8125rem] text-neutral-400">
-              {tour.player.caption}
-            </p>
-          </div>
+        {/*
+          ONE BOX, NOT TWO. The video frame IS the design's bordered panel —
+          it fills the container edge to edge and carries the border, the
+          rounding and the caption chip itself. An earlier version wrapped it
+          in a second padded, bordered panel, which drew a frame inside a
+          frame and cost the video ~80px of width at desktop.
+        */}
+        <motion.div {...rise(0.1)}>
+          <TourVideo className="mt-12" />
         </motion.div>
 
         {/* ============================ Step rail ======================= */}

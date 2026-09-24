@@ -34,7 +34,7 @@ import { cn } from "@/lib/utils";
  */
 
 export function TourVideo({ className }: { className?: string }) {
-  const { youTubeId, label } = tour.player;
+  const { youTubeId, label, duration, caption } = tour.player;
 
   /** Only true once the reader has asked for the video. */
   const [playing, setPlaying] = useState(false);
@@ -44,7 +44,12 @@ export function TourVideo({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative w-full overflow-hidden rounded-2xl",
+        /*
+          THIS FRAME IS THE SECTION'S PANEL. The design draws one bordered box
+          with the illustration inside it, so the border and the 3xl rounding
+          live here rather than on a wrapper — see the note in Tour.tsx.
+        */
+        "relative w-full overflow-hidden rounded-3xl",
         /*
           THE BOX IS THE SAME SHAPE BEFORE AND AFTER THE CLICK, which is what
           stops the section resizing when someone presses play. The poster
@@ -62,7 +67,7 @@ export function TourVideo({ className }: { className?: string }) {
           move.
         */
         "h-[19rem] sm:aspect-video sm:h-auto",
-        "bg-[#04060f] ring-1 ring-white/10",
+        "border border-white/8 bg-[#04060f]",
         className,
       )}
     >
@@ -172,6 +177,37 @@ export function TourVideo({ className }: { className?: string }) {
 
             <span className="sr-only">{label}</span>
           </button>
+
+          {/* ------------------------ Caption chip -------------------- */}
+          {/*
+            The duration and caption, in the frame's bottom-left corner as
+            the design places them. Poster state only: once the iframe is
+            playing this corner is YouTube's own control bar, and nothing of
+            ours may sit over it.
+
+            After the button in the DOM so it paints above the scrim, and
+            `pointer-events-none` so a click on it still reaches the button
+            underneath. Hidden below sm, where the frame is sized to the
+            poster's scroller and has no spare corner — the duration is
+            already stated in the "4-minute guided tour" note above the
+            player.
+          */}
+          <div
+            className={cn(
+              "pointer-events-none absolute bottom-6 left-6 hidden sm:flex",
+              "flex-wrap items-center gap-3 lg:bottom-8 lg:left-8",
+            )}
+          >
+            <span
+              className={cn(
+                "rounded-lg bg-white/8 px-3 py-1.5 backdrop-blur-sm",
+                "font-mono text-[0.8125rem] font-medium text-white",
+              )}
+            >
+              {duration}
+            </span>
+            <p className="text-[0.8125rem] text-neutral-300">{caption}</p>
+          </div>
         </div>
       )}
     </div>
