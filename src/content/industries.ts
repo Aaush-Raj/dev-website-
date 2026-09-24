@@ -4,17 +4,19 @@
  * Five industry cards presented as an expanding accordion: the active card is
  * roughly 1.4x the width of the others and carries an amber rule rather than
  * violet.
+ *
+ * THE PHOTOGRAPHS live in public/assets/images/industries/home, built by
+ * scripts/build-industries-images.cjs from the same six sector shots the
+ * /industries hero uses — shipped uncropped here because the accordion's
+ * panels change shape as they expand; see the script for why.
+ *
+ * `imageAlt` is empty on purpose. Each photo is a mood shot behind a scrim
+ * whose card already names the industry in its heading; describing the stock
+ * scene ("a nurse talking to a patient") adds nothing a screen-reader user
+ * can act on. The /industries hero makes the same call for the same six.
  */
 
-/**
- * PLACEHOLDER image, shared by every card.
- *
- * TODO(assets): replace with a distinct photo per industry. Each entry already
- * has its own `image` and `imageAlt`, so only the values change — and
- * `imageAlt` must describe the real photo before launch.
- */
-const PLACEHOLDER_IMAGE = "/assets/images/industry-placeholder.jpg";
-const PLACEHOLDER_ALT = "";
+const IMAGES = "/assets/images/industries/home";
 
 export const industries = {
   eyebrow: "Solutions by industry",
@@ -35,36 +37,36 @@ export const industries = {
       description:
         "Strengthen capability. Ensure compliance. Deliver trusted outcomes.",
       href: "/industries/banking",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
+      image: `${IMAGES}/bfsi.webp`,
+      imageAlt: "",
     },
     {
       title: "Telecom",
       description: "Build technical readiness. Improve performance at scale.",
       href: "/industries/telecom",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
+      image: `${IMAGES}/telecom.webp`,
+      imageAlt: "",
     },
     {
       title: "Healthcare",
       description: "Elevate clinical capability. Drive quality and compliance.",
       href: "/industries/healthcare",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
+      image: `${IMAGES}/healthcare.webp`,
+      imageAlt: "",
     },
     {
       title: "Manufacturing",
       description: "Enable safe operations. Build skills that scale.",
       href: "/industries/manufacturing",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
+      image: `${IMAGES}/manufacturing.webp`,
+      imageAlt: "",
     },
     {
       title: "Professional Services",
       description: "Build advisory excellence. Deliver client impact.",
       href: "/industries/professional-services",
-      image: PLACEHOLDER_IMAGE,
-      imageAlt: PLACEHOLDER_ALT,
+      image: `${IMAGES}/professional-services.webp`,
+      imageAlt: "",
     },
   ],
 } as const;

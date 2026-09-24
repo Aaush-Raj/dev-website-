@@ -244,7 +244,14 @@ export const caseStudy = {
 
     {
       kind: "figure",
-      src: "/assets/images/industries/bfsi.webp",
+      /*
+       * Its OWN file, not the /industries hero's `bfsi.webp`. The two used to
+       * share one photo; when the hero's mosaic was re-shot (Sep 2026) this
+       * figure would have silently become a bank advisor with a customer under
+       * a caption still describing a manager and two colleagues. Decoupled so
+       * neither page can change the other's picture again.
+       */
+      src: "/assets/images/industries/bfsi-team-review.webp",
       alt: "A manager reviewing work alongside two colleagues at a desk.",
       caption:
         "Illustrative scene. It does not document a coaching session from the pilot.",
