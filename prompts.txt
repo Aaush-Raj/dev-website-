@@ -141,24 +141,13 @@ Section6 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurnySOP
 
 ----------------------------------------------------------------------------
 
-Now we need to work on LURNY SIM page - https://elurny.com/platform/sim
+Quick updates to do -
 
-Section1 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section1.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/1 lurnysim-hero-assets/01-background/blue-purple-gradient.png
-Man in img - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/1 lurnysim-hero-assets/02-human-office/human-office-computer-plant.png
-Cards imgs - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/1 lurnysim-hero-assets/03-cards
+now I want you to check the section 10 - Customer stories - of homepage - and
+section 2 of https://elurny.com/customers "customers page" 
 
-Section2 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section2.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/2 lurnysim-problem-solution-text/2 ChatGPT Image Sep 21, 2026, 11_32_29 AM.png
+"Use the same stories and card images from the detailed page.  And the same text content as in the inside page"
 
-Section3 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section3.png
-Women office img - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/3 lurnysim-customer-service-extracted-assets/01-woman-office/woman-office.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/3 lurnysim-customer-service-extracted-assets/02-background/blue-geometric-gradient.png
-CARDS - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/3 lurnysim-customer-service-extracted-assets/03-cards
 
-Section4 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section4.png
-BG - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/4 lurnysim-manager-coaching-assets (2)/01-background/lavender-geometric-gradient.png
-Card imgs - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/4 lurnysim-manager-coaching-assets (2)/02-cards
 
-Section5 - /Users/aaushraj/Desktop/Developer/elurny-new-website/designs/lurny sim all assets/section5.png
-BG - 
+
