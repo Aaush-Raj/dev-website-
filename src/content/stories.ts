@@ -1,31 +1,58 @@
 /**
  * SECTION 10 CONTENT — customer stories
  * ---------------------------------------------------------------------------
- * Three case-study cards, each with a photo, an industry label, two headline
- * metrics and the engines that powered the programme — closed by a pull quote
- * on a dark bar.
+ * Three story cards, each with a photo, a sector label, the story's standfirst
+ * and its two chips — closed by a pull quote on a dark bar.
  *
- * The figures and the quote are illustrative marketing content, not live data.
+ * THE CARDS ARE NOT WRITTEN HERE. They are picked, by id, from the customer
+ * stories index in content/customers.ts, which in turn derives the BFSI story
+ * from its own page in content/case-study.ts. So a card on the homepage shows
+ * exactly the photograph, headline and figures a visitor finds when they click
+ * through — this file used to carry its own three stories with placeholder
+ * photos and invented metrics, and none of them matched anything inside.
  *
- * TODO(legal): named-customer claims and the attributed quote need sign-off
- * before launch, and the attribution should carry a real name and company
- * once one is cleared.
+ * What IS decided here: which three of the index's stories the homepage
+ * features, in what order, and which card carries the amber emphasis.
  */
 
+import { caseStudy } from "./case-study";
+import { customers } from "./customers";
+
+type IndexStory = (typeof customers.stories.items)[number];
+
 /**
- * PLACEHOLDER images.
- *
- * These are the two dummy photos supplied with the design, which already live
- * in public/assets/images for the solutions and industries sections — the
- * files are byte-identical, so they are reused rather than duplicated.
- *
- * TODO(assets): replace with the real per-story photography. Each card has
- * its own `image` and `imageAlt`, so only the values change — and `imageAlt`
- * must describe the actual photo before launch.
+ * The three featured stories, by id, in display order. The first three of
+ * the index — the same order the customers page opens with — so the homepage
+ * and the index tell the story the same way. Swap an id to feature a
+ * different one; an id the index does not carry fails the build rather than
+ * silently rendering an empty card.
  */
-const PLACEHOLDER_A = "/assets/images/card-placeholder.jpg";
-const PLACEHOLDER_B = "/assets/images/industry-placeholder.jpg";
-const PLACEHOLDER_ALT = "";
+const FEATURED = ["story-bfsi", "story-ngo", "story-ict"] as const;
+
+function pick(id: (typeof FEATURED)[number]): IndexStory {
+  const story = customers.stories.items.find((s) => s.id === id);
+  if (!story) throw new Error(`stories: no customer story with id "${id}"`);
+  return story;
+}
+
+/**
+ * Where the card goes. A story with its own page links there; one that has
+ * no page yet links to its card on the index (the index itself uses a bare
+ * "/customers" for those, which from the homepage would land at the top of
+ * the page rather than on the story).
+ */
+function hrefFor(story: IndexStory) {
+  return story.cta.href === "/customers"
+    ? `/customers#${story.id}`
+    : story.cta.href;
+}
+
+/** The case study's own pull quote — see `quote` below. */
+const caseStudyQuote = caseStudy.article.find(
+  (block): block is Extract<(typeof caseStudy.article)[number], { kind: "quote" }> =>
+    block.kind === "quote",
+);
+if (!caseStudyQuote) throw new Error("stories: the case study has no pull quote");
 
 export const stories = {
   eyebrow: "Customer stories",
@@ -39,75 +66,43 @@ export const stories = {
   link: { label: "Explore all customer stories", href: "/customers" },
 
   /**
-   * The three cards.
+   * The three cards, in the shape the homepage card draws.
    *
-   * `tone` drives the top rule, the industry label and the metric figures.
-   * The design runs two violet cards and one amber, so the row has a single
-   * point of emphasis rather than three competing ones.
-   *
-   * `engine` is the badge in the card foot: the engine that powered the
-   * programme, plus the products alongside it.
+   * `tone` drives the top rule, the sector label and the figures. The design
+   * runs two violet cards and one amber, so the row has a single point of
+   * emphasis rather than three competing ones — the third card takes it.
    */
-  items: [
-    {
-      industry: "Banking",
-      client: "Multi-branch lender",
-      title: "Building stronger branch capability at scale",
-      href: "/customers/banking",
-      image: PLACEHOLDER_A,
-      imageAlt: PLACEHOLDER_ALT,
-      tone: "brand",
-      metrics: [
-        { value: "38%", label: "Faster readiness" },
-        { value: "2.1×", label: "Cross-sell rate" },
-      ],
-      engine: {
-        icon: "pulse",
-        name: "Powered by Pulse",
-        tags: ["KxP", "Pitch"],
-      },
-    },
-    {
-      industry: "Telecom",
-      client: "National operator",
-      title: "Certifying field engineers on new network standards",
-      href: "/customers/telecom",
-      image: PLACEHOLDER_B,
-      imageAlt: PLACEHOLDER_ALT,
-      tone: "brand",
-      metrics: [
-        { value: "9,400", label: "Engineers certified" },
-        { value: "6 wks", label: "End to end" },
-      ],
-      engine: {
-        icon: "sparkle",
-        name: "Powered by Magic",
-        tags: ["KxP", "Saathi"],
-      },
-    },
-    {
-      industry: "Manufacturing",
-      client: "Auto components",
-      title: "Making critical SOPs usable on the shop floor",
-      href: "/customers/manufacturing",
-      image: PLACEHOLDER_A,
-      imageAlt: PLACEHOLDER_ALT,
-      tone: "accent",
-      metrics: [
-        { value: "31%", label: "Fewer safety incidents" },
-        { value: "18", label: "Plants live" },
-      ],
-      engine: {
-        icon: "sparkle",
-        name: "Powered by Magic",
-        tags: ["Saathi", "Chat"],
-      },
-    },
-  ],
+  items: FEATURED.map((id, index) => {
+    const story = pick(id);
+    const tone: "brand" | "accent" = index === 2 ? "accent" : "brand";
 
-  /** The pull quote on the dark bar that closes the section. */
+    return {
+      id: story.id,
+      industry: story.category,
+      title: story.headline,
+      description: story.description,
+      chips: story.chips,
+      href: hrefFor(story),
+      image: story.image,
+      tone,
+    };
+  }),
+
+  /**
+   * The pull quote on the dark bar that closes the section.
+   *
+   * It is the BFSI story's own closing line, credited to the story — NOT a
+   * customer testimonial. The bar used to carry an invented quote attributed
+   * to an anonymous "Learning Leader, Enterprise Customer"; beside three real
+   * stories, an unsourced testimonial is a liability, and the design's TODO
+   * already said it could not ship without sign-off. If a cleared customer
+   * quote arrives, it goes here with a real name.
+   */
   quote: {
-    text: "We stopped measuring course completion and started measuring whether capability was visible in the work.",
-    attribution: ["— Learning Leader,", "Enterprise Customer"] as const,
+    text: caseStudyQuote.text,
+    attribution: [
+      "\u2014 From the customer story,",
+      caseStudy.breadcrumb.current + " / Financial Services",
+    ] as const,
   },
 } as const;

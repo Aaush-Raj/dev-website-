@@ -12,6 +12,8 @@
  * the site.
  */
 
+import { caseStudy } from "./case-study";
+
 export const customers = {
   /** Page-level metadata, consumed by the route's `metadata` export. */
   meta: {
@@ -88,18 +90,14 @@ export const customers = {
         /** Anchor target for the hero's sector rail. */
         id: "story-bfsi",
         category: "BFSI / Financial Services",
-        headline:
-          "From customer conversations to missed-opportunity intelligence",
-        description:
-          "Conversation analysis brings customer needs, missed opportunities and coaching priorities into clearer view.",
-        chips: [
-          { value: "25", label: "branches" },
-          { value: "9,328", label: "conversations" },
-        ],
-        cta: { label: "Read the story", href: "/resources/case-studies" },
+        headline: caseStudy.hero.headline,
+        description: caseStudy.hero.description,
+        /* The page's two scope figures are exactly the card's two chips. */
+        chips: caseStudy.hero.stats,
+        cta: { label: "Read the story", href: caseStudy.meta.path },
         image: {
-          src: "/assets/images/customers/story-bfsi.webp",
-          alt: "A bank employee talking with a customer across a desk in a branch office.",
+          src: caseStudy.hero.image.src,
+          alt: caseStudy.hero.image.alt,
         },
       },
       {

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 
 import { ArrowRightIcon } from "@/components/sections/hero/DashboardIcons";
-import { PulseIcon, SparkleIcon } from "@/components/sections/model/ModelIcons";
 import { Container } from "@/components/ui/Container";
 import { stories } from "@/content/stories";
 import { cn } from "@/lib/utils";
@@ -17,13 +16,22 @@ import { cn } from "@/lib/utils";
  * on a dark bar.
  *
  * CARD ANATOMY
- * Each card is one link: a coloured top rule, a photo with the industry label
- * and title laid over its foot, then a white panel carrying two metrics and
- * the engine badge. The overlay sits on a bottom-up scrim rather than a solid
- * band, so the photo stays visible behind the text.
+ * Each card is one link: a coloured top rule, a photo with the sector label
+ * and title laid over its foot, then a white panel carrying the story's
+ * standfirst and its two chips. The overlay sits on a bottom-up scrim rather
+ * than a solid band, so the photo stays visible behind the text.
  *
- * The metric row and the badge live in the white panel with `mt-auto`, which
- * keeps them aligned across a row of cards whose titles wrap to different
+ * WHERE THE CONTENT COMES FROM
+ * The three cards are the customer stories index's own entries — same photo,
+ * headline, standfirst and chips as the page each card opens. See the note in
+ * content/stories.ts. That is also why there is no "Powered by …" badge and no
+ * client descriptor in the label: neither is stated on the story pages, and
+ * the versions this card used to carry were invented.
+ *
+ * TWO SHAPES OF CHIP, as on the index: the BFSI story's chips are FIGURES
+ * ("25 branches") and render the number in the display face; the others are
+ * phrases and render as plain text. The chip row sits on `mt-auto`, which
+ * keeps it aligned across a row of cards whose standfirsts wrap to different
  * heights.
  *
  * BACKGROUND
@@ -45,22 +53,12 @@ const toneStyles = {
     rule: "bg-brand-600",
     industry: "text-brand-400",
     metric: "text-brand-700",
-    badge: "bg-brand-50 text-brand-700",
-    badgeIcon: "text-brand-500",
   },
   accent: {
     rule: "bg-accent-500",
     industry: "text-accent-400",
     metric: "text-accent-600",
-    badge: "bg-accent-50 text-accent-800",
-    badgeIcon: "text-accent-500",
   },
-} as const;
-
-/** Engine badge icons, keyed by the name in the content file. */
-const engineIcons = {
-  pulse: PulseIcon,
-  sparkle: SparkleIcon,
 } as const;
 
 export function Stories() {
@@ -198,11 +196,10 @@ export function Stories() {
         <ul className="mt-10 grid gap-5 md:grid-cols-2 lg:mt-12 lg:grid-cols-3">
           {stories.items.map((item, index) => {
             const tone = toneStyles[item.tone];
-            const EngineIcon = engineIcons[item.engine.icon];
 
             return (
               <motion.li
-                key={item.title}
+                key={item.id}
                 initial={reduce ? "shown" : "hidden"}
                 whileInView="shown"
                 viewport={{ once: true, amount: "some" }}
@@ -242,8 +239,8 @@ export function Stories() {
                   {/* ---------------------- Photo --------------------- */}
                   <div className="relative aspect-4/3 overflow-hidden bg-neutral-800">
                     <Image
-                      src={item.image}
-                      alt={item.imageAlt}
+                      src={item.image.src}
+                      alt={item.image.alt}
                       fill
                       sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                       className={cn(
@@ -261,13 +258,6 @@ export function Stories() {
                       gradient dark enough at the foot would grey out the top
                       of the photo.
                     */}
-                    {/*
-                      Tuned against the design, whose photos are dark, moody
-                      workplace shots. The current placeholders include a
-                      bright office scene, so the values here lean darker than
-                      the design strictly needs; with the real photography
-                      they should hold without changing.
-                    */}
                     <span
                       aria-hidden="true"
                       className="absolute inset-0 bg-black/25"
@@ -280,32 +270,16 @@ export function Stories() {
                       )}
                     />
 
-                    {/* Industry label and title, over the photo foot. */}
+                    {/* Sector label and title, over the photo foot. */}
                     <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-                      <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                        <span
-                          className={cn(
-                            "font-mono text-[0.625rem] font-semibold uppercase",
-                            "tracking-[0.12em]",
-                            tone.industry,
-                          )}
-                        >
-                          {item.industry}
-                        </span>
-                        <span
-                          aria-hidden="true"
-                          className="text-[0.625rem] text-white/50"
-                        >
-                          ·
-                        </span>
-                        <span
-                          className={cn(
-                            "font-mono text-[0.625rem] font-medium uppercase",
-                            "tracking-[0.12em] text-white/80",
-                          )}
-                        >
-                          {item.client}
-                        </span>
+                      <p
+                        className={cn(
+                          "font-mono text-[0.625rem] font-semibold uppercase",
+                          "tracking-[0.12em]",
+                          tone.industry,
+                        )}
+                      >
+                        {item.industry}
                       </p>
 
                       <h3
@@ -321,59 +295,44 @@ export function Stories() {
 
                   {/* ---------------------- Panel --------------------- */}
                   <div className="flex flex-1 flex-col p-4 sm:p-5">
-                    {/* Two metrics, divided by a hairline as in the design. */}
-                    <dl className="grid grid-cols-2 gap-x-4">
-                      {item.metrics.map((metric, metricIndex) => (
-                        <div
-                          key={metric.label}
+                    <p className="text-[0.875rem] leading-relaxed text-pretty text-neutral-600">
+                      {item.description}
+                    </p>
+
+                    {/* The two chips, divided by a hairline as in the design.
+                        `mt-auto` pins them to the card foot so the row aligns
+                        across uneven standfirsts. */}
+                    <ul className="mt-auto grid grid-cols-2 gap-x-4 pt-5">
+                      {item.chips.map((chip, chipIndex) => (
+                        <li
+                          key={chip.label}
                           className={cn(
-                            metricIndex === 1 &&
-                              "border-l border-neutral-200 pl-4",
+                            chipIndex === 1 && "border-l border-neutral-200 pl-4",
                           )}
                         >
-                          <dt className="sr-only">{metric.label}</dt>
-                          <dd>
-                            <span
-                              className={cn(
-                                "block font-display text-[1.375rem] font-bold",
-                                "leading-none tracking-[-0.02em] tabular-nums",
-                                tone.metric,
-                              )}
-                            >
-                              {metric.value}
+                          {"value" in chip && chip.value ? (
+                            <>
+                              <span
+                                className={cn(
+                                  "block font-display text-[1.375rem] font-bold",
+                                  "leading-none tracking-[-0.02em] tabular-nums",
+                                  tone.metric,
+                                )}
+                              >
+                                {chip.value}
+                              </span>
+                              <span className="mt-2 block text-[0.8125rem] leading-snug text-pretty text-neutral-600">
+                                {chip.label}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="block text-[0.875rem] leading-snug font-medium text-pretty text-neutral-800">
+                              {chip.label}
                             </span>
-                            <span className="mt-2 block text-[0.8125rem] leading-snug text-pretty text-neutral-600">
-                              {metric.label}
-                            </span>
-                          </dd>
-                        </div>
+                          )}
+                        </li>
                       ))}
-                    </dl>
-
-                    {/* Engine badge. mt-auto pins it to the card foot so the
-                        badges align across a row of uneven titles. */}
-                    <div className="mt-auto pt-4">
-                      <span
-                        className={cn(
-                          "inline-flex items-center gap-2 rounded-md px-2.5 py-2",
-                          "text-[0.8125rem] font-medium",
-                          tone.badge,
-                        )}
-                      >
-                        <EngineIcon
-                          className={cn("size-4 shrink-0", tone.badgeIcon)}
-                        />
-                        {item.engine.name}
-                        {item.engine.tags.map((tag) => (
-                          <span key={tag} className="flex items-center gap-2">
-                            <span aria-hidden="true" className="opacity-40">
-                              ·
-                            </span>
-                            {tag}
-                          </span>
-                        ))}
-                      </span>
-                    </div>
+                    </ul>
                   </div>
                 </Link>
               </motion.li>
