@@ -470,23 +470,29 @@ export const resourcesMenu: MegaMenuPanel = {
         },
       ],
     },
-    {
-      title: "Watch and attend",
-      items: [
-        {
-          name: "Webinars and Events",
-          description: "Live sessions with practitioners and leaders",
-          href: "/resources/events",
-          icon: "events",
-        },
-        {
-          name: "Videos",
-          description: "Short explainers, demos and customer stories",
-          href: "/resources/videos",
-          icon: "videos",
-        },
-      ],
-    },
+    /*
+     * The "Watch and attend" column is withheld for now (Sep 2026) — the menu
+     * shows only "Read". Restore it by uncommenting; MegaMenu lays the panel
+     * out from the column count, so nothing else needs to change.
+     *
+     * {
+     *   title: "Watch and attend",
+     *   items: [
+     *     {
+     *       name: "Webinars and Events",
+     *       description: "Live sessions with practitioners and leaders",
+     *       href: "/resources/events",
+     *       icon: "events",
+     *     },
+     *     {
+     *       name: "Videos",
+     *       description: "Short explainers, demos and customer stories",
+     *       href: "/resources/videos",
+     *       icon: "videos",
+     *     },
+     *   ],
+     * },
+     */
   ],
 
   footer: {

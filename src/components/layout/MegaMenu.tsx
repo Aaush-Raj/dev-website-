@@ -60,13 +60,23 @@ export function MegaMenu({ id, menu }: { id: string; menu: ColumnMenuKey }) {
       )}
     >
       {/* =========================== Columns ======================== */}
-      {/* The column count follows the data: Platform has three, Solutions and
-          Resources two. Hard-coding three would leave the narrower panels with
-          an empty trailing column. */}
+      {/* The column count follows the data: Platform has three, Solutions
+          two, and Resources — with its second column withheld for now — one.
+          Hard-coding three would leave the narrower panels with an empty
+          trailing column.
+
+          A SINGLE column is laid out differently: the panel still spans the
+          whole container, so a lone list of three links at its left edge
+          would strand two-thirds of it empty. Instead that column's items
+          are spread across the panel, one per column — see `spread` below. */}
       <div
         className={cn(
           "grid gap-x-8 gap-y-10 p-8 lg:gap-x-12 lg:p-10",
-          columns.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3",
+          columns.length === 1
+            ? "md:grid-cols-1"
+            : columns.length === 2
+              ? "md:grid-cols-2"
+              : "md:grid-cols-3",
         )}
       >
         {columns.map((column, columnIndex) => (
@@ -87,13 +97,16 @@ export function MegaMenu({ id, menu }: { id: string; menu: ColumnMenuKey }) {
             </p>
 
             {/* Paired columns lay their items two per row — see `paired` in
-                the navigation data for why the Solutions panel needs it. */}
+                the navigation data for why the Solutions panel needs it. A
+                panel's only column spreads its items across it instead. */}
             <ul
               className={cn(
                 "mt-6",
-                column.paired
-                  ? "grid gap-x-6 gap-y-6 sm:grid-cols-2"
-                  : "flex flex-col gap-6",
+                columns.length === 1
+                  ? "grid gap-x-8 gap-y-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-12"
+                  : column.paired
+                    ? "grid gap-x-6 gap-y-6 sm:grid-cols-2"
+                    : "flex flex-col gap-6",
               )}
             >
               {column.items.map((item) => (
