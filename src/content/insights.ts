@@ -223,7 +223,15 @@ export const insights = {
       ],
     },
 
-    action: { label: "Read the field note", href: "#latest" },
+    /*
+     * The field note is the frontline-conversations article. This used to
+     * point at "#latest" — the anchor of the very section the button sits in
+     * — so it scrolled to itself and went nowhere.
+     */
+    action: {
+      label: "Read the field note",
+      href: "/resources/insights/frontline-conversations",
+    },
 
     /** The network diagram the labels are laid over. */
     diagram: {
